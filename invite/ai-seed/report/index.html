@@ -1,0 +1,831 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI种子人才赋能与课题众创机制</title>
+  <style>
+    :root {
+      --navy: #0b1f3a;
+      --blue: #1d4ed8;
+      --cyan: #0f766e;
+      --gold: #b7791f;
+      --ink: #102033;
+      --muted: #5b6b80;
+      --soft: #eef5ff;
+      --line: #d8e3f0;
+      --card: rgba(255, 255, 255, 0.9);
+      --shadow: 0 22px 70px rgba(11, 31, 58, 0.14);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: "Microsoft YaHei", "PingFang SC", "Segoe UI", Arial, sans-serif;
+      background:
+        linear-gradient(120deg, rgba(29, 78, 216, 0.08), transparent 34%),
+        linear-gradient(240deg, rgba(15, 118, 110, 0.08), transparent 38%),
+        #f6f9fd;
+      line-height: 1.68;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(11, 31, 58, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(11, 31, 58, 0.035) 1px, transparent 1px);
+      background-size: 42px 42px;
+      mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.9), transparent 70%);
+    }
+
+    .wrap {
+      width: min(1360px, calc(100% - 48px));
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .hero {
+      min-height: 96vh;
+      display: grid;
+      align-items: center;
+      padding: 76px 0 60px;
+    }
+
+    .kicker {
+      display: inline-flex;
+      width: fit-content;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 14px;
+      border: 1px solid rgba(29, 78, 216, 0.18);
+      border-radius: 999px;
+      color: var(--blue);
+      background: rgba(255, 255, 255, 0.82);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+    }
+
+    h1 {
+      max-width: 980px;
+      margin: 28px 0 24px;
+      color: var(--navy);
+      font-size: clamp(44px, 6.8vw, 84px);
+      line-height: 1.05;
+      letter-spacing: -0.055em;
+    }
+
+    .lead {
+      max-width: 900px;
+      margin: 0;
+      color: var(--muted);
+      font-size: clamp(19px, 2vw, 25px);
+    }
+
+    .demo-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 28px;
+      padding: 13px 18px;
+      border-radius: 16px;
+      color: #ffffff;
+      background: linear-gradient(135deg, var(--blue), var(--navy));
+      box-shadow: 0 16px 36px rgba(29, 78, 216, 0.2);
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .demo-link span {
+      color: rgba(255, 255, 255, 0.72);
+      font-weight: 500;
+    }
+
+    .hero-map {
+      display: grid;
+      grid-template-columns: 1fr 1.4fr 1fr;
+      gap: 18px;
+      margin-top: 58px;
+      align-items: stretch;
+    }
+
+    .map-node {
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      background: var(--card);
+      box-shadow: var(--shadow);
+    }
+
+    .map-node.center {
+      color: #fff;
+      border: 0;
+      background:
+        radial-gradient(circle at 88% 12%, rgba(255, 255, 255, 0.26), transparent 25%),
+        linear-gradient(135deg, var(--navy), var(--blue));
+    }
+
+    .label {
+      display: block;
+      margin-bottom: 10px;
+      color: var(--blue);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .center .label {
+      color: rgba(255, 255, 255, 0.74);
+    }
+
+    .map-node strong {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 24px;
+      line-height: 1.25;
+    }
+
+    .map-node p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .center p {
+      color: rgba(255, 255, 255, 0.78);
+    }
+
+    section {
+      padding: 72px 0;
+      border-top: 1px solid rgba(11, 31, 58, 0.08);
+    }
+
+    .section-head {
+      display: grid;
+      grid-template-columns: 0.36fr 0.64fr;
+      gap: 38px;
+      margin-bottom: 30px;
+      align-items: end;
+    }
+
+    h2 {
+      margin: 0;
+      color: var(--navy);
+      font-size: clamp(32px, 4vw, 54px);
+      line-height: 1.14;
+      letter-spacing: -0.04em;
+    }
+
+    .section-head p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 19px;
+    }
+
+    .diagnosis {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      counter-reset: item;
+    }
+
+    .diagnosis article {
+      min-height: 238px;
+      padding: 26px;
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      background: rgba(255, 255, 255, 0.86);
+      box-shadow: 0 16px 44px rgba(11, 31, 58, 0.08);
+      counter-increment: item;
+    }
+
+    .diagnosis article::before {
+      content: "0" counter(item);
+      display: block;
+      margin-bottom: 28px;
+      color: rgba(29, 78, 216, 0.28);
+      font-size: 36px;
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    h3 {
+      margin: 0 0 12px;
+      color: var(--navy);
+      font-size: 22px;
+      line-height: 1.28;
+    }
+
+    p {
+      margin: 0;
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    .architecture {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 18px;
+    }
+
+    .layer {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .layer-title {
+      display: grid;
+      align-content: center;
+      min-height: 124px;
+      padding: 24px;
+      border-radius: 26px;
+      color: #fff;
+      background: linear-gradient(145deg, var(--navy), #163b6d);
+      box-shadow: 0 18px 45px rgba(11, 31, 58, 0.16);
+    }
+
+    .layer-title span {
+      display: block;
+      margin-bottom: 8px;
+      opacity: 0.68;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+    }
+
+    .layer-title strong {
+      font-size: 24px;
+      line-height: 1.2;
+    }
+
+    .layer-body {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      background: rgba(255, 255, 255, 0.72);
+    }
+
+    .capability {
+      padding: 20px;
+      border-radius: 22px;
+      background: #fff;
+      box-shadow: 0 10px 28px rgba(11, 31, 58, 0.06);
+    }
+
+    .capability strong {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--blue);
+      font-size: 18px;
+    }
+
+    .loop {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 14px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 34px;
+      background:
+        radial-gradient(circle at 8% 12%, rgba(29, 78, 216, 0.10), transparent 26%),
+        radial-gradient(circle at 92% 88%, rgba(15, 118, 110, 0.10), transparent 24%),
+        rgba(255, 255, 255, 0.72);
+      box-shadow: var(--shadow);
+    }
+
+    .loop-step {
+      position: relative;
+      min-height: 148px;
+      padding: 20px 18px 18px;
+      border: 1px solid rgba(216, 227, 240, 0.9);
+      border-radius: 24px;
+      color: var(--ink);
+      background: rgba(255, 255, 255, 0.94);
+      box-shadow: 0 12px 30px rgba(11, 31, 58, 0.07);
+    }
+
+    .loop-step::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      right: -15px;
+      width: 16px;
+      height: 2px;
+      background: linear-gradient(90deg, var(--blue), var(--cyan));
+      opacity: 0.55;
+    }
+
+    .loop-step:nth-child(5)::after,
+    .loop-step:nth-child(10)::after {
+      display: none;
+    }
+
+    .loop-step:nth-child(6)::before {
+      content: "";
+      position: absolute;
+      top: -15px;
+      left: 50%;
+      width: 2px;
+      height: 16px;
+      background: linear-gradient(180deg, var(--blue), var(--cyan));
+      opacity: 0.55;
+    }
+
+    .loop-step span {
+      display: inline-grid;
+      place-items: center;
+      width: 34px;
+      height: 34px;
+      margin-bottom: 16px;
+      border-radius: 12px;
+      color: #ffffff;
+      background: linear-gradient(135deg, var(--blue), var(--navy));
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .loop-step strong {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--navy);
+      font-size: 19px;
+      line-height: 1.2;
+    }
+
+    .loop-step small {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .loop-summary {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .loop-summary div {
+      padding: 16px 18px;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.86);
+      box-shadow: 0 10px 28px rgba(11, 31, 58, 0.06);
+    }
+
+    .loop-summary strong {
+      display: block;
+      margin-bottom: 5px;
+      color: var(--blue);
+      font-size: 18px;
+    }
+
+    .loop-summary span {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .roles {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    .role-main {
+      padding: 36px;
+      border-radius: 34px;
+      color: #fff;
+      background:
+        radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.22), transparent 28%),
+        linear-gradient(135deg, var(--navy), var(--blue));
+      box-shadow: var(--shadow);
+    }
+
+    .role-main h3 {
+      color: #fff;
+      font-size: 34px;
+    }
+
+    .role-main p {
+      max-width: 620px;
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 19px;
+    }
+
+    .role-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .role-item {
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.88);
+      box-shadow: 0 12px 30px rgba(11, 31, 58, 0.06);
+    }
+
+    .role-item strong {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--navy);
+      font-size: 18px;
+    }
+
+    .matrix {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      background: #fff;
+      box-shadow: var(--shadow);
+    }
+
+    .matrix th,
+    .matrix td {
+      padding: 22px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .matrix th {
+      color: #fff;
+      background: var(--navy);
+      font-size: 16px;
+    }
+
+    .matrix tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .matrix td:first-child {
+      color: var(--blue);
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .roadmap {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+
+    .phase {
+      min-height: 250px;
+      padding: 26px;
+      border-radius: 28px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.88);
+      box-shadow: 0 14px 38px rgba(11, 31, 58, 0.08);
+    }
+
+    .phase em {
+      display: block;
+      margin-bottom: 34px;
+      color: var(--gold);
+      font-style: normal;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+    }
+
+    .final {
+      padding: 54px;
+      border-radius: 38px;
+      color: #fff;
+      background:
+        radial-gradient(circle at 15% 15%, rgba(255, 255, 255, 0.22), transparent 24%),
+        linear-gradient(135deg, #071a31 0%, #113c72 48%, #0f766e 100%);
+      box-shadow: 0 28px 80px rgba(11, 31, 58, 0.22);
+    }
+
+    .final h2 {
+      color: #fff;
+      max-width: 900px;
+    }
+
+    .final p {
+      max-width: 920px;
+      margin-top: 22px;
+      color: rgba(255, 255, 255, 0.78);
+      font-size: 22px;
+    }
+
+    footer {
+      padding: 42px 0 80px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    @media (max-width: 980px) {
+      .hero-map,
+      .section-head,
+      .diagnosis,
+      .layer,
+      .layer-body,
+      .loop,
+      .loop-summary,
+      .roles,
+      .roadmap {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        min-height: auto;
+      }
+
+      .wrap {
+        width: min(100% - 32px, 1360px);
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <header class="hero">
+      <div>
+        <div class="kicker">AI GOVERNANCE · TALENT ENABLEMENT · TOPIC MARKET</div>
+        <h1>把 AI 大赛发现的人才，转化为持续创新机制</h1>
+        <p class="lead">建议建设“AI 课题众创平台”，用平台机制替代社团运营：让需求从一线涌现，让价值由社区和悬赏识别，让 AI 种子人才专注攻关，让成果沉淀为组织能力。</p>
+        <a class="demo-link" href="./AI课题众创论坛Demo.html" target="_blank">打开论坛 Demo <span>查看主帖、回帖、悬赏和排行榜</span></a>
+
+        <div class="hero-map">
+          <div class="map-node">
+            <span class="label">Input</span>
+            <strong>全员 AI 需求</strong>
+            <p>业务痛点、效率瓶颈、知识场景、数据分析、自动化设想。</p>
+          </div>
+          <div class="map-node center">
+            <span class="label">Core Architecture</span>
+            <strong>AI 课题众创平台</strong>
+            <p>需求广场 + 课题市场 + 悬赏机制 + 人才匹配 + 成果沉淀。</p>
+          </div>
+          <div class="map-node">
+            <span class="label">Output</span>
+            <strong>可复用 AI 能力</strong>
+            <p>方案、工具、Agent、MCP、模板、案例和方法论。</p>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <section>
+      <div class="section-head">
+        <h2>关键判断：不要把种子人才变成社团管理员</h2>
+        <p>研习社团能做交流，但不适合作为 AI 创新主机制。真正需要设计的是一套能自动发现课题、匹配人才、配置资源和兑现激励的运行架构。</p>
+      </div>
+      <div class="diagnosis">
+        <article>
+          <h3>角色错配</h3>
+          <p class="muted">社团负责人要做活动、纳新和成员管理，容易占用 AI 专业人才的攻关时间。</p>
+        </article>
+        <article>
+          <h3>边界偏窄</h3>
+          <p class="muted">只围绕大赛选手或固定专题建社团，可能遗漏未参赛但有潜力的员工。</p>
+        </article>
+        <article>
+          <h3>课题单向</h3>
+          <p class="muted">自上而下指定题目，难以及时捕捉一线业务里的真实 AI 场景。</p>
+        </article>
+        <article>
+          <h3>筛选失真</h3>
+          <p class="muted">传统审批依赖管理者判断，可能因认知保守而压制早期创新需求。</p>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <h2>目标架构：一平台、四机制、两保障</h2>
+        <p>从架构上看，这不是一个活动方案，而是公司 AI 创新的运行系统。平台承载交易与沉淀，机制驱动流转，治理保障安全和资源。</p>
+      </div>
+
+      <div class="architecture">
+        <div class="layer">
+          <div class="layer-title">
+            <span>01 PLATFORM</span>
+            <strong>AI 课题众创平台</strong>
+          </div>
+          <div class="layer-body">
+            <div class="capability"><strong>需求广场</strong><span class="muted">全员发布 AI 场景和痛点</span></div>
+            <div class="capability"><strong>课题市场</strong><span class="muted">高价值需求转化为任务</span></div>
+            <div class="capability"><strong>技术论坛</strong><span class="muted">讨论、复议、共创、学习</span></div>
+            <div class="capability"><strong>成果库</strong><span class="muted">沉淀可复用能力资产</span></div>
+          </div>
+        </div>
+
+        <div class="layer">
+          <div class="layer-title">
+            <span>02 MECHANISM</span>
+            <strong>四套运行机制</strong>
+          </div>
+          <div class="layer-body">
+            <div class="capability"><strong>需求发现</strong><span class="muted">让场景从一线产生</span></div>
+            <div class="capability"><strong>价值识别</strong><span class="muted">用热度和悬赏动态排序</span></div>
+            <div class="capability"><strong>人才匹配</strong><span class="muted">种子人才按兴趣认领攻关</span></div>
+            <div class="capability"><strong>成果激励</strong><span class="muted">按验证价值兑现奖励</span></div>
+          </div>
+        </div>
+
+        <div class="layer">
+          <div class="layer-title">
+            <span>03 GOVERNANCE</span>
+            <strong>两类保障</strong>
+          </div>
+          <div class="layer-body">
+            <div class="capability"><strong>资源保障</strong><span class="muted">AI 接口、MCP、模型额度、知识库、沙箱环境</span></div>
+            <div class="capability"><strong>规则保障</strong><span class="muted">积分、权限、验收、成果评价规则</span></div>
+            <div class="capability"><strong>安全保障</strong><span class="muted">数据、系统、模型调用和合规边界</span></div>
+            <div class="capability"><strong>组织保障</strong><span class="muted">AI 治理委员会协调重点资源</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <h2>运行流程：从主帖到能力资产</h2>
+        <p>每个课题都按同一条闭环流转：员工发起、论坛共创、积分加码、种子攻关、业务验证、成果入库。机制越清晰，平台越能低成本自动运转。</p>
+      </div>
+      <div class="loop">
+        <div class="loop-step">
+          <span>01</span>
+          <strong>发布主帖</strong>
+          <small>员工提交 AI 场景、业务痛点、预期价值和联系人。</small>
+        </div>
+        <div class="loop-step">
+          <span>02</span>
+          <strong>回帖共创</strong>
+          <small>同事补充业务背景、约束条件、相似案例和方案建议。</small>
+        </div>
+        <div class="loop-step">
+          <span>03</span>
+          <strong>追加悬赏</strong>
+          <small>员工、业务负责人和委员会用积分支持高价值课题。</small>
+        </div>
+        <div class="loop-step">
+          <span>04</span>
+          <strong>热度上浮</strong>
+          <small>系统按回帖、复议、悬赏、关注度形成动态排序。</small>
+        </div>
+        <div class="loop-step">
+          <span>05</span>
+          <strong>种子认领</strong>
+          <small>AI 种子选手选择有意愿、有能力突破的课题。</small>
+        </div>
+        <div class="loop-step">
+          <span>06</span>
+          <strong>申请资源</strong>
+          <small>按课题需要申请 AI 接口、MCP、模型额度和沙箱环境。</small>
+        </div>
+        <div class="loop-step">
+          <span>07</span>
+          <strong>提交成果</strong>
+          <small>交付方案、Prompt、Agent、MCP 工具、原型或报告。</small>
+        </div>
+        <div class="loop-step">
+          <span>08</span>
+          <strong>业务验证</strong>
+          <small>需求方和业务负责人验证效果、可用性和推广价值。</small>
+        </div>
+        <div class="loop-step">
+          <span>09</span>
+          <strong>激励兑付</strong>
+          <small>按贡献发放积分、奖金、荣誉和更高资源权限。</small>
+        </div>
+        <div class="loop-step">
+          <span>10</span>
+          <strong>能力入库</strong>
+          <small>优秀成果进入能力库，被其他部门复用和二次改造。</small>
+        </div>
+      </div>
+      <div class="loop-summary">
+        <div><strong>需求侧</strong><span>主帖 + 回帖，持续澄清真实业务场景。</span></div>
+        <div><strong>市场侧</strong><span>热度 + 悬赏，让高价值课题自然浮现。</span></div>
+        <div><strong>人才侧</strong><span>认领 + 资源，让 AI 种子选手专注攻关。</span></div>
+        <div><strong>组织侧</strong><span>验证 + 入库，把成果变成可复用资产。</span></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <h2>AI 种子人才：高等级创新成员，而非运营负责人</h2>
+        <p>通过身份分层和权限分层，让真正有能力、有贡献的人获得更多资源，同时承担更清晰的交付责任。</p>
+      </div>
+      <div class="roles">
+        <div class="role-main">
+          <h3>核心定位</h3>
+          <p>AI 种子人才应聚焦课题攻关、方案设计、工具开发、成果交付和经验扩散。公司要给他们方向、权限和激励，而不是增加社团运营负担。</p>
+        </div>
+        <div class="role-list">
+          <div class="role-item"><strong>方向</strong><span class="muted">通过平台直接看到真实业务需求和高悬赏课题。</span></div>
+          <div class="role-item"><strong>权限</strong><span class="muted">按等级开放 AI 接口、MCP、模型额度、知识库和测试环境。</span></div>
+          <div class="role-item"><strong>激励</strong><span class="muted">按任务完成、业务采纳、成果沉淀和经验分享获得奖励。</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <h2>分层权益：资源向贡献者倾斜</h2>
+        <p>分层不是为了制造门槛，而是让资源开放、任务难度和激励强度能够匹配人才贡献。</p>
+      </div>
+      <table class="matrix">
+        <thead>
+          <tr>
+            <th>层级</th>
+            <th>定位</th>
+            <th>主要权益</th>
+            <th>主要责任</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>普通成员</td>
+            <td>全员默认参与者</td>
+            <td>发布需求、参与讨论、复议、小额悬赏</td>
+            <td>贡献场景、补充背景、反馈效果</td>
+          </tr>
+          <tr>
+            <td>AI 种子成员</td>
+            <td>具备 AI 实践能力的参与者</td>
+            <td>认领课题、获得基础工具和模型额度</td>
+            <td>提交方案、工具、原型或阶段成果</td>
+          </tr>
+          <tr>
+            <td>AI 高级种子成员</td>
+            <td>具备较强交付能力的攻关者</td>
+            <td>更高接口权限、MCP 能力、沙箱和专家资源</td>
+            <td>完成重点悬赏任务，沉淀可复用成果</td>
+          </tr>
+          <tr>
+            <td>AI 创新合伙人</td>
+            <td>持续产出并能带动他人的核心人才</td>
+            <td>参与重点项目、规则共建、专项激励和荣誉认证</td>
+            <td>推广成果、辅导他人、共建公司 AI 方法论</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <h2>推进节奏：先验证机制，再扩大生态</h2>
+        <p>不建议一开始追求大而全平台，应先用轻量试点验证闭环，再逐步建设规则和系统能力。</p>
+      </div>
+      <div class="roadmap">
+        <div class="phase">
+          <em>PHASE 01</em>
+          <h3>小范围试点</h3>
+          <p class="muted">选择 AI 大赛优秀选手和若干业务部门，验证课题发布、悬赏、认领和兑付流程。</p>
+        </div>
+        <div class="phase">
+          <em>PHASE 02</em>
+          <h3>机制成型</h3>
+          <p class="muted">建立课题模板、积分规则、成员分层、权限开放和成果评价标准。</p>
+        </div>
+        <div class="phase">
+          <em>PHASE 03</em>
+          <h3>平台扩展</h3>
+          <p class="muted">面向更多员工开放，引入业务负责人、专家和更多 AI 能力成员。</p>
+        </div>
+        <div class="phase">
+          <em>PHASE 04</em>
+          <h3>常态运营</h3>
+          <p class="muted">纳入 AI 治理体系，持续沉淀 Prompt、Agent、MCP、案例和方法论。</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="final">
+        <h2>最终目标：形成公司级 AI 创新生态</h2>
+        <p>这套机制的价值，不是多组织几个活动，而是建立一个能够长期运转的 AI 创新系统：业务场景持续进入，价值需求自然上浮，种子人才主动攻关，公司资源精准赋能，优秀成果沉淀复用。</p>
+      </div>
+    </section>
+
+    <footer>AI种子人才赋能与课题众创机制汇报材料</footer>
+  </main>
+</body>
+</html>

@@ -120,6 +120,61 @@
       box-shadow: var(--shadow);
     }
 
+    .share-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+      margin-top: 36px;
+    }
+
+    .share-card {
+      display: grid;
+      min-height: 230px;
+      padding: 28px;
+      border: 1px solid rgba(223, 229, 238, 0.95);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.86);
+      box-shadow: var(--shadow);
+      color: inherit;
+      text-decoration: none;
+      transition: transform 160ms ease, border-color 160ms ease;
+    }
+
+    .share-card:hover,
+    .share-card:focus-visible {
+      transform: translateY(-3px);
+      border-color: rgba(36, 84, 166, 0.38);
+      outline: none;
+    }
+
+    .tag {
+      width: fit-content;
+      padding: 7px 11px;
+      border-radius: 999px;
+      color: var(--blue);
+      background: var(--blue-soft);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .share-card h2 {
+      margin: 18px 0 10px;
+      color: var(--navy);
+      font-size: 28px;
+      line-height: 1.18;
+    }
+
+    .share-card p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .share-action {
+      align-self: end;
+      color: var(--blue);
+      font-weight: 800;
+    }
+
     .empty h2 {
       margin: 0 0 10px;
       color: var(--navy);
@@ -171,6 +226,10 @@
       .criteria {
         grid-template-columns: 1fr;
       }
+
+      .share-grid {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
@@ -189,29 +248,36 @@
       <div class="eyebrow">Open Sharing</div>
       <h1 id="page-title">公开分享</h1>
       <p class="intro">
-        这里会收纳已经确认可以直接对外访问的页面。当前先保留为空态，后续每个页面都会在确认内容边界后加入。
+        这里收纳已经确认可以直接对外访问的页面。首批公开内容先从 AI 能力成长体系开始，
+        用更通用的方式介绍能力模型、成长路径和系统闭环。
       </p>
     </section>
 
-    <section class="empty" aria-label="公开内容状态">
-      <h2>公开内容将逐步更新</h2>
-      <p>
-        已发布的测试 Demo 暂不在首页和公开列表展示。后续新增内容时，会优先检查是否适合公开传播，再加入这个区域。
-      </p>
-      <div class="criteria" aria-label="发布原则">
-        <div class="criterion">
-          <strong>可直接传播</strong>
-          <span>不包含商业机密、内部数据或未确认授权的信息。</span>
-        </div>
-        <div class="criterion">
-          <strong>表达完整</strong>
-          <span>页面能独立阅读，不依赖额外口头背景。</span>
-        </div>
-        <div class="criterion">
-          <strong>方便复用</strong>
-          <span>适合作为观点、方法、Demo 或课程材料的公开入口。</span>
-        </div>
-      </div>
+    <section class="share-grid" aria-label="公开内容列表">
+      <a class="share-card" href="./ai-growth/">
+        <span class="tag">AI Growth</span>
+        <h2>AI 能力成长体系总览</h2>
+        <p>从为什么要做、评什么、怎么成长，到系统如何支撑留痕与申报，形成一套可理解的公开介绍。</p>
+        <span class="share-action">查看总览 →</span>
+      </a>
+      <a class="share-card" href="./ai-growth/model.html">
+        <span class="tag">Model</span>
+        <h2>五项能力模型</h2>
+        <p>用任务建模、Agent 编排、结果验证、风险治理、业务价值实现，解释 AI 能力如何被拆解。</p>
+        <span class="share-action">查看模型 →</span>
+      </a>
+      <a class="share-card" href="./ai-growth/path.html">
+        <span class="tag">Path</span>
+        <h2>G0-G3 成长路径</h2>
+        <p>用公开化语言说明从基础应用到流程与系统化的成长方向，强调证据、复用和业务结果。</p>
+        <span class="share-action">查看路径 →</span>
+      </a>
+      <a class="share-card" href="./ai-growth/system.html">
+        <span class="tag">System</span>
+        <h2>成长系统逻辑</h2>
+        <p>说明成长沟通、等级申报和个人档案如何形成闭环，以及为什么系统不替代制度。</p>
+        <span class="share-action">查看系统 →</span>
+      </a>
     </section>
   </main>
 </body>

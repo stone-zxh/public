@@ -94,11 +94,8 @@
     }
 
     .hero {
-      display: grid;
-      grid-template-columns: minmax(0, 1.35fr) minmax(360px, 0.65fr);
-      gap: 28px;
-      align-items: stretch;
-      margin-bottom: 24px;
+      max-width: 1040px;
+      margin-bottom: 30px;
     }
 
     .eyebrow {
@@ -134,53 +131,9 @@
       box-shadow: var(--shadow);
     }
 
-    .hero-card {
-      display: grid;
-      align-content: space-between;
-      min-height: 430px;
-      padding: 30px;
-    }
-
-    .hero-card h2 {
-      margin: 0 0 14px;
-      color: var(--navy);
-      font-size: 26px;
-      line-height: 1.2;
-    }
-
-    .hero-card p {
-      margin: 0;
-      color: var(--muted);
-    }
-
-    .meta-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 12px;
-      margin-top: 26px;
-    }
-
-    .meta {
-      padding: 16px;
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      background: #fbfcff;
-    }
-
-    .meta strong {
-      display: block;
-      margin-bottom: 4px;
-      color: var(--navy);
-    }
-
-    .meta span {
-      color: var(--muted);
-      font-size: 13px;
-    }
-
     .focus-grid {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 18px;
       margin: 24px 0;
     }
@@ -328,7 +281,6 @@
         flex-direction: column;
       }
 
-      .hero,
       .focus-grid,
       .entries {
         grid-template-columns: 1fr;
@@ -343,9 +295,6 @@
         padding-top: 24px;
       }
 
-      .hero-card {
-        min-height: auto;
-      }
     }
   </style>
 </head>
@@ -363,62 +312,41 @@
     <section class="hero" aria-labelledby="site-title">
       <div>
         <div class="eyebrow">Stone's Personal Sharing Platform</div>
-        <h1 id="site-title">数字化、AI 与真实业务场景的实践记录。</h1>
+        <h1 id="site-title">Stone 的个人分享平台</h1>
         <p class="intro">
           我是 Stone，长期关注数字化与 AI 在真实业务场景中的应用。这里是我的个人分享平台，
           用来沉淀业务问题分析、AI 工具化探索、组织机制设计和可复用实践。
         </p>
       </div>
-
-      <aside class="panel hero-card" aria-label="平台说明">
-        <div>
-          <h2>一个面向实践的个人分享平台</h2>
-          <p>
-            我更关心技术如何进入真实业务：先把问题说清楚，再把流程跑起来，
-            最后把经验沉淀成可复用的方法、页面和工具。
-          </p>
-        </div>
-        <div class="meta-grid" aria-label="内容边界">
-          <div class="meta">
-            <strong>公开分享</strong>
-            <span>适合直接对外交流的页面</span>
-          </div>
-          <div class="meta">
-            <strong>邀请访问</strong>
-            <span>小范围分享的半公开材料</span>
-          </div>
-          <div class="meta">
-            <strong>留言反馈</strong>
-            <span>通过 GitHub Issue 留痕</span>
-          </div>
-          <div class="meta">
-            <strong>安全边界</strong>
-            <span>发布前先确认内容可公开性</span>
-          </div>
-        </div>
-      </aside>
     </section>
 
     <section class="focus-grid" aria-label="关注方向">
       <article class="panel focus-card">
         <div class="number">01</div>
         <div>
-          <h2>业务问题分析</h2>
-          <p>从流程断点、协同摩擦和经营决策出发，拆解问题、边界和优先级。</p>
+          <h2>流程管理</h2>
+          <p>关注跨部门协同、流程断点、问题闭环与机制化改进。</p>
         </div>
       </article>
       <article class="panel focus-card">
         <div class="number">02</div>
         <div>
-          <h2>AI 工具化探索</h2>
-          <p>把 AI 能力、自动化脚本和轻量页面转化为可试用、可复盘的工作方式。</p>
+          <h2>AI 组织能力</h2>
+          <p>关注 AI 从单点工具走向组织能力，包括人才、治理、场景共创和能力复用。</p>
         </div>
       </article>
       <article class="panel focus-card">
         <div class="number">03</div>
         <div>
-          <h2>组织机制设计</h2>
-          <p>关注治理、激励、协同闭环和知识沉淀，让一次性成果形成复用资产。</p>
+          <h2>目标管理</h2>
+          <p>关注战略到执行、OKR/KPI、目标拆解和过程跟进。</p>
+        </div>
+      </article>
+      <article class="panel focus-card">
+        <div class="number">04</div>
+        <div>
+          <h2>知识管理</h2>
+          <p>关注个人与组织知识沉淀、复用、结构化表达和人机协同。</p>
         </div>
       </article>
     </section>
