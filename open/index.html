@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>公开分享 · cizen.net</title>
+  <style>
+    :root {
+      --bg: #f7f9fc;
+      --panel: #ffffff;
+      --ink: #172033;
+      --muted: #647084;
+      --line: #dfe5ee;
+      --navy: #10233f;
+      --blue: #2454a6;
+      --blue-soft: #eef4ff;
+      --radius: 24px;
+      --shadow: 0 22px 70px rgba(15, 23, 42, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      font-family: "Microsoft YaHei", "PingFang SC", "Segoe UI", Arial, sans-serif;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.86), rgba(247, 249, 252, 0.94)),
+        radial-gradient(circle at 16% 0%, rgba(36, 84, 166, 0.13), transparent 30%),
+        var(--bg);
+      line-height: 1.65;
+    }
+
+    main {
+      width: min(980px, calc(100% - 40px));
+      margin: 0 auto;
+      padding: 34px 0 46px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 72px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .brand {
+      color: var(--navy);
+      font-size: 18px;
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .back {
+      color: var(--blue);
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .hero {
+      margin-bottom: 28px;
+    }
+
+    .eyebrow {
+      width: fit-content;
+      margin-bottom: 18px;
+      padding: 7px 12px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--muted);
+      background: rgba(255, 255, 255, 0.74);
+      font-size: 14px;
+    }
+
+    h1 {
+      max-width: 720px;
+      margin: 0;
+      color: var(--navy);
+      font-size: clamp(38px, 6vw, 68px);
+      line-height: 1.08;
+      letter-spacing: -0.04em;
+    }
+
+    .intro {
+      max-width: 680px;
+      margin: 22px 0 0;
+      color: var(--muted);
+      font-size: 18px;
+    }
+
+    .empty {
+      margin-top: 36px;
+      padding: 34px;
+      border: 1px solid rgba(223, 229, 238, 0.95);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.86);
+      box-shadow: var(--shadow);
+    }
+
+    .empty h2 {
+      margin: 0 0 10px;
+      color: var(--navy);
+      font-size: 26px;
+    }
+
+    .empty p {
+      max-width: 680px;
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .criteria {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 22px;
+    }
+
+    .criterion {
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: #fbfcff;
+    }
+
+    .criterion strong {
+      display: block;
+      margin-bottom: 5px;
+      color: var(--navy);
+    }
+
+    .criterion span {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    @media (max-width: 760px) {
+      .topbar {
+        align-items: flex-start;
+        flex-direction: column;
+        margin-bottom: 52px;
+      }
+
+      main {
+        width: min(100% - 28px, 980px);
+      }
+
+      .criteria {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header class="topbar">
+      <a class="brand" href="../">cizen.net</a>
+      <a class="back" href="../">返回首页</a>
+    </header>
+
+    <section class="hero" aria-labelledby="page-title">
+      <div class="eyebrow">Open Sharing</div>
+      <h1 id="page-title">公开分享</h1>
+      <p class="intro">
+        这里会收纳已经确认可以直接对外访问的页面。当前先保留为空态，后续每个页面都会在确认内容边界后加入。
+      </p>
+    </section>
+
+    <section class="empty" aria-label="公开内容状态">
+      <h2>公开内容将逐步更新</h2>
+      <p>
+        已发布的测试 Demo 暂不在首页和公开列表展示。后续新增内容时，会优先检查是否适合公开传播，再加入这个区域。
+      </p>
+      <div class="criteria" aria-label="发布原则">
+        <div class="criterion">
+          <strong>可直接传播</strong>
+          <span>不包含商业机密、内部数据或未确认授权的信息。</span>
+        </div>
+        <div class="criterion">
+          <strong>表达完整</strong>
+          <span>页面能独立阅读，不依赖额外口头背景。</span>
+        </div>
+        <div class="criterion">
+          <strong>方便复用</strong>
+          <span>适合作为观点、方法、Demo 或课程材料的公开入口。</span>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

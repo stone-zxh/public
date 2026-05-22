@@ -6,15 +6,18 @@
   <title>cizen.net</title>
   <style>
     :root {
-      --bg: #f6f8fb;
+      --bg: #f7f9fc;
       --panel: #ffffff;
-      --ink: #182033;
-      --muted: #657289;
-      --line: #dfe6f0;
-      --accent: #2563eb;
-      --accent-soft: #eaf1ff;
-      --radius: 22px;
-      --shadow: 0 18px 50px rgba(15, 23, 42, 0.08);
+      --ink: #172033;
+      --muted: #647084;
+      --line: #dfe5ee;
+      --navy: #10233f;
+      --blue: #2454a6;
+      --blue-soft: #eef4ff;
+      --gold: #9a6a18;
+      --gold-soft: #fff8e8;
+      --radius: 24px;
+      --shadow: 0 22px 70px rgba(15, 23, 42, 0.08);
     }
 
     * {
@@ -27,133 +30,296 @@
       color: var(--ink);
       font-family: "Microsoft YaHei", "PingFang SC", "Segoe UI", Arial, sans-serif;
       background:
-        radial-gradient(circle at 12% 0%, rgba(37, 99, 235, 0.14), transparent 28%),
-        radial-gradient(circle at 88% 6%, rgba(20, 184, 166, 0.12), transparent 24%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.86), rgba(247, 249, 252, 0.94)),
+        radial-gradient(circle at 16% 0%, rgba(36, 84, 166, 0.13), transparent 30%),
+        radial-gradient(circle at 88% 10%, rgba(154, 106, 24, 0.1), transparent 26%),
         var(--bg);
-      line-height: 1.6;
+      line-height: 1.65;
     }
 
-    main {
-      width: min(1040px, calc(100% - 40px));
+    a {
+      color: inherit;
+    }
+
+    .site-shell {
+      width: min(1160px, calc(100% - 40px));
       margin: 0 auto;
-      padding: 88px 0;
+      padding: 34px 0 42px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 88px;
+    }
+
+    .brand {
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      color: var(--navy);
+    }
+
+    .nav-note {
+      color: var(--muted);
+      font-size: 14px;
     }
 
     .hero {
       display: grid;
-      gap: 26px;
-      margin-bottom: 38px;
+      grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr);
+      gap: 54px;
+      align-items: end;
+      margin-bottom: 64px;
     }
 
     .eyebrow {
       width: fit-content;
+      margin-bottom: 20px;
       padding: 7px 12px;
       border: 1px solid var(--line);
       border-radius: 999px;
       color: var(--muted);
-      background: rgba(255, 255, 255, 0.72);
+      background: rgba(255, 255, 255, 0.74);
       font-size: 14px;
     }
 
     h1 {
-      max-width: 760px;
       margin: 0;
-      font-size: clamp(38px, 7vw, 76px);
-      line-height: 1.05;
-      letter-spacing: -0.04em;
+      color: var(--navy);
+      font-size: clamp(40px, 6.4vw, 74px);
+      line-height: 1.06;
+      letter-spacing: -0.045em;
     }
 
     .intro {
-      max-width: 720px;
-      margin: 0;
+      max-width: 690px;
+      margin: 24px 0 0;
       color: var(--muted);
       font-size: 18px;
     }
 
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 18px;
-    }
-
-    .card {
-      display: grid;
-      gap: 16px;
-      min-height: 230px;
-      padding: 28px;
-      border: 1px solid rgba(223, 230, 240, 0.9);
+    .panel {
+      border: 1px solid rgba(223, 229, 238, 0.95);
       border-radius: var(--radius);
-      background: rgba(255, 255, 255, 0.82);
+      background: rgba(255, 255, 255, 0.86);
       box-shadow: var(--shadow);
-      text-decoration: none;
-      color: inherit;
-      transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
     }
 
-    .card:hover,
-    .card:focus-visible {
-      transform: translateY(-3px);
-      border-color: rgba(37, 99, 235, 0.45);
-      box-shadow: 0 24px 60px rgba(15, 23, 42, 0.12);
+    .principles {
+      display: grid;
+      gap: 18px;
+      padding: 26px;
+    }
+
+    .principle {
+      display: grid;
+      grid-template-columns: 40px 1fr;
+      gap: 14px;
+      align-items: start;
+    }
+
+    .number {
+      display: grid;
+      width: 40px;
+      height: 40px;
+      place-items: center;
+      border-radius: 14px;
+      color: var(--blue);
+      background: var(--blue-soft);
+      font-weight: 800;
+    }
+
+    .principle h2 {
+      margin: 0 0 3px;
+      font-size: 18px;
+      color: var(--navy);
+    }
+
+    .principle p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .entries {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px;
+      margin-bottom: 52px;
+    }
+
+    .entry {
+      position: relative;
+      display: grid;
+      min-height: 260px;
+      padding: 30px;
+      overflow: hidden;
+      text-decoration: none;
+      transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+    }
+
+    .entry:hover,
+    .entry:focus-visible {
+      transform: translateY(-4px);
+      border-color: rgba(36, 84, 166, 0.38);
+      box-shadow: 0 28px 76px rgba(15, 23, 42, 0.12);
       outline: none;
     }
 
-    .tag {
-      width: fit-content;
-      padding: 6px 10px;
+    .entry::after {
+      position: absolute;
+      right: -60px;
+      bottom: -70px;
+      width: 210px;
+      height: 210px;
       border-radius: 999px;
-      color: var(--accent);
-      background: var(--accent-soft);
+      background: rgba(36, 84, 166, 0.08);
+      content: "";
+    }
+
+    .entry.invite::after {
+      background: rgba(154, 106, 24, 0.11);
+    }
+
+    .entry-label {
+      width: fit-content;
+      padding: 7px 11px;
+      border-radius: 999px;
+      color: var(--blue);
+      background: var(--blue-soft);
       font-size: 13px;
-      font-weight: 700;
+      font-weight: 800;
     }
 
-    h2 {
-      margin: 0;
-      font-size: 26px;
-      line-height: 1.25;
+    .entry.invite .entry-label {
+      color: var(--gold);
+      background: var(--gold-soft);
     }
 
-    .card p {
+    .entry h2 {
+      max-width: 430px;
+      margin: 18px 0 10px;
+      color: var(--navy);
+      font-size: 32px;
+      line-height: 1.16;
+      letter-spacing: -0.025em;
+    }
+
+    .entry p {
+      max-width: 440px;
       margin: 0;
       color: var(--muted);
     }
 
-    .arrow {
+    .entry-action {
       align-self: end;
-      color: var(--accent);
-      font-weight: 700;
+      color: var(--blue);
+      font-weight: 800;
+      z-index: 1;
     }
 
-    footer {
-      margin-top: 44px;
+    .entry.invite .entry-action {
+      color: var(--gold);
+    }
+
+    .closing {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding-top: 24px;
+      border-top: 1px solid var(--line);
       color: var(--muted);
       font-size: 14px;
+    }
+
+    @media (max-width: 820px) {
+      .topbar,
+      .closing {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .hero,
+      .entries {
+        grid-template-columns: 1fr;
+      }
+
+      .topbar {
+        margin-bottom: 54px;
+      }
+
+      .site-shell {
+        width: min(100% - 28px, 1160px);
+        padding-top: 24px;
+      }
     }
   </style>
 </head>
 <body>
-  <main>
+  <main class="site-shell">
+    <header class="topbar">
+      <div class="brand">cizen.net</div>
+      <div class="nav-note">数字化与业务创新实践</div>
+    </header>
+
     <section class="hero" aria-labelledby="site-title">
-      <div class="eyebrow">cizen.net · 个人网站测试发布</div>
-      <h1 id="site-title">一些可以公开分享的网页作品。</h1>
-      <p class="intro">
-        这里会逐步收纳我用 AI 和工程工具生成的演示页、汇报材料、课程页和交互原型。
-        当前先用一个 Demo 验证域名、托管和发布流程。
-      </p>
+      <div>
+        <div class="eyebrow">Digital Innovation · Practical Notes</div>
+        <h1 id="site-title">把业务问题转化为可复用的数字化实践。</h1>
+        <p class="intro">
+          这里整理面向业务场景的数字化探索、工具化原型和方法沉淀。内容会按分享边界分层发布：
+          可公开交流的页面直接开放，需要控制传播范围的材料通过邀请入口访问。
+        </p>
+      </div>
+
+      <aside class="panel principles" aria-label="实践方向">
+        <div class="principle">
+          <div class="number">01</div>
+          <div>
+            <h2>业务问题洞察</h2>
+            <p>从真实流程、协同和管理问题出发，先界定问题，再选择工具。</p>
+          </div>
+        </div>
+        <div class="principle">
+          <div class="number">02</div>
+          <div>
+            <h2>AI 与工具化实践</h2>
+            <p>用 AI、自动化和轻量系统，把想法快速变成可试用的工作方式。</p>
+          </div>
+        </div>
+        <div class="principle">
+          <div class="number">03</div>
+          <div>
+            <h2>可复用方法沉淀</h2>
+            <p>把一次性成果整理为模板、页面和机制，便于复盘、传播和迭代。</p>
+          </div>
+        </div>
+      </aside>
     </section>
 
-    <section class="cards" aria-label="已发布页面">
-      <a class="card" href="./ai-seed/forum-demo/">
-        <span class="tag">Demo</span>
-        <h2>AI课题众创论坛 Demo</h2>
-        <p>用于测试 cizen.net 个人网站发布链路的首个静态页面。</p>
-        <span class="arrow">打开页面 →</span>
+    <section class="entries" aria-label="内容入口">
+      <a class="panel entry" href="./open/">
+        <span class="entry-label">公开分享</span>
+        <h2>可直接访问的公开页面</h2>
+        <p>适合对外交流的展示页、说明材料和轻量 Demo，会在确认公开后逐步加入。</p>
+        <span class="entry-action">进入公开区 →</span>
+      </a>
+
+      <a class="panel entry invite" href="./invite/">
+        <span class="entry-label">邀请访问</span>
+        <h2>需要密码进入的分享入口</h2>
+        <p>用于半公开材料和小范围传播页面。该入口为轻度访问控制，不承载真正商业机密。</p>
+        <span class="entry-action">输入密码访问 →</span>
       </a>
     </section>
 
-    <footer>
-      cizen.net · Static site powered by GitHub Pages
+    <footer class="closing">
+      <span>cizen.net · Powered by GitHub Pages</span>
+      <span>公开发布前先确认内容边界。</span>
     </footer>
   </main>
 </body>

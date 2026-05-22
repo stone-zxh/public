@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>邀请访问 · cizen.net</title>
+  <style>
+    :root {
+      --bg: #f7f9fc;
+      --panel: #ffffff;
+      --ink: #172033;
+      --muted: #647084;
+      --line: #dfe5ee;
+      --navy: #10233f;
+      --blue: #2454a6;
+      --blue-soft: #eef4ff;
+      --gold: #9a6a18;
+      --gold-soft: #fff8e8;
+      --red: #b42318;
+      --red-soft: #fff1f0;
+      --green: #166534;
+      --green-soft: #ecfdf3;
+      --radius: 24px;
+      --shadow: 0 22px 70px rgba(15, 23, 42, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      font-family: "Microsoft YaHei", "PingFang SC", "Segoe UI", Arial, sans-serif;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.86), rgba(247, 249, 252, 0.94)),
+        radial-gradient(circle at 18% 0%, rgba(36, 84, 166, 0.11), transparent 30%),
+        radial-gradient(circle at 88% 12%, rgba(154, 106, 24, 0.12), transparent 26%),
+        var(--bg);
+      line-height: 1.65;
+    }
+
+    main {
+      width: min(980px, calc(100% - 40px));
+      margin: 0 auto;
+      padding: 34px 0 46px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 72px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .brand {
+      color: var(--navy);
+      font-size: 18px;
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .back {
+      color: var(--blue);
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .hero {
+      margin-bottom: 34px;
+    }
+
+    .eyebrow {
+      width: fit-content;
+      margin-bottom: 18px;
+      padding: 7px 12px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--gold);
+      background: var(--gold-soft);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    h1 {
+      max-width: 720px;
+      margin: 0;
+      color: var(--navy);
+      font-size: clamp(38px, 6vw, 68px);
+      line-height: 1.08;
+      letter-spacing: -0.04em;
+    }
+
+    .intro {
+      max-width: 700px;
+      margin: 22px 0 0;
+      color: var(--muted);
+      font-size: 18px;
+    }
+
+    .panel {
+      border: 1px solid rgba(223, 229, 238, 0.95);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.88);
+      box-shadow: var(--shadow);
+    }
+
+    .gate {
+      max-width: 640px;
+      padding: 30px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 10px;
+      color: var(--navy);
+      font-weight: 800;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+    }
+
+    input {
+      width: 100%;
+      min-height: 50px;
+      padding: 0 14px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      color: var(--ink);
+      background: #fbfcff;
+      font: inherit;
+    }
+
+    input:focus {
+      border-color: rgba(36, 84, 166, 0.55);
+      outline: 3px solid rgba(36, 84, 166, 0.12);
+    }
+
+    button {
+      min-height: 50px;
+      padding: 0 18px;
+      border: 0;
+      border-radius: 14px;
+      color: #ffffff;
+      background: var(--navy);
+      cursor: pointer;
+      font: inherit;
+      font-weight: 800;
+    }
+
+    .hint {
+      margin: 12px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .message {
+      display: none;
+      margin-top: 14px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      font-size: 14px;
+    }
+
+    .message.error {
+      display: block;
+      color: var(--red);
+      background: var(--red-soft);
+    }
+
+    .message.success {
+      display: block;
+      color: var(--green);
+      background: var(--green-soft);
+    }
+
+    .restricted {
+      display: none;
+      margin-top: 28px;
+      padding: 30px;
+    }
+
+    .restricted.is-visible {
+      display: block;
+    }
+
+    .restricted h2 {
+      margin: 0 0 10px;
+      color: var(--navy);
+      font-size: 28px;
+    }
+
+    .restricted p {
+      max-width: 700px;
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .empty-list {
+      margin-top: 22px;
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: #fbfcff;
+    }
+
+    .empty-list strong {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--navy);
+    }
+
+    .safety-note {
+      max-width: 740px;
+      margin-top: 24px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    @media (max-width: 700px) {
+      .topbar {
+        align-items: flex-start;
+        flex-direction: column;
+        margin-bottom: 52px;
+      }
+
+      main {
+        width: min(100% - 28px, 980px);
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header class="topbar">
+      <a class="brand" href="../">cizen.net</a>
+      <a class="back" href="../">返回首页</a>
+    </header>
+
+    <section class="hero" aria-labelledby="page-title">
+      <div class="eyebrow">Invite Only</div>
+      <h1 id="page-title">邀请访问</h1>
+      <p class="intro">
+        这里用于小范围分享半公开页面。请输入邀请密码后查看可访问列表。
+        该入口是轻度访问控制，不用于承载真正商业机密。
+      </p>
+    </section>
+
+    <section class="panel gate" aria-label="邀请密码">
+      <form id="password-form">
+        <label for="password">访问密码</label>
+        <div class="form-row">
+          <input id="password" name="password" type="password" autocomplete="current-password" placeholder="请输入邀请密码">
+          <button type="submit">进入</button>
+        </div>
+        <p class="hint">密码仅在浏览器本地校验，页面不会保存你的输入。</p>
+        <div id="message" class="message" role="status" aria-live="polite"></div>
+      </form>
+    </section>
+
+    <section id="restricted" class="panel restricted" aria-label="受限内容列表">
+      <h2>受限内容列表</h2>
+      <p>当前暂未加入受限页面。后续确认适合小范围分享的内容后，会在这里显示入口。</p>
+      <div class="empty-list">
+        <strong>等待内容确认</strong>
+        <span>建议只放半公开材料；真正敏感或商业机密内容应使用更强的访问控制方案。</span>
+      </div>
+    </section>
+
+    <p class="safety-note">
+      安全提示：该密码门禁适用于轻度限制，能避免入口被随手看到，但不能替代后端鉴权或私有存储。
+    </p>
+  </main>
+
+  <script>
+    const expectedHash = "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3";
+    const form = document.querySelector("#password-form");
+    const input = document.querySelector("#password");
+    const message = document.querySelector("#message");
+    const restricted = document.querySelector("#restricted");
+
+    async function sha256(value) {
+      const data = new TextEncoder().encode(value);
+      const digest = await crypto.subtle.digest("SHA-256", data);
+      return Array.from(new Uint8Array(digest))
+        .map((byte) => byte.toString(16).padStart(2, "0"))
+        .join("");
+    }
+
+    function showMessage(text, type) {
+      message.textContent = text;
+      message.className = `message ${type}`;
+    }
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const password = input.value;
+      const actualHash = await sha256(password);
+
+      if (actualHash === expectedHash) {
+        restricted.classList.add("is-visible");
+        showMessage("验证通过，已显示邀请访问内容。", "success");
+        input.value = "";
+        return;
+      }
+
+      restricted.classList.remove("is-visible");
+      showMessage("密码不正确，请确认后重试。", "error");
+    });
+  </script>
+</body>
+</html>
