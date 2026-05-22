@@ -57,10 +57,27 @@
       text-decoration: none;
     }
 
+    .nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: flex-end;
+    }
+
     .back {
+      padding: 8px 12px;
+      border: 1px solid transparent;
+      border-radius: 999px;
       color: var(--blue);
       font-weight: 700;
       text-decoration: none;
+    }
+
+    .back:hover,
+    .back:focus-visible {
+      border-color: var(--line);
+      background: rgba(255, 255, 255, 0.74);
+      outline: none;
     }
 
     .hero {
@@ -161,7 +178,11 @@
   <main>
     <header class="topbar">
       <a class="brand" href="../">cizen.net</a>
-      <a class="back" href="../">返回首页</a>
+      <nav class="nav-links" aria-label="页面导航">
+        <a class="back" href="../">返回首页</a>
+        <a class="back" href="../invite/">邀请访问</a>
+        <a class="back" href="../message/">留言</a>
+      </nav>
     </header>
 
     <section class="hero" aria-labelledby="page-title">
