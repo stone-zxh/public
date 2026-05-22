@@ -332,19 +332,19 @@
       <div class="eyebrow">Invite Only</div>
       <h1 id="page-title">邀请访问</h1>
       <p class="intro">
-        这里用于小范围分享半公开页面。请输入邀请密码后查看可访问列表。
+        这里用于小范围分享半公开页面。请输入访问码后查看可访问列表。
         该入口是轻度访问控制，不用于承载真正商业机密。
       </p>
     </section>
 
-    <section class="panel gate" aria-label="邀请密码">
+    <section class="panel gate" aria-label="访问码">
       <form id="password-form">
-        <label for="password">访问密码</label>
+        <label for="password">访问码</label>
         <div class="form-row">
-          <input id="password" name="password" type="password" autocomplete="current-password" placeholder="请输入邀请密码">
+          <input id="password" name="password" type="password" autocomplete="off" inputmode="numeric" placeholder="请输入访问码">
           <button type="submit">进入</button>
         </div>
-        <p class="hint">密码仅在浏览器本地校验，页面不会保存你的输入。</p>
+        <p class="hint">访问码仅在浏览器本地校验，页面不会保存你的输入。</p>
         <div id="message" class="message" role="status" aria-live="polite"></div>
       </form>
     </section>
@@ -380,18 +380,22 @@
   </main>
 
   <script>
-    const expectedHash = "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3";
     const form = document.querySelector("#password-form");
     const input = document.querySelector("#password");
     const message = document.querySelector("#message");
     const restricted = document.querySelector("#restricted");
 
-    async function sha256(value) {
-      const data = new TextEncoder().encode(value);
-      const digest = await crypto.subtle.digest("SHA-256", data);
-      return Array.from(new Uint8Array(digest))
-        .map((byte) => byte.toString(16).padStart(2, "0"))
-        .join("");
+    function getBeijingAccessCode() {
+      const formatter = new Intl.DateTimeFormat("zh-CN", {
+        timeZone: "Asia/Shanghai",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit"
+      });
+      const parts = Object.fromEntries(
+        formatter.formatToParts(new Date()).map((part) => [part.type, part.value])
+      );
+      return `${parts.year}${parts.month}${parts.day}`;
     }
 
     function showMessage(text, type) {
@@ -401,10 +405,9 @@
 
     form.addEventListener("submit", async (event) => {
       event.preventDefault();
-      const password = input.value;
-      const actualHash = await sha256(password);
+      const accessCode = input.value.trim();
 
-      if (actualHash === expectedHash) {
+      if (accessCode === getBeijingAccessCode()) {
         restricted.classList.add("is-visible");
         showMessage("验证通过，已显示邀请访问内容。", "success");
         input.value = "";
@@ -412,7 +415,7 @@
       }
 
       restricted.classList.remove("is-visible");
-      showMessage("密码不正确，请确认后重试。", "error");
+      showMessage("访问码不正确，请确认后重试。", "error");
     });
   </script>
 </body>
