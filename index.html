@@ -273,6 +273,106 @@
       outline: none;
     }
 
+    .invite-modal {
+      position: fixed;
+      inset: 0;
+      display: none;
+      place-items: center;
+      padding: 24px;
+      background: rgba(15, 23, 42, 0.42);
+      z-index: 20;
+    }
+
+    .invite-modal.is-visible {
+      display: grid;
+    }
+
+    .invite-dialog {
+      width: min(480px, 100%);
+      padding: 28px;
+      border: 1px solid rgba(223, 229, 238, 0.95);
+      border-radius: var(--radius);
+      background: #ffffff;
+      box-shadow: 0 26px 80px rgba(15, 23, 42, 0.2);
+    }
+
+    .invite-dialog h2 {
+      margin: 0 0 10px;
+      color: var(--navy);
+      font-size: 28px;
+      line-height: 1.18;
+    }
+
+    .invite-dialog p {
+      margin: 0 0 18px;
+      color: var(--muted);
+    }
+
+    .invite-dialog label {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--navy);
+      font-weight: 800;
+    }
+
+    .invite-dialog input {
+      width: 100%;
+      min-height: 48px;
+      padding: 0 14px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      color: var(--ink);
+      background: #fbfcff;
+      font: inherit;
+    }
+
+    .invite-dialog input:focus {
+      border-color: rgba(36, 84, 166, 0.55);
+      outline: 3px solid rgba(36, 84, 166, 0.12);
+    }
+
+    .invite-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .invite-actions button {
+      min-height: 44px;
+      padding: 0 16px;
+      border-radius: 14px;
+      cursor: pointer;
+      font: inherit;
+      font-weight: 800;
+    }
+
+    .invite-cancel {
+      border: 1px solid var(--line);
+      color: var(--muted);
+      background: #ffffff;
+    }
+
+    .invite-submit {
+      border: 0;
+      color: #ffffff;
+      background: var(--navy);
+    }
+
+    .invite-message {
+      display: none;
+      margin-top: 12px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      color: #b42318;
+      background: #fff1f0;
+      font-size: 14px;
+    }
+
+    .invite-message.is-visible {
+      display: block;
+    }
+
     @media (max-width: 820px) {
       .topbar,
       .closing {
@@ -303,7 +403,7 @@
       <div class="brand">cizen.net</div>
       <nav class="nav" aria-label="主导航">
         <a href="./open/">公开分享</a>
-        <a href="./invite/">邀请访问</a>
+        <a href="./invite/" data-invite-link>邀请访问</a>
         <a href="./message/">留言</a>
       </nav>
     </header>
@@ -358,7 +458,7 @@
         <span class="entry-action">进入公开区 →</span>
       </a>
 
-      <a class="panel entry invite" href="./invite/">
+      <a class="panel entry invite" href="./invite/" data-invite-link>
         <span class="entry-label">邀请访问</span>
         <h2>需要访问码进入的分享入口</h2>
         <p>用于半公开材料和小范围传播页面。该入口为轻度访问控制，不承载真正商业机密。</p>
@@ -371,5 +471,90 @@
       <span>公开发布前先确认内容边界。<a href="./message/">给 Stone 留言</a></span>
     </footer>
   </main>
+
+  <div id="invite-modal" class="invite-modal" role="dialog" aria-modal="true" aria-labelledby="invite-modal-title">
+    <div class="invite-dialog">
+      <h2 id="invite-modal-title">邀请访问</h2>
+      <p>请输入访问码后进入目录页。</p>
+      <form id="invite-form">
+        <label for="invite-code">访问码</label>
+        <input id="invite-code" name="invite-code" type="password" autocomplete="off" inputmode="numeric" placeholder="请输入访问码">
+        <div id="invite-message" class="invite-message" role="status" aria-live="polite"></div>
+        <div class="invite-actions">
+          <button class="invite-cancel" type="button" id="invite-cancel">取消</button>
+          <button class="invite-submit" type="submit">进入</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const inviteLinks = document.querySelectorAll("[data-invite-link]");
+    const inviteModal = document.querySelector("#invite-modal");
+    const inviteForm = document.querySelector("#invite-form");
+    const inviteInput = document.querySelector("#invite-code");
+    const inviteMessage = document.querySelector("#invite-message");
+    const inviteCancel = document.querySelector("#invite-cancel");
+    const inviteAccessKey = "cizenInviteAccess";
+
+    function getBeijingAccessCode() {
+      const formatter = new Intl.DateTimeFormat("zh-CN", {
+        timeZone: "Asia/Shanghai",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit"
+      });
+      const parts = Object.fromEntries(
+        formatter.formatToParts(new Date()).map((part) => [part.type, part.value])
+      );
+      return `${parts.year}${parts.month}${parts.day}`;
+    }
+
+    function openInviteModal() {
+      inviteModal.classList.add("is-visible");
+      inviteMessage.classList.remove("is-visible");
+      inviteInput.value = "";
+      inviteInput.focus();
+    }
+
+    function closeInviteModal() {
+      inviteModal.classList.remove("is-visible");
+    }
+
+    inviteLinks.forEach((link) => {
+      link.addEventListener("click", (event) => {
+        event.preventDefault();
+        openInviteModal();
+      });
+    });
+
+    inviteCancel.addEventListener("click", closeInviteModal);
+
+    inviteModal.addEventListener("click", (event) => {
+      if (event.target === inviteModal) {
+        closeInviteModal();
+      }
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        closeInviteModal();
+      }
+    });
+
+    inviteForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const accessCode = inviteInput.value.trim();
+
+      if (accessCode === getBeijingAccessCode()) {
+        sessionStorage.setItem(inviteAccessKey, accessCode);
+        window.location.href = "./invite/";
+        return;
+      }
+
+      inviteMessage.textContent = "访问码不正确，请确认后重试。";
+      inviteMessage.classList.add("is-visible");
+    });
+  </script>
 </body>
 </html>

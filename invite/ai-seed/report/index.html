@@ -827,5 +827,46 @@
 
     <footer>AI种子人才赋能与课题众创机制汇报材料</footer>
   </main>
+  <script>
+    (function () {
+      const docGateKey = "cizenDocGate:ai-seed-report";
+      const docPassword = "001";
+
+      if (sessionStorage.getItem(docGateKey) === "ok") {
+        return;
+      }
+
+      const overlay = document.createElement("div");
+      overlay.setAttribute("role", "dialog");
+      overlay.setAttribute("aria-modal", "true");
+      overlay.style.cssText = "position:fixed;inset:0;z-index:9999;display:grid;place-items:center;padding:24px;background:linear-gradient(180deg,rgba(247,249,252,.98),rgba(238,245,255,.98));font-family:'Microsoft YaHei','PingFang SC','Segoe UI',Arial,sans-serif;color:#102033;";
+      overlay.innerHTML = `
+        <form id="doc-gate-form" style="width:min(460px,100%);padding:28px;border:1px solid #d8e3f0;border-radius:22px;background:#fff;box-shadow:0 24px 76px rgba(11,31,58,.16);">
+          <h1 style="margin:0 0 10px;color:#0b1f3a;font-size:28px;line-height:1.2;">文档访问</h1>
+          <p style="margin:0 0 18px;color:#5b6b80;">请输入本文档密码后查看内容。</p>
+          <label for="doc-gate-password" style="display:block;margin-bottom:8px;font-weight:800;color:#0b1f3a;">文档密码</label>
+          <input id="doc-gate-password" type="password" autocomplete="off" placeholder="请输入文档密码" style="width:100%;min-height:48px;padding:0 14px;border:1px solid #d8e3f0;border-radius:14px;font:inherit;">
+          <div id="doc-gate-message" style="display:none;margin-top:12px;padding:10px 12px;border-radius:12px;color:#b42318;background:#fff1f0;font-size:14px;"></div>
+          <button type="submit" style="width:100%;min-height:46px;margin-top:18px;border:0;border-radius:14px;color:#fff;background:#0b1f3a;font:inherit;font-weight:800;cursor:pointer;">进入文档</button>
+        </form>`;
+      document.body.appendChild(overlay);
+
+      const form = overlay.querySelector("#doc-gate-form");
+      const input = overlay.querySelector("#doc-gate-password");
+      const message = overlay.querySelector("#doc-gate-message");
+      input.focus();
+
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        if (input.value.trim() === docPassword) {
+          sessionStorage.setItem(docGateKey, "ok");
+          overlay.remove();
+          return;
+        }
+        message.textContent = "文档密码不正确，请确认后重试。";
+        message.style.display = "block";
+      });
+    })();
+  </script>
 </body>
 </html>

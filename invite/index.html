@@ -198,6 +198,39 @@
       background: var(--green-soft);
     }
 
+    .locked {
+      margin-top: 28px;
+      padding: 30px;
+    }
+
+    .locked.is-hidden {
+      display: none;
+    }
+
+    .locked h2 {
+      margin: 0 0 10px;
+      color: var(--navy);
+      font-size: 28px;
+    }
+
+    .locked p {
+      max-width: 700px;
+      margin: 0 0 18px;
+      color: var(--muted);
+    }
+
+    .locked a {
+      display: inline-flex;
+      min-height: 44px;
+      align-items: center;
+      padding: 0 16px;
+      border-radius: 14px;
+      color: #ffffff;
+      background: var(--navy);
+      font-weight: 800;
+      text-decoration: none;
+    }
+
     .restricted {
       display: none;
       margin-top: 28px;
@@ -332,21 +365,15 @@
       <div class="eyebrow">Invite Only</div>
       <h1 id="page-title">邀请访问</h1>
       <p class="intro">
-        这里用于小范围分享半公开页面。请输入访问码后查看可访问列表。
+        这里用于小范围分享半公开页面。通过首页访问码后查看可访问列表。
         该入口是轻度访问控制，不用于承载真正商业机密。
       </p>
     </section>
 
-    <section class="panel gate" aria-label="访问码">
-      <form id="password-form">
-        <label for="password">访问码</label>
-        <div class="form-row">
-          <input id="password" name="password" type="password" autocomplete="off" inputmode="numeric" placeholder="请输入访问码">
-          <button type="submit">进入</button>
-        </div>
-        <p class="hint">访问码仅在浏览器本地校验，页面不会保存你的输入。</p>
-        <div id="message" class="message" role="status" aria-live="polite"></div>
-      </form>
+    <section id="locked" class="panel locked" aria-label="访问提示">
+      <h2>请从首页进入</h2>
+      <p>邀请目录需要先在首页输入访问码。验证通过后，会自动跳转到这里。</p>
+      <a href="../">返回首页输入访问码</a>
     </section>
 
     <section id="restricted" class="panel restricted" aria-label="受限内容列表">
@@ -380,9 +407,8 @@
   </main>
 
   <script>
-    const form = document.querySelector("#password-form");
-    const input = document.querySelector("#password");
-    const message = document.querySelector("#message");
+    const inviteAccessKey = "cizenInviteAccess";
+    const locked = document.querySelector("#locked");
     const restricted = document.querySelector("#restricted");
 
     function getBeijingAccessCode() {
@@ -398,25 +424,10 @@
       return `${parts.year}${parts.month}${parts.day}`;
     }
 
-    function showMessage(text, type) {
-      message.textContent = text;
-      message.className = `message ${type}`;
+    if (sessionStorage.getItem(inviteAccessKey) === getBeijingAccessCode()) {
+      locked.classList.add("is-hidden");
+      restricted.classList.add("is-visible");
     }
-
-    form.addEventListener("submit", async (event) => {
-      event.preventDefault();
-      const accessCode = input.value.trim();
-
-      if (accessCode === getBeijingAccessCode()) {
-        restricted.classList.add("is-visible");
-        showMessage("验证通过，已显示邀请访问内容。", "success");
-        input.value = "";
-        return;
-      }
-
-      restricted.classList.remove("is-visible");
-      showMessage("访问码不正确，请确认后重试。", "error");
-    });
   </script>
 </body>
 </html>
