@@ -1,0 +1,1283 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI课题众创论坛 Demo</title>
+  <style>
+    :root {
+      --bg: #eef3f8;
+      --panel: #ffffff;
+      --ink: #172033;
+      --muted: #66758a;
+      --line: #d7e1ee;
+      --blue: #2563eb;
+      --navy: #0f2a4d;
+      --cyan: #0f766e;
+      --green: #16a34a;
+      --orange: #ea580c;
+      --gold: #b7791f;
+      --red: #dc2626;
+      --soft-blue: #eaf1ff;
+      --soft-gold: #fff7df;
+      --soft-green: #e8f8ef;
+      --shadow: 0 16px 42px rgba(15, 23, 42, 0.09);
+      --radius: 20px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: "Microsoft YaHei", "PingFang SC", "Segoe UI", Arial, sans-serif;
+      background:
+        radial-gradient(circle at 8% 0%, rgba(37, 99, 235, 0.15), transparent 30%),
+        radial-gradient(circle at 90% 4%, rgba(15, 118, 110, 0.12), transparent 26%),
+        var(--bg);
+      line-height: 1.55;
+    }
+
+    button,
+    input,
+    textarea,
+    select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .shell {
+      min-height: 100vh;
+      display: grid;
+      grid-template-rows: auto 1fr;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      border-bottom: 1px solid rgba(215, 225, 238, 0.85);
+      background: rgba(255, 255, 255, 0.86);
+      backdrop-filter: blur(14px);
+    }
+
+    .topbar {
+      width: min(1440px, calc(100% - 36px));
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 14px 0;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 14px;
+      color: #ffffff;
+      background: linear-gradient(135deg, var(--navy), var(--blue));
+      font-weight: 900;
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: 19px;
+      line-height: 1.2;
+    }
+
+    .brand small {
+      color: var(--muted);
+    }
+
+    .search {
+      flex: 1;
+      max-width: 520px;
+      position: relative;
+    }
+
+    .search input {
+      width: 100%;
+      height: 42px;
+      padding: 0 16px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #f8fafc;
+      outline: none;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 40px;
+      padding: 9px 14px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      color: var(--ink);
+      background: #ffffff;
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.05);
+      transition: 0.18s ease;
+      text-decoration: none;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 12px 26px rgba(15, 23, 42, 0.09);
+    }
+
+    .btn.primary {
+      border-color: transparent;
+      color: #ffffff;
+      background: linear-gradient(135deg, var(--blue), var(--navy));
+    }
+
+    .btn.gold {
+      border-color: transparent;
+      color: #ffffff;
+      background: linear-gradient(135deg, #d97706, #92400e);
+    }
+
+    .btn.green {
+      border-color: transparent;
+      color: #ffffff;
+      background: linear-gradient(135deg, var(--cyan), #0b5f59);
+    }
+
+    .layout {
+      width: min(1440px, calc(100% - 36px));
+      margin: 22px auto 36px;
+      display: grid;
+      grid-template-columns: 220px minmax(560px, 1fr) 330px;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.92);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .panel-pad {
+      padding: 18px;
+    }
+
+    .side {
+      position: sticky;
+      top: 86px;
+    }
+
+    .section-title {
+      margin: 0 0 12px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .board-btn,
+    .sort-btn {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 8px;
+      padding: 11px 12px;
+      border: 1px solid transparent;
+      border-radius: 13px;
+      color: var(--ink);
+      background: transparent;
+      text-align: left;
+    }
+
+    .board-btn:hover,
+    .sort-btn:hover,
+    .board-btn.active,
+    .sort-btn.active {
+      border-color: rgba(37, 99, 235, 0.16);
+      background: var(--soft-blue);
+    }
+
+    .board-btn small,
+    .sort-btn small {
+      color: var(--muted);
+    }
+
+    .me-card {
+      margin-top: 16px;
+      padding: 16px;
+      border-radius: 18px;
+      color: #ffffff;
+      background:
+        radial-gradient(circle at 90% 12%, rgba(255, 255, 255, 0.26), transparent 24%),
+        linear-gradient(135deg, var(--navy), var(--blue));
+    }
+
+    .me-card strong {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 18px;
+    }
+
+    .me-card p {
+      margin: 0;
+      color: rgba(255, 255, 255, 0.74);
+      font-size: 13px;
+    }
+
+    .metric-line {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .metric {
+      padding: 15px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.9);
+      box-shadow: 0 10px 28px rgba(15, 23, 42, 0.05);
+    }
+
+    .metric strong {
+      display: block;
+      color: var(--blue);
+      font-size: 24px;
+      line-height: 1;
+    }
+
+    .metric span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .forum-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .forum-head h2 {
+      margin: 0 0 4px;
+      font-size: 24px;
+      letter-spacing: -0.03em;
+    }
+
+    .forum-head p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--line);
+      overflow-x: auto;
+    }
+
+    .tab {
+      flex: 0 0 auto;
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--muted);
+      background: #ffffff;
+    }
+
+    .tab.active {
+      color: #ffffff;
+      border-color: transparent;
+      background: var(--blue);
+    }
+
+    .topic-list {
+      display: block;
+    }
+
+    .topic-row {
+      display: grid;
+      grid-template-columns: 1fr 118px 102px 94px;
+      gap: 14px;
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--line);
+      background: #ffffff;
+      transition: 0.16s ease;
+    }
+
+    .topic-row:hover,
+    .topic-row.active {
+      background: #f8fbff;
+    }
+
+    .topic-main {
+      min-width: 0;
+    }
+
+    .topic-title {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 0 0 8px;
+      font-size: 18px;
+      line-height: 1.35;
+    }
+
+    .topic-title button {
+      padding: 0;
+      border: 0;
+      color: var(--ink);
+      background: transparent;
+      font-weight: 800;
+      text-align: left;
+    }
+
+    .topic-title button:hover {
+      color: var(--blue);
+    }
+
+    .topic-summary {
+      margin: 0 0 10px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .meta,
+    .tags {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      color: #334155;
+      background: #eef2f7;
+      font-size: 12px;
+    }
+
+    .pill.hot {
+      color: #9a3412;
+      background: #ffedd5;
+    }
+
+    .pill.reward {
+      color: #92400e;
+      background: #fef3c7;
+    }
+
+    .pill.done {
+      color: #065f46;
+      background: #d1fae5;
+    }
+
+    .topic-stat {
+      align-self: center;
+      text-align: right;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .topic-stat strong {
+      display: block;
+      color: var(--ink);
+      font-size: 18px;
+    }
+
+    .topic-stat.reward strong {
+      color: var(--orange);
+    }
+
+    .thread {
+      display: none;
+    }
+
+    .thread.active {
+      display: block;
+    }
+
+    .thread-hero {
+      padding: 22px;
+      border-bottom: 1px solid var(--line);
+      background:
+        linear-gradient(135deg, rgba(37, 99, 235, 0.08), transparent 54%),
+        #ffffff;
+    }
+
+    .back-btn {
+      margin-bottom: 14px;
+      border: 0;
+      color: var(--blue);
+      background: transparent;
+      font-weight: 800;
+    }
+
+    .thread-hero h2 {
+      margin: 10px 0 12px;
+      font-size: 28px;
+      line-height: 1.25;
+      letter-spacing: -0.03em;
+    }
+
+    .thread-body {
+      padding: 16px;
+      background: #f8fafc;
+    }
+
+    .post {
+      display: grid;
+      grid-template-columns: 86px 1fr;
+      gap: 14px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: #ffffff;
+    }
+
+    .post + .post {
+      margin-top: 12px;
+    }
+
+    .avatar {
+      width: 52px;
+      height: 52px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 8px;
+      border-radius: 18px;
+      color: #ffffff;
+      background: linear-gradient(135deg, var(--blue), var(--cyan));
+      font-weight: 900;
+    }
+
+    .author {
+      color: var(--ink);
+      font-weight: 800;
+      font-size: 13px;
+    }
+
+    .role {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .floor {
+      display: inline-flex;
+      margin-bottom: 8px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .post h3 {
+      margin: 0 0 8px;
+      font-size: 18px;
+    }
+
+    .post p {
+      margin: 0 0 12px;
+      color: #334155;
+    }
+
+    .post-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .mini-btn {
+      padding: 6px 9px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--muted);
+      background: #ffffff;
+      font-size: 12px;
+    }
+
+    .reply-box {
+      margin-top: 12px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: #ffffff;
+    }
+
+    .reply-box textarea {
+      width: 100%;
+      min-height: 96px;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      resize: vertical;
+      outline: none;
+    }
+
+    .reply-tools {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .reply-tools select {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 9px 10px;
+      background: #ffffff;
+    }
+
+    .right-card {
+      margin-bottom: 14px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.93);
+      box-shadow: 0 12px 32px rgba(15, 23, 42, 0.06);
+      overflow: hidden;
+    }
+
+    .right-card h3 {
+      margin: 0;
+      padding: 15px 16px;
+      border-bottom: 1px solid var(--line);
+      font-size: 17px;
+    }
+
+    .rank-list {
+      padding: 8px;
+    }
+
+    .rank-item {
+      display: grid;
+      grid-template-columns: 30px 1fr auto;
+      gap: 10px;
+      align-items: center;
+      padding: 10px;
+      border-radius: 13px;
+    }
+
+    .rank-item:hover {
+      background: #f8fafc;
+    }
+
+    .rank-no {
+      width: 28px;
+      height: 28px;
+      display: grid;
+      place-items: center;
+      border-radius: 10px;
+      color: #ffffff;
+      background: var(--navy);
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .rank-no.top {
+      background: linear-gradient(135deg, #d97706, #92400e);
+    }
+
+    .rank-name strong {
+      display: block;
+      font-size: 14px;
+    }
+
+    .rank-name span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .rank-score {
+      color: var(--orange);
+      font-weight: 900;
+    }
+
+    .bounty-card {
+      padding: 16px;
+      color: #ffffff;
+      background:
+        radial-gradient(circle at 88% 10%, rgba(255, 255, 255, 0.24), transparent 28%),
+        linear-gradient(135deg, #9a3412, #d97706);
+    }
+
+    .bounty-card strong {
+      display: block;
+      font-size: 30px;
+      line-height: 1;
+    }
+
+    .bounty-card span {
+      color: rgba(255, 255, 255, 0.75);
+      font-size: 13px;
+    }
+
+    .bounty-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .notice {
+      padding: 14px 16px;
+      color: #334155;
+      background: #fff;
+      font-size: 14px;
+    }
+
+    .notice + .notice {
+      border-top: 1px solid var(--line);
+    }
+
+    .toast {
+      position: fixed;
+      right: 24px;
+      bottom: 24px;
+      max-width: 380px;
+      padding: 15px 17px;
+      border-radius: 16px;
+      color: #ffffff;
+      background: #0f172a;
+      box-shadow: 0 18px 58px rgba(15, 23, 42, 0.28);
+      opacity: 0;
+      transform: translateY(14px);
+      transition: 0.22s ease;
+      pointer-events: none;
+      z-index: 20;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 1180px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .side {
+        position: static;
+      }
+
+      .left-side {
+        order: 1;
+      }
+
+      .center {
+        order: 2;
+      }
+
+      .right-side {
+        order: 3;
+      }
+
+      .metric-line {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 760px) {
+      .topbar {
+        display: grid;
+      }
+
+      .search {
+        max-width: none;
+      }
+
+      .topic-row {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .topic-main {
+        grid-column: 1 / -1;
+      }
+
+      .post {
+        grid-template-columns: 1fr;
+      }
+
+      .metric-line {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header>
+      <div class="topbar">
+        <div class="brand">
+          <div class="logo">AI</div>
+          <div>
+            <h1>AI课题众创论坛</h1>
+            <small>每个课题都是一个帖子，讨论、悬赏、认领和成果都沉淀在帖子里</small>
+          </div>
+        </div>
+        <div class="search">
+          <input id="searchInput" placeholder="搜索课题、业务场景、AI 种子选手或成果">
+        </div>
+        <button class="btn primary" id="newTopicBtn">发布课题</button>
+      </div>
+    </header>
+
+    <div class="layout">
+      <aside class="left-side side">
+        <div class="panel panel-pad">
+          <div class="section-title">论坛版块</div>
+          <button class="board-btn active" data-board="all"><span>全部课题</span><small>128</small></button>
+          <button class="board-btn" data-board="流程提效"><span>流程提效</span><small>36</small></button>
+          <button class="board-btn" data-board="知识管理"><span>知识管理</span><small>24</small></button>
+          <button class="board-btn" data-board="经营分析"><span>经营分析</span><small>18</small></button>
+          <button class="board-btn" data-board="客户服务"><span>客户服务</span><small>22</small></button>
+          <button class="board-btn" data-board="风险合规"><span>风险合规</span><small>15</small></button>
+
+          <div class="section-title" style="margin-top:22px;">排序方式</div>
+          <button class="sort-btn active" data-sort="hot"><span>按热度</span><small>默认</small></button>
+          <button class="sort-btn" data-sort="bounty"><span>按悬赏</span><small>积分</small></button>
+          <button class="sort-btn" data-sort="replies"><span>按回帖</span><small>讨论</small></button>
+          <button class="sort-btn" data-sort="latest"><span>按最新</span><small>动态</small></button>
+
+          <div class="me-card">
+            <strong>我的积分：1,260</strong>
+            <p>可用于支持课题、追加小额悬赏；成果被采纳后可兑换奖金、荣誉和资源权限。</p>
+          </div>
+        </div>
+      </aside>
+
+      <main class="center">
+        <div class="metric-line">
+          <div class="metric"><strong>128</strong><span>累计课题</span></div>
+          <div class="metric"><strong>1,486</strong><span>累计回帖</span></div>
+          <div class="metric"><strong>36</strong><span>悬赏中</span></div>
+          <div class="metric"><strong>12</strong><span>成果入库</span></div>
+        </div>
+
+        <section class="panel topic-list-view" id="listView">
+          <div class="forum-head">
+            <div>
+              <h2>AI课题广场</h2>
+              <p>像论坛一样公开讨论：主帖提出需求，回帖不断补充业务认知、方案路径和交付成果。</p>
+            </div>
+            <button class="btn" id="walkBtn">演示闭环</button>
+          </div>
+          <div class="tabs">
+            <button class="tab active" data-status="all">全部</button>
+            <button class="tab" data-status="待认领">待认领</button>
+            <button class="tab" data-status="已认领">已认领</button>
+            <button class="tab" data-status="验证中">验证中</button>
+            <button class="tab" data-status="已入库">已入库</button>
+          </div>
+          <div id="topicList"></div>
+        </section>
+
+        <section class="panel thread" id="threadView"></section>
+      </main>
+
+      <aside class="right-side side">
+        <div class="right-card">
+          <div class="bounty-card">
+            <span>当前最高悬赏池</span>
+            <strong>42,800</strong>
+            <span>积分待认领 · 可兑换奖金和资源权益</span>
+            <div class="bounty-actions">
+              <button class="btn" id="quickSponsorBtn">赞助 200</button>
+              <button class="btn" id="leaderSponsorBtn">领导加码</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="right-card">
+          <h3>积分排行榜</h3>
+          <div class="rank-list" id="pointRank"></div>
+        </div>
+
+        <div class="right-card">
+          <h3>任务完成榜</h3>
+          <div class="rank-list" id="taskRank"></div>
+        </div>
+
+        <div class="right-card">
+          <h3>论坛治理提示</h3>
+          <div class="notice">高风险课题涉及客户信息、经营敏感数据或生产系统写入时，需要治理委员会审核。</div>
+          <div class="notice">悬赏兑付以业务验证为准，概念建议可获小额积分，落地成果可获高额激励。</div>
+          <div class="notice">优秀回帖也计入贡献积分，用于发现未参赛但有能力的潜在 AI 人才。</div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const contributors = [
+      { name: "周明", role: "AI创新合伙人", points: 18600, tasks: 9 },
+      { name: "陈晓", role: "AI高级种子成员", points: 14280, tasks: 7 },
+      { name: "林然", role: "业务专家", points: 11840, tasks: 5 },
+      { name: "何雨", role: "AI种子成员", points: 9680, tasks: 6 },
+      { name: "赵宁", role: "普通员工 · 场景贡献者", points: 7320, tasks: 3 }
+    ];
+
+    const topics = [
+      {
+        id: 1,
+        board: "风险合规",
+        status: "已认领",
+        title: "投标文件智能初审与风险条款提示",
+        author: "市场经营部 · 陈同事",
+        authorRole: "需求发起人",
+        summary: "标书初审依赖人工逐条核对，容易遗漏付款、交付、违约、资质等风险条款。希望 AI 自动提取风险点并给出处理建议。",
+        bounty: 12800,
+        heat: 98,
+        replies: 42,
+        supporters: 31,
+        latest: "10分钟前",
+        tags: ["高悬赏", "跨部门", "治理审核"],
+        posts: [
+          { author: "陈同事", role: "需求发起人", floor: "楼主", type: "主帖", text: "我们目前投标文件评审主要靠人工经验，尤其付款条件、违约责任、交付承诺、资质要求经常需要反复确认。希望 AI 能先做一轮初审，把明显风险点和需要法务确认的条款标出来。", likes: 36 },
+          { author: "林然", role: "法务专家", floor: "2楼", type: "业务补充", text: "建议风险识别不要只做关键词匹配，需要把条款分为付款、交付、违约、保密、知识产权、资质承诺六类。每类都要给出处和风险等级，避免生成泛泛建议。", likes: 28 },
+          { author: "周明", role: "AI创新合伙人", floor: "3楼", type: "方案建议", text: "可以先做 RAG + 条款分类器：上传标书后自动切分条款，调用制度库和法务规则库进行比对，再输出风险清单。第一阶段只做辅助审查，不直接给最终结论。", likes: 41 },
+          { author: "AI治理委员会", role: "治理提示", floor: "4楼", type: "权限边界", text: "该课题涉及商务文件和客户信息，建议使用沙箱环境，脱敏样本先行验证；如接入真实标书，需要记录调用日志和访问权限。", likes: 19 }
+        ]
+      },
+      {
+        id: 2,
+        board: "知识管理",
+        status: "待认领",
+        title: "制度知识库问答与引用溯源助手",
+        author: "综合管理部 · 李同事",
+        authorRole: "需求发起人",
+        summary: "员工查询制度依赖人工翻文档，常出现理解不一致。希望构建可溯源的制度问答助手，回答时给出条款出处。",
+        bounty: 6800,
+        heat: 91,
+        replies: 36,
+        supporters: 27,
+        latest: "25分钟前",
+        tags: ["低风险", "可试点", "知识库"],
+        posts: [
+          { author: "李同事", role: "需求发起人", floor: "楼主", type: "主帖", text: "大家经常问制度，但不同人理解不一样。希望有一个问答助手，回答时必须引用制度原文和章节，不确定时提示找哪个部门确认。", likes: 34 },
+          { author: "赵宁", role: "普通员工", floor: "2楼", type: "场景补充", text: "建议先覆盖报销、采购、合同、考勤四类高频制度。每个答案都要能点开原文，否则大家不敢用。", likes: 21 },
+          { author: "何雨", role: "AI种子成员", floor: "3楼", type: "技术建议", text: "可以用文档切片 + 引用定位，先做不接业务系统的轻量版本。关键是把制度版本号和生效日期放进检索元数据。", likes: 25 }
+        ]
+      },
+      {
+        id: 3,
+        board: "流程提效",
+        status: "验证中",
+        title: "项目周报自动生成与异常预警",
+        author: "项目管理部 · 王同事",
+        authorRole: "需求发起人",
+        summary: "项目经理每周手工汇总进度、风险和资源问题，质量不稳定。希望 AI 从项目系统和会议纪要中生成周报并提示异常。",
+        bounty: 9300,
+        heat: 86,
+        replies: 29,
+        supporters: 24,
+        latest: "1小时前",
+        tags: ["流程提效", "系统沙箱", "成果验证"],
+        posts: [
+          { author: "王同事", role: "需求发起人", floor: "楼主", type: "主帖", text: "项目周报每周都要人工整理，项目经理负担很重。希望 AI 从任务系统、会议纪要、风险清单里生成初稿，并提示延期、资源冲突和风险升级。", likes: 30 },
+          { author: "陈晓", role: "AI高级种子成员", floor: "2楼", type: "认领说明", text: "我已认领该课题，第一版原型只读取项目沙箱数据，不写入生产系统。计划先在 3 个项目组验证周报准确率。", likes: 33 },
+          { author: "项目A经理", role: "试点用户", floor: "3楼", type: "验证反馈", text: "目前周报初稿可用，但风险摘要还偏保守。建议增加项目经理确认按钮，把人工修订结果回流为优化样本。", likes: 17 }
+        ]
+      },
+      {
+        id: 4,
+        board: "客户服务",
+        status: "待认领",
+        title: "客户拜访纪要自动结构化与行动项追踪",
+        author: "客户成功部 · 赵同事",
+        authorRole: "需求发起人",
+        summary: "客户经理拜访后需要手工整理纪要、提炼诉求和同步行动项。希望 AI 自动结构化纪要，并生成后续跟进任务。",
+        bounty: 4200,
+        heat: 73,
+        replies: 18,
+        supporters: 16,
+        latest: "2小时前",
+        tags: ["小额悬赏", "可复用", "客户服务"],
+        posts: [
+          { author: "赵同事", role: "需求发起人", floor: "楼主", type: "主帖", text: "拜访后整理纪要很耗时，经常还要再同步给售前、售后和项目经理。希望 AI 能把纪要拆成客户诉求、风险、承诺事项、下一步行动。", likes: 22 },
+          { author: "售前顾问", role: "业务补充", floor: "2楼", type: "场景补充", text: "建议行动项要包含责任人、截止时间和关联商机阶段，否则只是摘要，不能推动闭环。", likes: 18 },
+          { author: "普通员工A", role: "悬赏支持者", floor: "3楼", type: "追加悬赏", text: "这个我们部门也需要，我追加 200 积分支持，希望能优先做一个模板。", likes: 12 }
+        ]
+      },
+      {
+        id: 5,
+        board: "经营分析",
+        status: "待认领",
+        title: "经营数据异常波动归因分析",
+        author: "经营分析部 · 刘同事",
+        authorRole: "需求发起人",
+        summary: "月度经营指标波动后，归因分析依赖人工拉数和经验判断。希望 AI 自动识别异常指标并生成可解释归因线索。",
+        bounty: 15000,
+        heat: 95,
+        replies: 33,
+        supporters: 22,
+        latest: "35分钟前",
+        tags: ["高悬赏", "数据敏感", "需审批"],
+        posts: [
+          { author: "刘同事", role: "需求发起人", floor: "楼主", type: "主帖", text: "经营指标波动后，我们需要人工拉很多维度的数据做归因。希望 AI 能先发现异常指标，再从区域、产品、客户、渠道等维度给出归因线索。", likes: 29 },
+          { author: "AI决策委员会", role: "悬赏方", floor: "2楼", type: "领导加码", text: "该课题具有较强经营价值，追加 8000 积分悬赏。建议先以只读数据和离线分析方式试点。", likes: 31 },
+          { author: "AI治理委员会", role: "治理提示", floor: "3楼", type: "权限边界", text: "涉及经营敏感数据，需明确数据字段、访问人员、输出范围和审计记录。暂不允许直接连接生产库进行自由查询。", likes: 24 }
+        ]
+      }
+    ];
+
+    let currentBoard = "all";
+    let currentSort = "hot";
+    let currentStatus = "all";
+    let currentTopicId = 1;
+    let inThread = false;
+
+    function fmt(num) {
+      return num.toLocaleString("zh-CN");
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.classList.add("show");
+      clearTimeout(window.toastTimer);
+      window.toastTimer = setTimeout(() => toast.classList.remove("show"), 2600);
+    }
+
+    function getVisibleTopics() {
+      const keyword = document.getElementById("searchInput").value.trim();
+      return topics
+        .filter((topic) => currentBoard === "all" || topic.board === currentBoard)
+        .filter((topic) => currentStatus === "all" || topic.status === currentStatus)
+        .filter((topic) => !keyword || `${topic.title}${topic.summary}${topic.author}${topic.posts.map((post) => post.text).join("")}`.includes(keyword))
+        .sort((a, b) => {
+          if (currentSort === "bounty") return b.bounty - a.bounty;
+          if (currentSort === "replies") return b.replies - a.replies;
+          if (currentSort === "latest") return a.latest.length - b.latest.length;
+          return b.heat - a.heat;
+        });
+    }
+
+    function renderTopicList() {
+      const list = document.getElementById("topicList");
+      const visible = getVisibleTopics();
+      list.innerHTML = visible.map((topic) => `
+        <article class="topic-row ${topic.id === currentTopicId ? "active" : ""}">
+          <div class="topic-main">
+            <h3 class="topic-title">
+              <button data-open-topic="${topic.id}">${topic.title}</button>
+              <span class="pill">${topic.board}</span>
+              <span class="pill ${topic.status === "已入库" ? "done" : topic.status === "验证中" ? "hot" : ""}">${topic.status}</span>
+            </h3>
+            <p class="topic-summary">${topic.summary}</p>
+            <div class="meta">
+              <span class="pill">${topic.author}</span>
+              ${topic.tags.map((tag) => `<span class="pill ${tag.includes("高") ? "hot" : tag.includes("悬赏") ? "reward" : ""}">${tag}</span>`).join("")}
+            </div>
+          </div>
+          <div class="topic-stat reward"><strong>${fmt(topic.bounty)}</strong><span>悬赏积分</span></div>
+          <div class="topic-stat"><strong>${topic.replies}</strong><span>回帖</span></div>
+          <div class="topic-stat"><strong>${topic.heat}</strong><span>热度</span></div>
+        </article>
+      `).join("");
+
+      list.querySelectorAll("[data-open-topic]").forEach((btn) => {
+        btn.addEventListener("click", () => openThread(Number(btn.dataset.openTopic)));
+      });
+    }
+
+    function renderThread() {
+      const topic = topics.find((item) => item.id === currentTopicId) || topics[0];
+      const view = document.getElementById("threadView");
+      view.innerHTML = `
+        <div class="thread-hero">
+          <button class="back-btn" id="backBtn">← 返回课题广场</button>
+          <div class="tags">
+            <span class="pill">${topic.board}</span>
+            <span class="pill ${topic.status === "验证中" ? "hot" : ""}">${topic.status}</span>
+            <span class="pill reward">${fmt(topic.bounty)} 积分悬赏</span>
+            <span class="pill">${topic.supporters} 人复议</span>
+          </div>
+          <h2>${topic.title}</h2>
+          <p class="topic-summary">${topic.summary}</p>
+          <div class="meta">
+            <span class="pill">发起人：${topic.author}</span>
+            <span class="pill">回帖：${topic.replies}</span>
+            <span class="pill">热度：${topic.heat}</span>
+            <span class="pill">最新：${topic.latest}</span>
+          </div>
+        </div>
+        <div class="thread-body">
+          ${topic.posts.map((post, index) => `
+            <article class="post">
+              <div>
+                <div class="avatar">${post.author.slice(0, 1)}</div>
+                <div class="author">${post.author}</div>
+                <div class="role">${post.role}</div>
+              </div>
+              <div>
+                <span class="floor">${post.floor} · ${post.type}</span>
+                ${index === 0 ? `<h3>课题主帖</h3>` : ""}
+                <p>${post.text}</p>
+                <div class="post-actions">
+                  <button class="mini-btn" data-like="${index}">赞同 ${post.likes}</button>
+                  <button class="mini-btn">引用回复</button>
+                  <button class="mini-btn">标记为有价值观点</button>
+                </div>
+              </div>
+            </article>
+          `).join("")}
+          <div class="reply-box">
+            <div class="section-title">发表回帖</div>
+            <textarea id="replyText">我建议先明确这个课题的最小可验证场景，并把需要的数据、接口、验收标准列出来，方便种子选手判断是否可以认领。</textarea>
+            <div class="reply-tools">
+              <select id="replyType">
+                <option>业务补充</option>
+                <option>方案建议</option>
+                <option>追加悬赏</option>
+                <option>认领说明</option>
+                <option>成果提交</option>
+                <option>治理提示</option>
+              </select>
+              <div>
+                <button class="btn gold" id="sponsorBtn">追加 200 积分</button>
+                <button class="btn green" id="claimBtn">认领课题</button>
+                <button class="btn primary" id="replyBtn">发布回帖</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+
+      document.getElementById("backBtn").addEventListener("click", closeThread);
+      document.getElementById("replyBtn").addEventListener("click", addReply);
+      document.getElementById("sponsorBtn").addEventListener("click", () => sponsor(200));
+      document.getElementById("claimBtn").addEventListener("click", claimTopic);
+      view.querySelectorAll("[data-like]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          topic.posts[Number(btn.dataset.like)].likes += 1;
+          topic.heat += 1;
+          renderThread();
+          renderTopicList();
+          showToast("已赞同该楼层，优秀观点也会计入贡献积分。");
+        });
+      });
+    }
+
+    function openThread(id) {
+      currentTopicId = id;
+      inThread = true;
+      document.getElementById("listView").style.display = "none";
+      document.getElementById("threadView").classList.add("active");
+      renderTopicList();
+      renderThread();
+    }
+
+    function closeThread() {
+      inThread = false;
+      document.getElementById("listView").style.display = "block";
+      document.getElementById("threadView").classList.remove("active");
+      renderTopicList();
+    }
+
+    function addReply() {
+      const topic = topics.find((item) => item.id === currentTopicId);
+      const text = document.getElementById("replyText").value.trim();
+      const type = document.getElementById("replyType").value;
+      if (!text) {
+        showToast("请先填写回帖内容。");
+        return;
+      }
+      topic.posts.push({
+        author: "我",
+        role: "论坛成员",
+        floor: `${topic.posts.length + 1}楼`,
+        type,
+        text,
+        likes: 0
+      });
+      topic.replies += 1;
+      topic.heat += 2;
+      topic.latest = "刚刚";
+      contributors[4].points += 80;
+      renderThread();
+      renderTopicList();
+      renderRanks();
+      showToast("回帖已发布：它会帮助课题发起人和交付人完善认知。");
+    }
+
+    function sponsor(amount) {
+      const topic = topics.find((item) => item.id === currentTopicId);
+      topic.bounty += amount;
+      topic.heat += Math.ceil(amount / 100);
+      topic.supporters += 1;
+      topic.posts.push({
+        author: "我",
+        role: "悬赏支持者",
+        floor: `${topic.posts.length + 1}楼`,
+        type: "追加悬赏",
+        text: `我追加 ${amount} 积分支持这个课题，希望它能获得更多关注并被优先认领。`,
+        likes: 0
+      });
+      topic.replies += 1;
+      topic.latest = "刚刚";
+      renderThread();
+      renderTopicList();
+      showToast(`已追加 ${amount} 积分，课题悬赏和热度同步上升。`);
+    }
+
+    function claimTopic() {
+      const topic = topics.find((item) => item.id === currentTopicId);
+      topic.status = "已认领";
+      topic.posts.push({
+        author: "陈晓",
+        role: "AI高级种子成员",
+        floor: `${topic.posts.length + 1}楼`,
+        type: "认领说明",
+        text: "我认领该课题。下一步会先整理最小验证范围、所需数据和验收标准；涉及系统或数据权限的部分会提交治理审核。",
+        likes: 0
+      });
+      topic.replies += 1;
+      topic.heat += 5;
+      topic.latest = "刚刚";
+      contributors[1].points += 300;
+      contributors[1].tasks += 1;
+      renderThread();
+      renderTopicList();
+      renderRanks();
+      showToast("AI 种子选手已认领课题，进入攻关阶段。");
+    }
+
+    function renderRanks() {
+      const byPoints = [...contributors].sort((a, b) => b.points - a.points);
+      const byTasks = [...contributors].sort((a, b) => b.tasks - a.tasks);
+
+      document.getElementById("pointRank").innerHTML = byPoints.map((item, index) => `
+        <div class="rank-item">
+          <span class="rank-no ${index < 3 ? "top" : ""}">${index + 1}</span>
+          <span class="rank-name"><strong>${item.name}</strong><span>${item.role}</span></span>
+          <span class="rank-score">${fmt(item.points)}</span>
+        </div>
+      `).join("");
+
+      document.getElementById("taskRank").innerHTML = byTasks.map((item, index) => `
+        <div class="rank-item">
+          <span class="rank-no ${index < 3 ? "top" : ""}">${index + 1}</span>
+          <span class="rank-name"><strong>${item.name}</strong><span>${item.role}</span></span>
+          <span class="rank-score">${item.tasks}项</span>
+        </div>
+      `).join("");
+    }
+
+    document.querySelectorAll(".board-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        currentBoard = btn.dataset.board;
+        document.querySelectorAll(".board-btn").forEach((item) => item.classList.remove("active"));
+        btn.classList.add("active");
+        if (inThread) closeThread();
+        renderTopicList();
+      });
+    });
+
+    document.querySelectorAll(".sort-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        currentSort = btn.dataset.sort;
+        document.querySelectorAll(".sort-btn").forEach((item) => item.classList.remove("active"));
+        btn.classList.add("active");
+        renderTopicList();
+      });
+    });
+
+    document.querySelectorAll(".tab").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        currentStatus = btn.dataset.status;
+        document.querySelectorAll(".tab").forEach((item) => item.classList.remove("active"));
+        btn.classList.add("active");
+        renderTopicList();
+      });
+    });
+
+    document.getElementById("searchInput").addEventListener("input", renderTopicList);
+
+    document.getElementById("newTopicBtn").addEventListener("click", () => {
+      const newTopic = {
+        id: topics.length + 1,
+        board: "客户服务",
+        status: "待认领",
+        title: "客户拜访纪要自动结构化与行动项追踪",
+        author: "客户成功部 · 新需求",
+        authorRole: "需求发起人",
+        summary: "将客户拜访纪要自动拆解为诉求、风险、承诺事项和下一步行动，推动跨部门跟进闭环。",
+        bounty: 1200,
+        heat: 60,
+        replies: 1,
+        supporters: 1,
+        latest: "刚刚",
+        tags: ["新课题", "待共创", "小额悬赏"],
+        posts: [
+          { author: "客户成功部", role: "需求发起人", floor: "楼主", type: "主帖", text: "希望用 AI 自动结构化客户拜访纪要，并形成行动项追踪。请大家帮忙补充哪些字段最关键，以及是否有类似场景可以复用。", likes: 0 }
+        ]
+      };
+      topics.unshift(newTopic);
+      currentTopicId = newTopic.id;
+      renderTopicList();
+      openThread(newTopic.id);
+      showToast("新课题已发布为论坛主帖，等待大家回帖共创和追加悬赏。");
+    });
+
+    document.getElementById("quickSponsorBtn").addEventListener("click", () => {
+      if (!inThread) openThread(currentTopicId);
+      sponsor(200);
+    });
+
+    document.getElementById("leaderSponsorBtn").addEventListener("click", () => {
+      if (!inThread) openThread(5);
+      sponsor(5000);
+      showToast("业务负责人已加码 5000 积分，该课题会在排行榜和帖子流中持续曝光。");
+    });
+
+    document.getElementById("walkBtn").addEventListener("click", () => {
+      openThread(4);
+      setTimeout(() => showToast("第一步：课题以主帖形式发出，大家在楼层中补充业务认知。"), 200);
+      setTimeout(() => sponsor(200), 1800);
+      setTimeout(() => claimTopic(), 3600);
+      setTimeout(() => {
+        document.getElementById("replyType").value = "成果提交";
+        document.getElementById("replyText").value = "提交第一版 Prompt 模板和 Agent 流程：已支持纪要结构化、行动项提取和责任人建议，建议进入业务小范围验证。";
+        addReply();
+        showToast("第四步：成果以回帖形式提交，后续可进入能力库沉淀。");
+      }, 5400);
+    });
+
+    renderTopicList();
+    renderThread();
+    renderRanks();
+  </script>
+</body>
+</html>

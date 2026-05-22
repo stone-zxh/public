@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>cizen.net</title>
+  <style>
+    :root {
+      --bg: #f6f8fb;
+      --panel: #ffffff;
+      --ink: #182033;
+      --muted: #657289;
+      --line: #dfe6f0;
+      --accent: #2563eb;
+      --accent-soft: #eaf1ff;
+      --radius: 22px;
+      --shadow: 0 18px 50px rgba(15, 23, 42, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      font-family: "Microsoft YaHei", "PingFang SC", "Segoe UI", Arial, sans-serif;
+      background:
+        radial-gradient(circle at 12% 0%, rgba(37, 99, 235, 0.14), transparent 28%),
+        radial-gradient(circle at 88% 6%, rgba(20, 184, 166, 0.12), transparent 24%),
+        var(--bg);
+      line-height: 1.6;
+    }
+
+    main {
+      width: min(1040px, calc(100% - 40px));
+      margin: 0 auto;
+      padding: 88px 0;
+    }
+
+    .hero {
+      display: grid;
+      gap: 26px;
+      margin-bottom: 38px;
+    }
+
+    .eyebrow {
+      width: fit-content;
+      padding: 7px 12px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--muted);
+      background: rgba(255, 255, 255, 0.72);
+      font-size: 14px;
+    }
+
+    h1 {
+      max-width: 760px;
+      margin: 0;
+      font-size: clamp(38px, 7vw, 76px);
+      line-height: 1.05;
+      letter-spacing: -0.04em;
+    }
+
+    .intro {
+      max-width: 720px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 18px;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 18px;
+    }
+
+    .card {
+      display: grid;
+      gap: 16px;
+      min-height: 230px;
+      padding: 28px;
+      border: 1px solid rgba(223, 230, 240, 0.9);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.82);
+      box-shadow: var(--shadow);
+      text-decoration: none;
+      color: inherit;
+      transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+    }
+
+    .card:hover,
+    .card:focus-visible {
+      transform: translateY(-3px);
+      border-color: rgba(37, 99, 235, 0.45);
+      box-shadow: 0 24px 60px rgba(15, 23, 42, 0.12);
+      outline: none;
+    }
+
+    .tag {
+      width: fit-content;
+      padding: 6px 10px;
+      border-radius: 999px;
+      color: var(--accent);
+      background: var(--accent-soft);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 26px;
+      line-height: 1.25;
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .arrow {
+      align-self: end;
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    footer {
+      margin-top: 44px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="hero" aria-labelledby="site-title">
+      <div class="eyebrow">cizen.net · 个人网站测试发布</div>
+      <h1 id="site-title">一些可以公开分享的网页作品。</h1>
+      <p class="intro">
+        这里会逐步收纳我用 AI 和工程工具生成的演示页、汇报材料、课程页和交互原型。
+        当前先用一个 Demo 验证域名、托管和发布流程。
+      </p>
+    </section>
+
+    <section class="cards" aria-label="已发布页面">
+      <a class="card" href="./ai-seed/forum-demo/">
+        <span class="tag">Demo</span>
+        <h2>AI课题众创论坛 Demo</h2>
+        <p>用于测试 cizen.net 个人网站发布链路的首个静态页面。</p>
+        <span class="arrow">打开页面 →</span>
+      </a>
+    </section>
+
+    <footer>
+      cizen.net · Static site powered by GitHub Pages
+    </footer>
+  </main>
+</body>
+</html>
