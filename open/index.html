@@ -120,34 +120,40 @@
       box-shadow: var(--shadow);
     }
 
-    .share-grid {
+    .resource-list {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 18px;
+      gap: 0;
       margin-top: 36px;
-    }
-
-    .share-card {
-      display: grid;
-      min-height: 230px;
-      padding: 28px;
+      overflow: hidden;
       border: 1px solid rgba(223, 229, 238, 0.95);
       border-radius: var(--radius);
       background: rgba(255, 255, 255, 0.86);
       box-shadow: var(--shadow);
-      color: inherit;
-      text-decoration: none;
-      transition: transform 160ms ease, border-color 160ms ease;
     }
 
-    .share-card:hover,
-    .share-card:focus-visible {
-      transform: translateY(-3px);
-      border-color: rgba(36, 84, 166, 0.38);
+    .resource-item {
+      display: grid;
+      grid-template-columns: 110px minmax(0, 1fr) auto;
+      gap: 22px;
+      align-items: center;
+      padding: 22px 24px;
+      color: inherit;
+      text-decoration: none;
+      border-bottom: 1px solid var(--line);
+      transition: background 160ms ease;
+    }
+
+    .resource-item:last-child {
+      border-bottom: 0;
+    }
+
+    .resource-item:hover,
+    .resource-item:focus-visible {
+      background: #ffffff;
       outline: none;
     }
 
-    .tag {
+    .resource-type {
       width: fit-content;
       padding: 7px 11px;
       border-radius: 999px;
@@ -155,24 +161,26 @@
       background: var(--blue-soft);
       font-size: 13px;
       font-weight: 800;
+      white-space: nowrap;
     }
 
-    .share-card h2 {
-      margin: 18px 0 10px;
+    .resource-copy h2 {
+      margin: 0 0 6px;
       color: var(--navy);
-      font-size: 28px;
-      line-height: 1.18;
+      font-size: 22px;
+      line-height: 1.25;
     }
 
-    .share-card p {
+    .resource-copy p {
       margin: 0;
       color: var(--muted);
+      font-size: 14px;
     }
 
-    .share-action {
-      align-self: end;
+    .resource-action {
       color: var(--blue);
       font-weight: 800;
+      white-space: nowrap;
     }
 
     .empty h2 {
@@ -227,8 +235,13 @@
         grid-template-columns: 1fr;
       }
 
-      .share-grid {
+      .resource-list {
         grid-template-columns: 1fr;
+      }
+
+      .resource-item {
+        grid-template-columns: 1fr;
+        gap: 10px;
       }
     }
   </style>
@@ -253,30 +266,38 @@
       </p>
     </section>
 
-    <section class="share-grid" aria-label="公开内容列表">
-      <a class="share-card" href="./ai-growth/">
-        <span class="tag">AI Growth</span>
-        <h2>AI 能力成长体系总览</h2>
-        <p>从为什么要做、评什么、怎么成长，到系统如何支撑留痕与申报，形成一套可理解的公开介绍。</p>
-        <span class="share-action">查看总览 →</span>
+    <section class="resource-list" aria-label="公开内容列表">
+      <a class="resource-item" href="./ai-growth/">
+        <span class="resource-type">AI Growth</span>
+        <div class="resource-copy">
+          <h2>AI 能力成长体系总览</h2>
+          <p>从为什么要做、评什么、怎么成长，到系统如何支撑留痕与申报，形成一套可理解的公开介绍。</p>
+        </div>
+        <span class="resource-action">查看总览 →</span>
       </a>
-      <a class="share-card" href="./ai-growth/model.html">
-        <span class="tag">Model</span>
-        <h2>五项能力模型</h2>
-        <p>用任务建模、Agent 编排、结果验证、风险治理、业务价值实现，解释 AI 能力如何被拆解。</p>
-        <span class="share-action">查看模型 →</span>
+      <a class="resource-item" href="./ai-growth/model.html">
+        <span class="resource-type">Model</span>
+        <div class="resource-copy">
+          <h2>五项能力模型</h2>
+          <p>用任务建模、Agent 编排、结果验证、风险治理、业务价值实现，解释 AI 能力如何被拆解。</p>
+        </div>
+        <span class="resource-action">查看模型 →</span>
       </a>
-      <a class="share-card" href="./ai-growth/path.html">
-        <span class="tag">Path</span>
-        <h2>G0-G3 成长路径</h2>
-        <p>用公开化语言说明从基础应用到流程与系统化的成长方向，强调证据、复用和业务结果。</p>
-        <span class="share-action">查看路径 →</span>
+      <a class="resource-item" href="./ai-growth/path.html">
+        <span class="resource-type">Path</span>
+        <div class="resource-copy">
+          <h2>G0-G3 成长路径</h2>
+          <p>用公开化语言说明从基础应用到流程与系统化的成长方向，强调证据、复用和业务结果。</p>
+        </div>
+        <span class="resource-action">查看路径 →</span>
       </a>
-      <a class="share-card" href="./ai-growth/system.html">
-        <span class="tag">System</span>
-        <h2>成长系统逻辑</h2>
-        <p>说明成长沟通、等级申报和个人档案如何形成闭环，以及为什么系统不替代制度。</p>
-        <span class="share-action">查看系统 →</span>
+      <a class="resource-item" href="./ai-growth/system.html">
+        <span class="resource-type">System</span>
+        <div class="resource-copy">
+          <h2>成长系统逻辑</h2>
+          <p>说明成长沟通、等级申报和个人档案如何形成闭环，以及为什么系统不替代制度。</p>
+        </div>
+        <span class="resource-action">查看系统 →</span>
       </a>
     </section>
   </main>
