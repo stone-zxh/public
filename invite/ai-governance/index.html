@@ -15,7 +15,10 @@
     .eyebrow { width: fit-content; margin-bottom: 18px; padding: 7px 12px; border: 1px solid var(--line); border-radius: 999px; color: var(--gold); background: var(--gold-soft); font-size: 14px; font-weight: 800; }
     h1 { max-width: 680px; margin: 0; color: var(--navy); font-size: clamp(38px, 6vw, 66px); line-height: 1.08; letter-spacing: -0.04em; }
     .intro { max-width: 660px; margin: 22px 0 0; color: var(--muted); font-size: 18px; }
-    .panel { margin-top: 34px; padding: 30px; border: 1px solid rgba(223,229,238,.95); border-radius: var(--radius); background: rgba(255,255,255,.9); box-shadow: var(--shadow); }
+    .modal-overlay { position: fixed; inset: 0; display: grid; place-items: center; padding: 24px; background: rgba(16,35,63,.32); backdrop-filter: blur(10px); z-index: 10; }
+    .unlock-dialog { width: min(520px, 100%); padding: 30px; border: 1px solid rgba(223,229,238,.95); border-radius: var(--radius); background: rgba(255,255,255,.96); box-shadow: var(--shadow); }
+    .unlock-dialog h2 { margin: 0 0 8px; color: var(--navy); font-size: 28px; line-height: 1.2; }
+    .unlock-dialog .dialog-intro { margin: 0 0 22px; color: var(--muted); }
     label { display: block; margin-bottom: 10px; color: var(--navy); font-weight: 900; }
     .form-row { display: grid; grid-template-columns: 1fr auto; gap: 12px; }
     input { width: 100%; min-height: 50px; padding: 0 14px; border: 1px solid var(--line); border-radius: 14px; color: var(--ink); background: #fbfcff; font: inherit; }
@@ -28,7 +31,7 @@
     .message.error { color: var(--red); background: var(--red-soft); }
     .message.success { color: var(--green); background: var(--green-soft); }
     .safety-note { margin-top: 24px; color: var(--muted); font-size: 14px; }
-    @media (max-width: 640px) { main { width: min(100% - 28px, 760px); } .topbar { align-items: flex-start; flex-direction: column; margin-bottom: 56px; } .form-row { grid-template-columns: 1fr; } }
+    @media (max-width: 640px) { main { width: min(100% - 28px, 760px); } .topbar { align-items: flex-start; flex-direction: column; margin-bottom: 56px; } .form-row { grid-template-columns: 1fr; } .unlock-dialog { padding: 24px; } }
   </style>
 </head>
 <body>
@@ -42,16 +45,20 @@
       <h1 id="page-title">AI治理机制业务项目操作手册</h1>
       <p class="intro">该页面用于小范围分享。请先输入文档密码，解锁后内容会在当前浏览器中本地渲染。</p>
     </section>
-    <section class="panel" aria-label="文档解锁">
+    <section class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="unlock-title" aria-describedby="unlock-description">
+      <div class="unlock-dialog">
+      <h2 id="unlock-title">文档密码</h2>
+      <p id="unlock-description" class="dialog-intro">请输入文档密码，解锁后内容会在当前浏览器中本地渲染。</p>
       <form id="unlock-form">
         <label for="doc-password">文档密码</label>
         <div class="form-row">
-          <input id="doc-password" type="password" autocomplete="current-password" placeholder="请输入文档密码">
+          <input id="doc-password" type="password" autocomplete="current-password" placeholder="请输入文档密码" autofocus>
           <button id="unlock-button" type="submit">解锁</button>
         </div>
         <p class="hint">如果密码错误，页面不会显示文档内容。</p>
         <div id="message" class="message" role="status" aria-live="polite"></div>
       </form>
+      </div>
     </section>
     <p class="safety-note">安全提示：这是适用于静态网页的小范围分享控制，解密在浏览器本地完成；请勿将真正商业机密发布到公开 GitHub Pages。</p>
   </main>
@@ -64,6 +71,7 @@
     const input = document.querySelector("#doc-password");
     const button = document.querySelector("#unlock-button");
     const message = document.querySelector("#message");
+    const docPasswordKey = "cizenDocPassword:ai-governance";
 
     function fromBase64(value) {
       return Uint8Array.from(atob(value), (char) => char.charCodeAt(0));
@@ -72,6 +80,10 @@
     function showMessage(text, type) {
       message.textContent = text;
       message.className = "message is-visible " + type;
+    }
+
+    function focusPasswordInput() {
+      requestAnimationFrame(() => input.focus());
     }
 
     async function deriveKey(password) {
@@ -86,9 +98,7 @@
       );
     }
 
-    form.addEventListener("submit", async (event) => {
-      event.preventDefault();
-      const password = input.value.trim();
+    async function unlockDocument(password, rememberPassword) {
       if (!password) {
         showMessage("请输入文档密码。", "error");
         return;
@@ -103,14 +113,35 @@
           fromBase64(encryptedPayload)
         );
         const html = new TextDecoder().decode(plaintext);
+        if (rememberPassword) {
+          localStorage.setItem(docPasswordKey, password);
+        }
         document.open();
         document.write(html);
         document.close();
       } catch (error) {
         button.disabled = false;
+        if (!rememberPassword) {
+          localStorage.removeItem(docPasswordKey);
+        }
         showMessage("密码不正确，请确认后重试。", "error");
+        input.value = "";
+        focusPasswordInput();
       }
+    }
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const password = input.value.trim();
+      await unlockDocument(password, true);
     });
+
+    const savedPassword = localStorage.getItem(docPasswordKey);
+    if (savedPassword) {
+      unlockDocument(savedPassword, false);
+    } else {
+      focusPasswordInput();
+    }
   </script>
 </body>
 </html>

@@ -521,9 +521,25 @@
       inviteModal.classList.remove("is-visible");
     }
 
+    function hasValidInviteAccess() {
+      const accessCode = getBeijingAccessCode();
+      if (localStorage.getItem(inviteAccessKey) === accessCode) {
+        return true;
+      }
+      if (sessionStorage.getItem(inviteAccessKey) === accessCode) {
+        localStorage.setItem(inviteAccessKey, accessCode);
+        return true;
+      }
+      return false;
+    }
+
     inviteLinks.forEach((link) => {
       link.addEventListener("click", (event) => {
         event.preventDefault();
+        if (hasValidInviteAccess()) {
+          window.location.href = link.href;
+          return;
+        }
         openInviteModal();
       });
     });
@@ -547,7 +563,7 @@
       const accessCode = inviteInput.value.trim();
 
       if (accessCode === getBeijingAccessCode()) {
-        sessionStorage.setItem(inviteAccessKey, accessCode);
+        localStorage.setItem(inviteAccessKey, accessCode);
         window.location.href = "./invite/";
         return;
       }
