@@ -42,7 +42,7 @@
     }
 
     main {
-      width: min(1240px, calc(100% - 48px));
+      width: min(1460px, calc(100% - 56px));
       margin: 0 auto;
       padding: 34px 0 46px;
     }
@@ -113,7 +113,7 @@
     }
 
     .intro {
-      max-width: 1160px;
+      max-width: 1320px;
       margin: 22px 0 0;
       color: var(--muted);
       font-size: clamp(18px, 1.35vw, 20px);
@@ -235,7 +235,7 @@
     .restricted {
       display: none;
       margin-top: 28px;
-      padding: 30px;
+      padding: 34px;
     }
 
     .restricted.is-visible {
@@ -249,7 +249,7 @@
     }
 
     .restricted p {
-      max-width: 700px;
+      max-width: 1160px;
       margin: 0;
       color: var(--muted);
     }
@@ -270,32 +270,30 @@
 
     .resource-list {
       display: grid;
-      gap: 0;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
       margin-top: 24px;
-      overflow: hidden;
-      border: 1px solid var(--line);
-      border-radius: 20px;
-      background: #fbfcff;
     }
 
     .resource-item {
       display: grid;
-      grid-template-columns: 110px minmax(0, 1fr) auto;
-      gap: 22px;
-      align-items: center;
-      padding: 22px 24px;
+      grid-template-rows: auto 1fr auto;
+      min-height: 210px;
+      gap: 16px;
+      align-items: start;
+      padding: 24px;
       color: inherit;
       text-decoration: none;
-      border-bottom: 1px solid var(--line);
-      transition: background 160ms ease;
-    }
-
-    .resource-item:last-child {
-      border-bottom: 0;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: #fbfcff;
+      transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
     }
 
     .resource-item:hover,
     .resource-item:focus-visible {
+      transform: translateY(-2px);
+      border-color: rgba(36, 84, 166, 0.34);
       background: #ffffff;
       outline: none;
     }
@@ -312,19 +310,21 @@
     }
 
     .resource-copy h3 {
-      margin: 0 0 6px;
+      margin: 0 0 10px;
       color: var(--navy);
-      font-size: 21px;
+      font-size: 24px;
       line-height: 1.25;
     }
 
     .resource-copy p {
       margin: 0;
       color: var(--muted);
-      font-size: 14px;
+      font-size: 15px;
+      line-height: 1.65;
     }
 
     .resource-action {
+      align-self: end;
       color: var(--blue);
       font-size: 14px;
       font-weight: 800;
@@ -346,7 +346,7 @@
       }
 
       main {
-        width: min(100% - 28px, 1240px);
+        width: min(100% - 28px, 1460px);
       }
 
       .form-row {
