@@ -38,7 +38,7 @@
     }
 
     main {
-      width: min(1120px, calc(100% - 40px));
+      width: min(1280px, calc(100% - 48px));
       margin: 0 auto;
       padding: 34px 0 46px;
     }
@@ -85,7 +85,7 @@
 
     .layout {
       display: grid;
-      grid-template-columns: minmax(0, 0.9fr) minmax(420px, 1.1fr);
+      grid-template-columns: minmax(0, 1fr) minmax(420px, 1fr);
       gap: 28px;
       align-items: start;
     }
@@ -114,10 +114,11 @@
     }
 
     .intro {
-      max-width: 560px;
+      max-width: 680px;
       margin: 22px 0 0;
       color: var(--muted);
-      font-size: 18px;
+      font-size: clamp(18px, 1.35vw, 20px);
+      line-height: 1.72;
     }
 
     .notice {
@@ -226,7 +227,7 @@
 
     @media (max-width: 860px) {
       main {
-        width: min(100% - 28px, 1120px);
+        width: min(100% - 28px, 1280px);
       }
 
       .topbar {
@@ -261,8 +262,7 @@
         <div class="eyebrow">Message to Stone</div>
         <h1 id="page-title">给 Stone 留言</h1>
         <p class="intro">
-          如果你对某个页面、某个观点或某个业务问题有反馈，可以在这里先写下留言。
-          提交后会跳转到 GitHub Issue 页面，由你确认后正式发送。
+          如果你对某个页面、观点或业务问题有反馈，可以在这里留下线索；提交后会打开 GitHub Issue 确认页，由你检查内容后正式发送。
         </p>
         <div class="notice">
           <strong>提交前请注意</strong>

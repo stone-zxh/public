@@ -35,7 +35,7 @@
     }
 
     main {
-      width: min(980px, calc(100% - 40px));
+      width: min(1240px, calc(100% - 48px));
       margin: 0 auto;
       padding: 34px 0 46px;
     }
@@ -96,7 +96,7 @@
     }
 
     h1 {
-      max-width: 720px;
+      max-width: none;
       margin: 0;
       color: var(--navy);
       font-size: clamp(38px, 6vw, 68px);
@@ -105,10 +105,11 @@
     }
 
     .intro {
-      max-width: 680px;
+      max-width: 1120px;
       margin: 22px 0 0;
       color: var(--muted);
-      font-size: 18px;
+      font-size: clamp(18px, 1.35vw, 20px);
+      line-height: 1.72;
     }
 
     .empty {
@@ -228,7 +229,7 @@
       }
 
       main {
-        width: min(100% - 28px, 980px);
+        width: min(100% - 28px, 1240px);
       }
 
       .criteria {
@@ -261,8 +262,7 @@
       <div class="eyebrow">Open Sharing</div>
       <h1 id="page-title">公开分享</h1>
       <p class="intro">
-        这里收纳已经确认可以直接对外访问的页面。首批公开内容先从 AI 能力成长体系开始，
-        用更通用的方式介绍能力模型、成长路径和系统闭环。
+        这里收纳已确认可以公开访问的页面，当前以 AI 能力成长体系为主，面向外部交流说明能力模型、成长路径、系统闭环与可复用实践。
       </p>
     </section>
 

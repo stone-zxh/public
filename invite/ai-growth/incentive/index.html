@@ -8,13 +8,13 @@
     :root { --bg:#f7f9fc; --ink:#172033; --muted:#647084; --line:#dfe5ee; --navy:#10233f; --blue:#2454a6; --red:#b42318; --red-soft:#fff1f0; --green:#166534; --green-soft:#ecfdf3; --gold:#9a6a18; --gold-soft:#fff8e8; --shadow:0 22px 70px rgba(15,23,42,.08); }
     * { box-sizing: border-box; }
     body { margin:0; min-height:100vh; color:var(--ink); font-family:"Microsoft YaHei","PingFang SC","Segoe UI",Arial,sans-serif; background:linear-gradient(180deg,rgba(255,255,255,.86),rgba(247,249,252,.94)),radial-gradient(circle at 18% 0%,rgba(36,84,166,.12),transparent 30%),radial-gradient(circle at 88% 12%,rgba(154,106,24,.12),transparent 26%),var(--bg); line-height:1.65; }
-    main { width:min(760px, calc(100% - 40px)); margin:0 auto; padding:42px 0 54px; }
+    main { width:min(980px, calc(100% - 48px)); margin:0 auto; padding:42px 0 54px; }
     .topbar { display:flex; align-items:center; justify-content:space-between; gap:18px; margin-bottom:74px; }
     .brand,.back { color:var(--navy); font-weight:800; text-decoration:none; }
     .back { color:var(--blue); font-size:14px; }
     .eyebrow { width:fit-content; margin-bottom:18px; padding:7px 12px; border:1px solid var(--line); border-radius:999px; color:var(--gold); background:var(--gold-soft); font-size:14px; font-weight:800; }
     h1 { margin:0; color:var(--navy); font-size:clamp(38px,6vw,66px); line-height:1.08; letter-spacing:-.04em; }
-    .intro { margin:22px 0 0; color:var(--muted); font-size:18px; }
+    .intro { max-width:880px; margin:22px 0 0; color:var(--muted); font-size:clamp(18px,1.35vw,20px); line-height:1.72; }
     .panel { margin-top:34px; padding:30px; border:1px solid var(--line); border-radius:24px; background:rgba(255,255,255,.88); box-shadow:var(--shadow); }
     label { display:block; margin-bottom:10px; color:var(--navy); font-weight:800; }
     .form-row { display:grid; grid-template-columns:1fr auto; gap:12px; }
@@ -37,7 +37,7 @@
     <section>
       <div class="eyebrow">Invite Only</div>
       <h1>AI成长沟通成果激励宣导</h1>
-      <p class="intro">该页面为受邀访问材料。请输入文档密码后查看内容。</p>
+      <p class="intro">这是 AI 成长沟通成果激励的受邀宣导页，输入文档密码后可查看完整机制说明、奖金档位和种子选手共创安排。</p>
     </section>
     <section class="panel" aria-label="文档解锁">
       <label for="password">文档密码</label>

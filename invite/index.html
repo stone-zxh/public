@@ -42,7 +42,7 @@
     }
 
     main {
-      width: min(980px, calc(100% - 40px));
+      width: min(1240px, calc(100% - 48px));
       margin: 0 auto;
       padding: 34px 0 46px;
     }
@@ -104,7 +104,7 @@
     }
 
     h1 {
-      max-width: 720px;
+      max-width: none;
       margin: 0;
       color: var(--navy);
       font-size: clamp(38px, 6vw, 68px);
@@ -113,10 +113,11 @@
     }
 
     .intro {
-      max-width: 700px;
+      max-width: 1160px;
       margin: 22px 0 0;
       color: var(--muted);
-      font-size: 18px;
+      font-size: clamp(18px, 1.35vw, 20px);
+      line-height: 1.72;
     }
 
     .panel {
@@ -345,7 +346,7 @@
       }
 
       main {
-        width: min(100% - 28px, 980px);
+        width: min(100% - 28px, 1240px);
       }
 
       .form-row {
@@ -378,8 +379,7 @@
       <div class="eyebrow">Invite Only</div>
       <h1 id="page-title">邀请访问</h1>
       <p class="intro">
-        这里用于小范围分享半公开页面。通过首页访问码后查看可访问列表。
-        该入口是轻度访问控制，不用于承载真正商业机密。
+        这里存放需要小范围分享的材料：机制汇报、宣导课件、内部 Demo 和受邀文档。进入目录需要访问码，单个敏感文档可能另设独立密码。
       </p>
     </section>
 

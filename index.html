@@ -94,7 +94,7 @@
     }
 
     .hero {
-      max-width: 1040px;
+      max-width: none;
       margin-bottom: 30px;
     }
 
@@ -118,10 +118,11 @@
     }
 
     .intro {
-      max-width: 900px;
+      max-width: 1280px;
       margin: 24px 0 0;
       color: var(--muted);
-      font-size: 20px;
+      font-size: clamp(18px, 1.35vw, 20px);
+      line-height: 1.72;
     }
 
     .panel {
@@ -413,8 +414,7 @@
         <div class="eyebrow">Stone's Personal Sharing Platform</div>
         <h1 id="site-title">Stone 的个人分享平台</h1>
         <p class="intro">
-          我是 Stone，长期关注数字化与 AI 在真实业务场景中的应用。这里是我的个人分享平台，
-          用来沉淀业务问题分析、AI 工具化探索、组织机制设计和可复用实践。
+          我是 Stone，长期关注数字化与 AI 在真实业务场景中的应用，这里用来沉淀业务问题分析、AI 工具探索、组织机制设计和可复用实践。
         </p>
       </div>
     </section>
