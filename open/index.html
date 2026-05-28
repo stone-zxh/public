@@ -163,6 +163,19 @@
       white-space: nowrap;
     }
 
+    .resource-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      align-items: flex-start;
+    }
+
+    .resource-date {
+      color: var(--muted);
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
     .resource-copy h2 {
       margin: 0 0 10px;
       color: var(--navy);
@@ -265,7 +278,10 @@
     <ul class="resource-list" aria-label="公开内容列表">
       <li>
         <a class="resource-item" href="./ai-growth/">
-          <span class="resource-type">AI Growth</span>
+          <span class="resource-meta">
+            <span class="resource-type">AI Growth</span>
+            <span class="resource-date">分享日期 2026-05-22</span>
+          </span>
           <div class="resource-copy">
             <h2>AI 能力成长体系总览</h2>
             <p>从为什么要做、评什么、怎么成长，到系统如何支撑留痕与申报，形成一套可理解的公开介绍。</p>
@@ -275,7 +291,10 @@
       </li>
       <li>
         <a class="resource-item" href="./ai-growth/model.html">
-          <span class="resource-type">Model</span>
+          <span class="resource-meta">
+            <span class="resource-type">Model</span>
+            <span class="resource-date">分享日期 2026-05-22</span>
+          </span>
           <div class="resource-copy">
             <h2>五项能力模型</h2>
             <p>用任务建模、Agent 编排、结果验证、风险治理、业务价值实现，解释 AI 能力如何被拆解。</p>
@@ -285,7 +304,10 @@
       </li>
       <li>
         <a class="resource-item" href="./ai-growth/path.html">
-          <span class="resource-type">Path</span>
+          <span class="resource-meta">
+            <span class="resource-type">Path</span>
+            <span class="resource-date">分享日期 2026-05-22</span>
+          </span>
           <div class="resource-copy">
             <h2>G0-G3 成长路径</h2>
             <p>用公开化语言说明从基础应用到流程与系统化的成长方向，强调证据、复用和业务结果。</p>
@@ -295,7 +317,10 @@
       </li>
       <li>
         <a class="resource-item" href="./ai-growth/system.html">
-          <span class="resource-type">System</span>
+          <span class="resource-meta">
+            <span class="resource-type">System</span>
+            <span class="resource-date">分享日期 2026-05-22</span>
+          </span>
           <div class="resource-copy">
             <h2>成长系统逻辑</h2>
             <p>说明成长沟通、等级申报和个人档案如何形成闭环，以及为什么系统不替代制度。</p>
