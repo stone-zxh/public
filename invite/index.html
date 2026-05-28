@@ -270,22 +270,22 @@
 
     .resource-list {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 18px;
-      margin-top: 24px;
+      gap: 12px;
+      margin: 24px 0 0;
+      padding: 0;
+      list-style: none;
     }
 
     .resource-item {
       display: grid;
-      grid-template-rows: auto 1fr auto;
-      min-height: 210px;
-      gap: 16px;
-      align-items: start;
-      padding: 24px;
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      gap: 18px;
+      align-items: center;
+      padding: 18px 20px;
       color: inherit;
       text-decoration: none;
       border: 1px solid var(--line);
-      border-radius: 20px;
+      border-radius: 18px;
       background: #fbfcff;
       transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
     }
@@ -312,7 +312,7 @@
     .resource-copy h3 {
       margin: 0 0 10px;
       color: var(--navy);
-      font-size: 24px;
+      font-size: 22px;
       line-height: 1.25;
     }
 
@@ -353,10 +353,6 @@
         grid-template-columns: 1fr;
       }
 
-      .resource-list {
-        grid-template-columns: 1fr;
-      }
-
       .resource-item {
         grid-template-columns: 1fr;
         gap: 10px;
@@ -392,48 +388,58 @@
     <section id="restricted" class="panel restricted" aria-label="受限内容列表">
       <h2>受限内容列表</h2>
       <p>以下页面用于小范围分享，适合在明确对象和上下文后查看。请勿转发给未授权人员。</p>
-      <div class="resource-list">
-        <a class="resource-item" href="./ai-seed/report/">
-          <span class="resource-type">汇报材料</span>
-          <div class="resource-copy">
-            <h3>AI种子人才赋能机制汇报材料</h3>
-            <p>围绕种子人才、课题共创、积分激励和成果沉淀的机制汇报，适合用于管理层沟通和机制说明。</p>
-          </div>
-          <strong class="resource-action">打开页面 →</strong>
-        </a>
-        <a class="resource-item" href="./ai-seed/forum-demo/">
-          <span class="resource-type">Demo</span>
-          <div class="resource-copy">
-            <h3>AI课题众创论坛 Demo</h3>
-            <p>以论坛式协作承接 AI 课题发布、讨论、悬赏、认领和成果提交，展示课题共创的交互原型。</p>
-          </div>
-          <strong class="resource-action">打开页面 →</strong>
-        </a>
-        <a class="resource-item" href="./ai-growth/courseware/">
-          <span class="resource-type">课件</span>
-          <div class="resource-copy">
-            <h3>AI能力成长机制全员宣导课件</h3>
-            <p>面向全员理解 AI 能力成长机制、能力标准与系统路径的宣导材料，强调等级、证据和成长闭环。</p>
-          </div>
-          <strong class="resource-action">打开页面 →</strong>
-        </a>
-        <a class="resource-item" href="./ai-growth/incentive/">
-          <span class="resource-type">宣导页</span>
-          <div class="resource-copy">
-            <h3>AI成长沟通成果激励宣导</h3>
-            <p>介绍 AI 成长沟通流程、成果激励字段、奖金档位，以及 AI 大赛种子选手先行共创机制。</p>
-          </div>
-          <strong class="resource-action">打开页面 →</strong>
-        </a>
-        <a class="resource-item" href="./ai-governance/">
-          <span class="resource-type">制度说明</span>
-          <div class="resource-copy">
-            <h3>AI治理机制业务项目操作手册</h3>
-            <p>面向业务负责人和项目经理，介绍 AI 治理委员会运作机制与 AI 能力管理制度的使用路径。</p>
-          </div>
-          <strong class="resource-action">打开页面 →</strong>
-        </a>
-      </div>
+      <ul class="resource-list">
+        <li>
+          <a class="resource-item" href="./ai-seed/report/">
+            <span class="resource-type">汇报材料</span>
+            <div class="resource-copy">
+              <h3>AI种子人才赋能机制汇报材料</h3>
+              <p>围绕种子人才、课题共创、积分激励和成果沉淀的机制汇报，适合用于管理层沟通和机制说明。</p>
+            </div>
+            <strong class="resource-action">打开页面 →</strong>
+          </a>
+        </li>
+        <li>
+          <a class="resource-item" href="./ai-seed/forum-demo/">
+            <span class="resource-type">Demo</span>
+            <div class="resource-copy">
+              <h3>AI课题众创论坛 Demo</h3>
+              <p>以论坛式协作承接 AI 课题发布、讨论、悬赏、认领和成果提交，展示课题共创的交互原型。</p>
+            </div>
+            <strong class="resource-action">打开页面 →</strong>
+          </a>
+        </li>
+        <li>
+          <a class="resource-item" href="./ai-growth/courseware/">
+            <span class="resource-type">课件</span>
+            <div class="resource-copy">
+              <h3>AI能力成长机制全员宣导课件</h3>
+              <p>面向全员理解 AI 能力成长机制、能力标准与系统路径的宣导材料，强调等级、证据和成长闭环。</p>
+            </div>
+            <strong class="resource-action">打开页面 →</strong>
+          </a>
+        </li>
+        <li>
+          <a class="resource-item" href="./ai-growth/incentive/">
+            <span class="resource-type">宣导页</span>
+            <div class="resource-copy">
+              <h3>AI成长沟通成果激励宣导</h3>
+              <p>介绍 AI 成长沟通流程、成果激励字段、奖金档位，以及 AI 大赛种子选手先行共创机制。</p>
+            </div>
+            <strong class="resource-action">打开页面 →</strong>
+          </a>
+        </li>
+        <li>
+          <a class="resource-item" href="./ai-governance/">
+            <span class="resource-type">制度说明</span>
+            <div class="resource-copy">
+              <h3>AI治理机制业务项目操作手册</h3>
+              <p>面向业务负责人和项目经理，介绍 AI 治理委员会运作机制与 AI 能力管理制度的使用路径。</p>
+            </div>
+            <strong class="resource-action">打开页面 →</strong>
+          </a>
+        </li>
+      </ul>
     </section>
 
     <p class="safety-note">
