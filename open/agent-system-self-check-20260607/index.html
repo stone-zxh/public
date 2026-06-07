@@ -1,0 +1,459 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Agent 系统自检报告 · cizen.net</title>
+  <style>
+    :root {
+      --bg: #f6f8fb;
+      --panel: #ffffff;
+      --ink: #172033;
+      --muted: #647084;
+      --line: #dfe5ee;
+      --navy: #10233f;
+      --blue: #2454a6;
+      --green: #0f766e;
+      --amber: #b7791f;
+      --red: #b42318;
+      --blue-soft: #eef4ff;
+      --green-soft: #eaf8f4;
+      --amber-soft: #fff7e8;
+      --radius: 26px;
+      --shadow: 0 22px 70px rgba(15, 23, 42, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      font-family: "Microsoft YaHei", "PingFang SC", "Segoe UI", Arial, sans-serif;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.92), rgba(246,248,251,.98)),
+        radial-gradient(circle at 14% 0%, rgba(36,84,166,.14), transparent 31%),
+        radial-gradient(circle at 92% 14%, rgba(15,118,110,.10), transparent 28%),
+        var(--bg);
+      line-height: 1.7;
+    }
+
+    main {
+      width: min(1280px, calc(100% - 48px));
+      margin: 0 auto;
+      padding: 34px 0 58px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 68px;
+    }
+
+    .brand,
+    .nav a {
+      text-decoration: none;
+    }
+
+    .brand {
+      color: var(--navy);
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: flex-end;
+    }
+
+    .nav a {
+      padding: 8px 12px;
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .nav a:hover,
+    .nav a:focus-visible {
+      color: var(--navy);
+      background: #fff;
+      outline: 1px solid var(--line);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 280px;
+      gap: 28px;
+      align-items: stretch;
+      margin-bottom: 22px;
+    }
+
+    .hero-copy,
+    .score-panel,
+    .panel {
+      border: 1px solid rgba(223,229,238,.95);
+      border-radius: var(--radius);
+      background: rgba(255,255,255,.88);
+      box-shadow: var(--shadow);
+    }
+
+    .hero-copy {
+      padding: 34px;
+    }
+
+    .eyebrow {
+      width: fit-content;
+      margin-bottom: 18px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      color: var(--green);
+      background: var(--green-soft);
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    h1 {
+      max-width: 920px;
+      margin: 0;
+      color: var(--navy);
+      font-size: clamp(42px, 6vw, 76px);
+      line-height: 1.05;
+      letter-spacing: -0.045em;
+    }
+
+    .lead {
+      max-width: 980px;
+      margin: 24px 0 0;
+      color: var(--muted);
+      font-size: 19px;
+    }
+
+    .score-panel {
+      display: grid;
+      place-items: center;
+      padding: 30px;
+      text-align: center;
+    }
+
+    .score {
+      color: var(--amber);
+      font-size: 78px;
+      font-weight: 900;
+      line-height: .95;
+      letter-spacing: -0.07em;
+    }
+
+    .score-label {
+      margin-top: 14px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      color: var(--amber);
+      background: var(--amber-soft);
+      font-weight: 800;
+    }
+
+    .score-note {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 22px 0 38px;
+    }
+
+    .chip {
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255,255,255,.72);
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+      margin-bottom: 22px;
+    }
+
+    .metric {
+      padding: 22px;
+      min-height: 170px;
+    }
+
+    .metric strong {
+      display: block;
+      color: var(--navy);
+      font-size: 34px;
+      line-height: 1;
+      letter-spacing: -0.04em;
+    }
+
+    .metric span {
+      display: block;
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .metric h2,
+    .panel h2 {
+      margin: 0 0 14px;
+      color: var(--navy);
+      font-size: 22px;
+      line-height: 1.25;
+    }
+
+    .sections {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-bottom: 22px;
+    }
+
+    .panel {
+      padding: 28px;
+    }
+
+    .score-list,
+    .plain-list {
+      display: grid;
+      gap: 12px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .score-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 14px;
+      align-items: center;
+      padding: 14px 16px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: #fbfcff;
+    }
+
+    .score-row b {
+      color: var(--navy);
+    }
+
+    .score-row em {
+      font-style: normal;
+      font-weight: 900;
+    }
+
+    .good {
+      color: var(--green);
+    }
+
+    .warn {
+      color: var(--amber);
+    }
+
+    .risk {
+      color: var(--red);
+    }
+
+    .plain-list li {
+      position: relative;
+      padding-left: 18px;
+      color: var(--muted);
+    }
+
+    .plain-list li::before {
+      position: absolute;
+      top: .78em;
+      left: 0;
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--blue);
+      content: "";
+    }
+
+    .summary {
+      margin-bottom: 22px;
+      padding: 26px 28px;
+      border-left: 6px solid var(--blue);
+      border-radius: 22px;
+      background: rgba(238,244,255,.74);
+    }
+
+    .summary p {
+      max-width: 1080px;
+      margin: 0;
+      color: #344054;
+      font-size: 18px;
+    }
+
+    footer {
+      margin-top: 34px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    @media (max-width: 940px) {
+      main {
+        width: min(100% - 30px, 820px);
+      }
+
+      .hero,
+      .sections {
+        grid-template-columns: 1fr;
+      }
+
+      .grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 620px) {
+      .topbar {
+        align-items: flex-start;
+        flex-direction: column;
+        margin-bottom: 46px;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-copy,
+      .score-panel,
+      .panel {
+        padding: 22px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header class="topbar">
+      <a class="brand" href="../../">cizen.net</a>
+      <nav class="nav" aria-label="页面导航">
+        <a href="../">公开分享</a>
+        <a href="../../message/">留言</a>
+      </nav>
+    </header>
+
+    <section class="hero" aria-labelledby="page-title">
+      <div class="hero-copy">
+        <div class="eyebrow">Agent System Self-Check · 2026-06-07</div>
+        <h1 id="page-title">Agent 系统自检报告</h1>
+        <p class="lead">这是一份公开版自检：只展示目标体系、能力栈状态、改进方向和可分享的统计口径，不暴露私有仓库地址、本机绝对路径或知识库正文内容。</p>
+      </div>
+      <aside class="score-panel" aria-label="总体评分">
+        <div class="score">76</div>
+        <div class="score-label">黄色偏绿 / 100</div>
+        <div class="score-note">体系已成型，真实任务验证和外部标杆输入仍需加强。</div>
+      </aside>
+    </section>
+
+    <div class="meta" aria-label="报告元信息">
+      <span class="chip">公开分享版</span>
+      <span class="chip">不含敏感内容</span>
+      <span class="chip">四大目标评分</span>
+      <span class="chip">下一步：真实任务验证</span>
+    </div>
+
+    <section class="summary" aria-label="总览结论">
+      <p>当前 Agent 系统已经从“能完成任务”升级到“围绕长期目标自我治理”：知识库治理、能力栈进化、内容产品化、基础可靠性四条主线已经建立。但它还处在初始运行期，分数主要被工作树压力、MCP 未做实测、Skill 触发尚未多轮验证、公开内容资产沉淀不足拉低。</p>
+    </section>
+
+    <section class="grid" aria-label="关键观察指标">
+      <article class="panel metric">
+        <h2>Rules / Skills</h2>
+        <strong>4 / 11</strong>
+        <span>已新增目标路由 rule 和知识库治理 skill，内容交付 skill 已开始适配。</span>
+      </article>
+      <article class="panel metric">
+        <h2>MCP 基线</h2>
+        <strong>6 / 280</strong>
+        <span>6 个 MCP server，280 个 JSON descriptor；尚未形成高频任务映射。</span>
+      </article>
+      <article class="panel metric">
+        <h2>知识库 Inbox</h2>
+        <strong>7</strong>
+        <span>共享知识库收件箱处于可控区间，但仍需定期归位与双链治理。</span>
+      </article>
+      <article class="panel metric">
+        <h2>工作树压力</h2>
+        <strong>45</strong>
+        <span>变更项偏多，短期内应避免把治理改动和无关清理混在一起。</span>
+      </article>
+    </section>
+
+    <section class="sections">
+      <article class="panel">
+        <h2>四大目标评分</h2>
+        <ul class="score-list">
+          <li class="score-row"><b>知识库治理与第二大脑质量</b><em class="warn">73</em></li>
+          <li class="score-row"><b>Agent 能力栈先进性与运维健康</b><em class="warn">78</em></li>
+          <li class="score-row"><b>内容产品化与个人 IP 增长支撑</b><em class="warn">75</em></li>
+          <li class="score-row"><b>基础协作可靠性与安全纪律</b><em class="warn">77</em></li>
+        </ul>
+      </article>
+
+      <article class="panel">
+        <h2>主要证据</h2>
+        <ul class="plain-list">
+          <li>目标管理体系已经固化为四大目标，并接入 Agent 自检与周/月报触发语。</li>
+          <li>新增知识库治理 skill，使目录、归档、双链、AI 可读性有了专门工作流。</li>
+          <li>内容交付 skill 已加入报告、图示、HTML、个人 IP 和回流知识库的要求。</li>
+          <li>MCP 已建立运维基线，但还没有用真实任务验证成功调用率与覆盖质量。</li>
+        </ul>
+      </article>
+    </section>
+
+    <section class="sections">
+      <article class="panel">
+        <h2>当前风险</h2>
+        <ul class="plain-list">
+          <li>新 skill 与新 rule 刚建立，触发准确性需要真实任务验证，不能只看文档存在。</li>
+          <li>工作树变更项偏多，可能影响后续提交、回滚和审计清晰度。</li>
+          <li>MCP 目前记录了可发现性，但缺少“最近成功调用、鉴权状态、失败原因”的运行数据。</li>
+          <li>知识库治理还没有完成全库级孤岛笔记、重复内容和双链覆盖的量化扫描。</li>
+        </ul>
+      </article>
+
+      <article class="panel">
+        <h2>下一轮改进</h2>
+        <ul class="plain-list">
+          <li>用一次真实知识库治理任务检验 `knowledge-vault-governance` 的触发和输出质量。</li>
+          <li>做一次能力栈体检，检查 rules、skills、MCP 是否出现重复、冲突或低价值堆叠。</li>
+          <li>建立公开内容资产清单，把报告、图示、HTML 页面沉淀为可复用主题资产。</li>
+          <li>为 MCP 增加高频任务映射：场景、推荐工具、最近验证、风险和替代方案。</li>
+        </ul>
+      </article>
+    </section>
+
+    <section class="panel">
+      <h2>公开版说明</h2>
+      <ul class="plain-list">
+        <li>这份报告用于展示 Agent 系统自我治理方法，不公开私有知识库正文、内部文档、账号信息或本地绝对路径。</li>
+        <li>评分是趋势工具，不是绝对能力证明；真正的判断来自后续真实任务中的闭环、返工率和可复用资产沉淀。</li>
+        <li>后续公开分享可以继续演进为系列：知识库治理实践、Agent 能力栈运维、内容产品化与个人网站建设。</li>
+      </ul>
+    </section>
+
+    <footer>
+      <p>发布于 2026-06-07 · cizen.net 公开分享区 · 本页为轻量公开自检，不包含敏感信息。</p>
+    </footer>
+  </main>
+</body>
+</html>
