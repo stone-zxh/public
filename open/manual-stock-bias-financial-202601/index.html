@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>2026-01 人工备货偏差 · 财务后果 · 汇报版</title>
+  <style>
+    :root {
+      --color-text: #1e293b;
+      --color-muted: #64748b;
+      --color-border: #e2e8f0;
+      --accent: #0f766e;
+      --accent-dark: #134e4a;
+      --lamp-green: #059669;
+      --lamp-yellow: #d97706;
+      --lamp-red: #dc2626;
+      --max-width: 1240px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", "Microsoft YaHei", sans-serif;
+      font-size: 14px;
+      line-height: 1.55;
+      color: var(--color-text);
+      background: #f0f4f8;
+    }
+    .wrap { max-width: var(--max-width); margin: 0 auto; padding: 24px 18px 56px; }
+    .cover {
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
+      color: #fff; padding: 28px; border-radius: 12px; margin-bottom: 20px;
+    }
+    .cover h1 { color: #fff; font-size: 22px; margin: 0; }
+    .cover .meta-line { opacity: 0.9; margin: 8px 0 0; font-size: 12px; }
+    .toc { display: flex; flex-wrap: wrap; gap: 0.5rem 1rem; margin: 0 0 18px; font-size: 13px; }
+    .toc a { color: var(--accent); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    .kpi {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin: 18px 0;
+    }
+    .kpi .c {
+      background: #fff; border-radius: 10px; padding: 16px;
+      border: 1px solid var(--color-border); box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+    .kpi .v { font-size: 28px; font-weight: 700; color: var(--accent); }
+    .kpi .s { font-size: 11px; color: var(--color-muted); margin-top: 4px; }
+    section, .kpi-block {
+      background: #fff; border-radius: 10px; padding: 18px; margin: 12px 0;
+      border: 1px solid var(--color-border);
+    }
+    .kpi-block { padding: 0; border: none; background: transparent; }
+    section h2 { font-size: 18px; color: var(--accent); margin: 0 0 12px; }
+    section h3 { font-size: 15px; color: #334155; margin: 16px 0 8px; }
+    .ins {
+      background: #ecfdf5; border-left: 4px solid var(--accent);
+      padding: 12px 16px; margin: 10px 0; font-size: 13px; border-radius: 0 8px 8px 0;
+    }
+    .warn {
+      background: #fff7ed; border-left: 4px solid #ea580c;
+      padding: 12px 16px; margin: 10px 0; font-size: 13px; border-radius: 0 8px 8px 0;
+    }
+    .quote {
+      background: #f0fdfa; border: 1px solid #99f6e4; border-radius: 8px;
+      padding: 14px 18px; margin: 12px 0; font-size: 14px; color: var(--accent-dark);
+    }
+    .table-wrap { overflow-x: auto; margin: 8px 0; }
+    table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    th, td { border: 1px solid var(--color-border); padding: 7px 9px; text-align: right; }
+    th { background: #f8fafc; text-align: center; font-weight: 600; }
+    th:first-child, td:first-child { text-align: left; }
+    .cell-green { color: var(--lamp-green); font-weight: 600; }
+    .cell-yellow { color: var(--lamp-yellow); font-weight: 600; }
+    .cell-red { color: var(--lamp-red); font-weight: 600; }
+    td.hi { background: #fee2e2; color: #b91c1c; font-weight: 600; }
+    .chart-caption { font-size: 12px; color: var(--color-muted); margin: 0.5rem 0; }
+    .chart-frame {
+      background: #fff; border: 1px solid var(--color-border); border-radius: 10px;
+      padding: 12px; margin: 0.75rem 0;
+    }
+    .chart-frame svg { width: 100%; height: auto; display: block; }
+    .topic-card {
+      margin: 1rem 0; padding: 16px 18px; background: #fff;
+      border: 1px solid var(--color-border); border-radius: 10px; border-left: 4px solid var(--accent);
+    }
+    .topic-card.topic-focus { border-left-color: var(--lamp-red); }
+    .topic-card.topic-ok { border-left-color: var(--lamp-green); }
+    .topic-card h3 { margin: 0 0 10px; font-size: 16px; }
+    .topic-lead { margin: 0 0 10px; font-size: 14px; }
+    .topic-evidence { margin: 0 0 10px; padding-left: 1.2rem; }
+    .topic-evidence li { margin: 4px 0; }
+    .topic-why { margin: 0; font-size: 14px; }
+    .phase-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 12px 0; }
+    .phase-box {
+      background: #f8fafc; border: 1px solid var(--color-border); border-radius: 8px; padding: 14px;
+    }
+    .phase-box h4 { margin: 0 0 8px; font-size: 14px; color: var(--accent-dark); }
+    .phase-box p { margin: 4px 0; font-size: 13px; }
+    .report-footer {
+      font-size: 12px; color: var(--color-muted);
+      border-top: 1px solid var(--color-border); margin-top: 32px; padding-top: 16px;
+    }
+
+    /* 术语提示 */
+    .term {
+      color: var(--accent);
+      cursor: help;
+      border-radius: 3px;
+      transition: background 0.15s;
+    }
+    .term-intro, .term-anchor {
+      text-decoration: underline dashed var(--accent);
+      text-underline-offset: 3px;
+    }
+    .term-ref {
+      background: rgba(15, 118, 110, 0.08);
+      padding: 0 3px;
+    }
+    .term:hover, .term.is-active {
+      background: rgba(15, 118, 110, 0.14);
+    }
+    .term.is-pinned {
+      background: rgba(15, 118, 110, 0.18);
+      outline: 1px solid rgba(15, 118, 110, 0.35);
+    }
+    .glossary-tip {
+      position: fixed;
+      z-index: 9999;
+      display: none;
+      max-width: 300px;
+      padding: 10px 14px;
+      font-size: 12px;
+      line-height: 1.5;
+      color: #f8fafc;
+      background: rgba(15, 23, 42, 0.94);
+      border-radius: 8px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);
+      pointer-events: none;
+    }
+    .glossary-tip.is-visible { display: block; }
+    .glossary-tip .tip-title {
+      font-weight: 600;
+      font-size: 13px;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+    .glossary-tip .tip-hint {
+      margin-top: 8px;
+      font-size: 11px;
+      color: #94a3b8;
+    }
+
+    @media (max-width: 900px) {
+      .kpi, .phase-grid { grid-template-columns: 1fr; }
+    }
+    @media print {
+      body { background: #fff; }
+      .cover { break-after: avoid; }
+      section { break-inside: avoid; }
+      .term { text-decoration: none !important; background: none !important; color: inherit; }
+      .glossary-tip { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="cover">
+    <h1>2026-01 人工备货偏差 · 财务后果 · 汇报版</h1>
+    <p class="meta-line">备货准确性后验评估 · 建单月 2026-01 · 观察至 2026-05 · 编制 2026-06-08</p>
+  </div>
+
+  <p class="toc">
+    <a href="#hero">核心结论</a>
+    <a href="#kpi">四张卡片</a>
+    <a href="#evidence">关键证据</a>
+    <a href="#qa">销售三问</a>
+    <a href="#actions">行动建议</a>
+    <a href="#boundary">口径速查</a>
+  </p>
+
+  <div class="kpi-block" id="kpi" data-glossary-section>
+    <div class="kpi">
+      <div class="c">
+        <div class="s">1月<span class="term term-anchor" data-term="超额件数">超额件数</span>（<span class="term term-anchor" data-term="14天销量">14天</span>）</div>
+        <div class="v">28.4<span style="font-size:14px">万</span></div>
+        <div class="s">建单 40.4 万 vs 实际 13.0 万</div>
+      </div>
+      <div class="c">
+        <div class="s"><span class="term term-anchor" data-term="重尾">重尾</span>区超额占比</div>
+        <div class="v" style="font-size:22px">72%</div>
+        <div class="s">超额件数集中 · 样本 55% 落重尾</div>
+      </div>
+      <div class="c">
+        <div class="s">Δ<span class="term term-anchor" data-term="在仓资金">每件销售在仓资金</span>（1→4月）</div>
+        <div class="v cell-red" style="font-size:22px">2.6×</div>
+        <div class="s">重尾 +1,665 vs 非重尾 +635 元/件</div>
+      </div>
+      <div class="c">
+        <div class="s"><span class="term term-anchor" data-term="90加占比">90+库龄占比</span> <span class="term term-anchor" data-term="变化量">Δ</span>（4→5月）</div>
+        <div class="v cell-red" style="font-size:22px">3×</div>
+        <div class="s">重尾 +8.4pp vs 非重尾 +2.8pp</div>
+      </div>
+    </div>
+  </div>
+
+  <section id="hero" data-glossary-section>
+    <h2>核心结论</h2>
+    <div class="quote">
+      <b>多备的代价不是立刻拉垮大盘呆滞率，而是加速积压库存资金。</b>
+      治理应聚焦 <b>≥300% <span class="term term-intro" data-term="重尾">重尾</span>多备</b>，不是否定销售目标，也不是一刀切砍备货。
+    </div>
+    <div class="ins">
+      <p><b>① 高估普遍，压力在尾部：</b>1 月人工建单相对 <span class="term term-intro" data-term="14天销量">14 天销量</span>普遍偏高；<b>72% <span class="term term-ref" data-term="超额件数">超额件数</span></b>落在<span class="term term-ref" data-term="重尾">重尾</span>区（20.6 万件）。</p>
+      <p><b>② 起点接近，三个月后拉开：</b><span class="term term-intro" data-term="重尾">重尾</span>与<span class="term term-intro" data-term="非重尾">非重尾</span> 1 月<span class="term term-ref" data-term="在仓资金">每件销售在仓资金</span>几乎一样（594 vs 530 元/件）；到 4 月差距拉到 <b>1.9 倍</b>（2,258 vs 1,165）。</p>
+      <p><b>③ 两阶段伤害：</b>1→4 月在仓资金冲击；4→5 月占用趋稳，但 <b><span class="term term-intro" data-term="90加占比">90+ 库龄占比</span>继续恶化</b>——卖不掉的货正在变老库存。</p>
+      <p><b>④ 利润不能单独定罪：</b>重尾组 1 月利润已偏低（选择偏差）；控制利润基线后，重尾 <span class="term term-intro" data-term="变化量">Δ</span>在仓资金仍差 <b>2–3 倍</b>。<span class="term term-intro" data-term="净利率">扣广告后净利率</span>辅证方向一致。</p>
+    </div>
+  </section>
+
+  <section id="evidence" data-glossary-section>
+    <h2>关键证据</h2>
+    <p class="chart-caption">样本：2026-01 人工建单（stock_type=0），actual_14d&gt;0，共 19,327 条 MSKU 建单记录。</p>
+
+    <h3>备货偏差：钱和件数都在尾部</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>分档</th><th>样本</th>
+            <th><span class="term term-anchor" data-term="超额件数">超额件数</span></th>
+            <th>占超额总量</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>[0,100%) 可接受</td><td>3,767</td><td>1.6 万</td><td>5.7%</td></tr>
+          <tr><td>[100%,300%) 明显高估</td><td>4,942</td><td>6.2 万</td><td>21.7%</td></tr>
+          <tr><td class="hi">≥300% <span class="term term-anchor" data-term="重尾">重尾</span></td><td class="hi">10,618</td><td class="hi">20.6 万</td><td class="hi">72.4%</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>主指标：Δ<span class="term term-anchor" data-term="在仓资金">每件销售在仓资金</span>（元/件）</h3>
+    <p class="chart-caption">看<span class="term term-anchor" data-term="变化量">变化量 Δ</span>，不看单月水平。</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>分档</th><th>1月</th><th>4月</th><th>5月</th>
+            <th><span class="term term-anchor" data-term="变化量">Δ</span>(1→4)</th>
+            <th><span class="term term-anchor" data-term="变化量">Δ</span>(4→5)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="term term-anchor" data-term="非重尾">非重尾</span> &lt;300%</td><td>530</td><td>1,165</td><td>1,518</td>
+            <td class="cell-yellow">+635</td><td>+353</td>
+          </tr>
+          <tr>
+            <td><span class="term term-anchor" data-term="重尾">重尾</span> ≥300%</td><td>594</td><td>2,260</td><td>2,247</td>
+            <td class="cell-red">+1,666</td><td class="cell-green">−13</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="chart-frame">
+      <svg viewBox="0 0 720 220" role="img" aria-label="在仓资金变化对比">
+        <text x="20" y="22" font-size="13" fill="#334155" font-weight="600">Δ每件销售在仓资金（元/件）</text>
+        <line x1="140" y1="180" x2="680" y2="180" stroke="#e2e8f0"/>
+        <text x="20" y="75" font-size="12" fill="#64748b">1→4月</text>
+        <rect x="160" y="55" width="200" height="28" fill="#d97706" rx="4"/>
+        <text x="170" y="74" font-size="12" fill="#fff">非重尾 +635</text>
+        <rect x="160" y="90" width="524" height="28" fill="#dc2626" rx="4"/>
+        <text x="170" y="109" font-size="12" fill="#fff">重尾 +1,666（2.6×）</text>
+        <text x="20" y="155" font-size="12" fill="#64748b">4→5月 90+占比</text>
+        <rect x="160" y="135" width="80" height="28" fill="#d97706" rx="4"/>
+        <text x="170" y="154" font-size="12" fill="#fff">+2.8pp</text>
+        <rect x="160" y="170" width="240" height="28" fill="#dc2626" rx="4"/>
+        <text x="170" y="189" font-size="12" fill="#fff">重尾 +8.4pp（3×）</text>
+      </svg>
+    </div>
+
+    <h3>辅证：FBA <span class="term term-anchor" data-term="净利率">扣广告后净利率</span>（SUM/SUM）</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>分档</th><th>1月</th><th>4月</th><th>5月</th>
+            <th><span class="term term-anchor" data-term="变化量">Δ</span>(1→4)</th>
+            <th><span class="term term-anchor" data-term="变化量">Δ</span>(4→5)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>非重尾 &lt;300%</td><td>27.4%</td><td>26.3%</td><td>24.2%</td>
+            <td>−1.1pp</td><td>−2.1pp</td>
+          </tr>
+          <tr>
+            <td>重尾 ≥300%</td><td>25.9%</td><td>23.4%</td><td>21.3%</td>
+            <td class="cell-red">−2.4pp</td><td>−2.2pp</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="chart-caption">毛利端基本稳定；净利率下行主因广告占收入比抬升。在仓资金趋稳 ≠ 盈利趋稳。</p>
+
+    <h3>稳健性：同样利润起点，重尾仍更差</h3>
+    <p class="chart-caption">分层：cohort 内按 1 月<span class="term term-intro" data-term="单件利润分层">单件利润</span>等频三分位（NTILE(3)，各约 5,955 MSKU）。</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>1月利润层</th>
+            <th>非重尾 Δ在仓资金</th>
+            <th>重尾 Δ在仓资金</th>
+            <th>倍数</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>低利润 T1（≤25.7 元/件）</td><td>+525</td><td>+1,231</td><td>2.3×</td></tr>
+          <tr><td>中利润 T2（25.7～41.1 元/件）</td><td>+568</td><td>+1,510</td><td>2.7×</td></tr>
+          <tr><td>高利润 T3（≥41.1 元/件）</td><td>+788</td><td>+2,292</td><td>2.9×</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="chart-caption">阈值为 cohort 内排序切分点（非固定业务线）；层内均值约 17 / 33 / 63 元/件。</p>
+
+    <div class="phase-grid">
+      <div class="phase-box">
+        <h4>阶段一 · 在仓资金冲击（1→4月）</h4>
+        <p><span class="term term-intro" data-term="重尾">重尾</span>多备 → <span class="term term-intro" data-term="在仓资金">每件销售在仓资金</span>快速抬升</p>
+        <p><b>重尾 <span class="term term-ref" data-term="变化量">Δ</span> +1,666</b>，为非重尾 2.6 倍</p>
+      </div>
+      <div class="phase-box">
+        <h4>阶段二 · 结构老化（4→5月）</h4>
+        <p>在仓资金高位平台化，但卖不掉的库存滚入 90+ 桶</p>
+        <p><b>重尾 <span class="term term-intro" data-term="90加占比">90+ 占比</span> +8.4pp</b>，约为非重尾 3 倍</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="qa">
+    <article class="topic-card topic-ok" data-glossary-section>
+      <h3>Q1：我们是目标驱动，推荐看实际销量，逻辑不同</h3>
+      <p class="topic-lead"><b>不矛盾，分工不同。</b></p>
+      <ul class="topic-evidence">
+        <li>销售定增长目标；库存管数量效率</li>
+        <li>推荐是<b>需求锚点</b>，不是取消目标</li>
+        <li>常态化 SKU：目标通过广告/活动兑现，不默认无限加库存</li>
+      </ul>
+    </article>
+
+    <article class="topic-card topic-focus" data-glossary-section>
+      <h3>Q2：呆滞率、周转、断货整体都好，为什么要收缩？</h3>
+      <p class="topic-lead"><b>大盘指标掩盖<span class="term term-intro" data-term="重尾">重尾</span> MSKU 的局部失血。</b></p>
+      <ul class="topic-evidence">
+        <li>1 月重尾<span class="term term-ref" data-term="超额件数">超额</span> <b>20.6 万件</b>，占总量 72%</li>
+        <li>同样起点下，重尾 Δ在仓资金恶化 <b>2.6 倍</b></li>
+        <li>4→5 月 <span class="term term-intro" data-term="90加占比">90+ 库龄</span>重尾再升 <b>8.4pp</b>——呆滞恶化的前置信号</li>
+      </ul>
+      <p class="topic-why"><b>一句话：</b>整体健康，不等于每笔重尾多备合理。</p>
+    </article>
+
+    <article class="topic-card topic-focus" data-glossary-section>
+      <h3>Q3：多备到底伤在哪？看什么数？</h3>
+      <p class="topic-lead"><b>别看利润水平，看<span class="term term-intro" data-term="变化量">变化量</span>。</b></p>
+      <ul class="topic-evidence">
+        <li><b>主看：</b>Δ<span class="term term-ref" data-term="在仓资金">每件销售在仓资金</span>（1→4月）+ <span class="term term-ref" data-term="90加占比">90+库龄</span>变化（4→5月）+ <span class="term term-ref" data-term="超额件数">超额件数</span></li>
+        <li><b>辅看：</b>FBA <span class="term term-intro" data-term="净利率">扣广告后净利率</span> Δ</li>
+        <li><b>反事实：</b>人工超推荐 21.3 万件；加权预测 84% 更接近实际</li>
+      </ul>
+      <p class="topic-why"><b>对外说法：</b>「同样起点下，重尾多备显著加快在仓资金积压，且库龄结构持续变老。」</p>
+    </article>
+  </section>
+
+  <section id="actions" data-glossary-section>
+    <h2>行动建议</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>优先级</th><th>做什么</th><th>谁来做</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="cell-red">P0</td>
+            <td>对当月 <b>≥300% <span class="term term-intro" data-term="重尾">重尾</span></b> 人工建单做复盘：记目标抓手、<span class="term term-ref" data-term="超额件数">超额件数</span>、T+3 Δ在仓资金；30 天回访</td>
+            <td>销售主导 · 库存供数</td>
+          </tr>
+          <tr>
+            <td class="cell-yellow">P1</td>
+            <td>常态化 SKU 采用「推荐量 + 约定安全垫」；新品/大促/断货恢复单列协议</td>
+            <td>库存 + 销售</td>
+          </tr>
+          <tr>
+            <td>—</td>
+            <td>建立月度标准报表：分档样本、超额件数、T0/T+3/T+4 Δ在仓资金、90+ Δ</td>
+            <td>库存 BI</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="warn">
+      <b>审慎边界：</b>关联性证据，非 A/B 实验；14 天窗口对长链路 SKU 偏严；新品/大促/断货恢复不适用常态化重尾标准。
+    </div>
+  </section>
+
+  <section id="boundary" data-glossary-section>
+    <h2>口径速查</h2>
+    <ul class="chart-caption" style="padding-left:1.2rem;line-height:1.7">
+      <li>样本：2026-01 人工建单，stock_type=0，actual_14d&gt;0</li>
+      <li>分档：<span class="term term-intro" data-term="非重尾">非重尾</span> &lt;300% / <span class="term term-intro" data-term="重尾">重尾</span> ≥300%</li>
+      <li><span class="term term-intro" data-term="在仓资金">每件销售在仓资金</span>：FBA 在仓库龄金额 ÷ 月销量（元/件），MSKU 等权平均</li>
+      <li><span class="term term-intro" data-term="净利率">扣广告后净利率</span>：SUM(利润−广告) / SUM(收入)</li>
+      <li>观察窗：T0=1月，T+3=4月，T+4=5月</li>
+    </ul>
+    <p class="chart-caption">带虚线下划线的术语：悬浮或点击可查看解释；仅着色的术语：点击可查看。</p>
+  </section>
+
+  <footer class="report-footer">
+    <p>项目：Sales_Based_Stock_Accuracy · 备货准确性 × 利润成本后验</p>
+    <p>汇报版 <code>260608-人工备货偏差财务后果-汇报版.html</code> · 完整版 <code>260608-人工备货财务后果评估报告.md</code></p>
+  </footer>
+
+</div>
+
+<div id="glossary-tip" class="glossary-tip" role="tooltip" aria-hidden="true">
+  <div class="tip-title"></div>
+  <div class="tip-body"></div>
+  <div class="tip-hint"></div>
+</div>
+
+<script>
+(function () {
+  var GLOSSARY = {
+    "重尾": {
+      title: "重尾（≥300%）",
+      body: "建单量比到货后 14 天销量高出 3 倍以上。例：实际卖 100 件，建了 400+ 件。本报告治理的优先对象。",
+      hint: "偏差率 = (建单量 − 14天销量) / 14天销量"
+    },
+    "非重尾": {
+      title: "非重尾（<300%）",
+      body: "偏差率低于 300%，含可接受高估和中等高估，不含极端多备。",
+      hint: ""
+    },
+    "在仓资金": {
+      title: "每件销售在仓资金",
+      body: "每卖出 1 件，平均对应多少已在 FBA 仓的库龄金额（元/件）。分子 = 月内每日在仓金额之和，分母 = 月销量。不含在途、建单待发。",
+      hint: "原称「单位销售库存占用」"
+    },
+    "变化量": {
+      title: "变化量 Δ",
+      body: "后验月减去建单月的变化。看恶化速度，不看单月绝对高低。重尾与非重尾 1 月起点接近，差在 1→4 月谁恶化更快。",
+      hint: ""
+    },
+    "超额件数": {
+      title: "超额件数",
+      body: "建单量 − 到货后 14 天实际销量，仅计多备部分。反映「多备了多少件、压力有多大」。",
+      hint: "14 天窗口，与项目监控线一致"
+    },
+    "14天销量": {
+      title: "14 天实际销量",
+      body: "到货后 14 天内实际售出的件数，用作偏差率分母和超额件数计算基准。",
+      hint: "长链路 SKU 需同步参考 30 天窗口"
+    },
+    "90加占比": {
+      title: "90+ 库龄占比",
+      body: "库龄 90 天以上的在仓金额 ÷ 总在仓金额。占比上升 = 货在变老，往往早于大盘呆滞率恶化。",
+      hint: "pp = 百分点，+8.4pp 即占比升 8.4 个百分点"
+    },
+    "净利率": {
+      title: "扣广告后净利率",
+      body: "SUM(利润 − 广告费) / SUM(收入)，按收入加权。毛利稳、净利降，多半是广告占收入比抬升。",
+      hint: "辅证指标，主证据仍为 Δ在仓资金 + 90+ 结构"
+    },
+    "单件利润分层": {
+      title: "1 月单件利润分层",
+      body: "Profits / SalesNum（TurnOver 表，2026-01）。cohort 内 NTILE(3) 等频三分位：低 ≤25.7、中 25.7～41.1、高 ≥41.1 元/件（切分点，非固定业务线）。",
+      hint: "各层约 5,955 MSKU；层内均值约 17 / 33 / 63 元/件"
+    }
+  };
+
+  var tip = document.getElementById("glossary-tip");
+  var titleEl = tip.querySelector(".tip-title");
+  var bodyEl = tip.querySelector(".tip-body");
+  var hintEl = tip.querySelector(".tip-hint");
+  var pinned = null;
+  var hoverEl = null;
+
+  function showTip(el, pin) {
+    var key = el.getAttribute("data-term");
+    var entry = GLOSSARY[key];
+    if (!entry) return;
+
+    if (pin) {
+      if (pinned) pinned.classList.remove("is-pinned");
+      pinned = el;
+      pinned.classList.add("is-pinned");
+    }
+
+    titleEl.textContent = entry.title;
+    bodyEl.textContent = entry.body;
+    hintEl.textContent = entry.hint || "";
+    hintEl.style.display = entry.hint ? "block" : "none";
+
+    tip.classList.add("is-visible");
+    tip.setAttribute("aria-hidden", "false");
+    el.classList.add("is-active");
+
+    var rect = el.getBoundingClientRect();
+    var tipRect = tip.getBoundingClientRect();
+    var left = rect.left + rect.width / 2 - tipRect.width / 2;
+    var top = rect.bottom + 8;
+
+    if (left < 8) left = 8;
+    if (left + tipRect.width > window.innerWidth - 8) {
+      left = window.innerWidth - tipRect.width - 8;
+    }
+    if (top + tipRect.height > window.innerHeight - 8) {
+      top = rect.top - tipRect.height - 8;
+    }
+
+    tip.style.left = left + "px";
+    tip.style.top = top + "px";
+  }
+
+  function hideTip(unpin) {
+    if (pinned && !unpin) return;
+    if (pinned) {
+      pinned.classList.remove("is-pinned", "is-active");
+      pinned = null;
+    }
+    if (hoverEl) {
+      hoverEl.classList.remove("is-active");
+      hoverEl = null;
+    }
+    tip.classList.remove("is-visible");
+    tip.setAttribute("aria-hidden", "true");
+  }
+
+  function onEnter(el) {
+    if (pinned) return;
+    if (!el.classList.contains("term-intro") && !el.classList.contains("term-anchor")) return;
+    hoverEl = el;
+    showTip(el, false);
+  }
+
+  function onLeave(el) {
+    if (pinned === el) return;
+    if (hoverEl === el) {
+      el.classList.remove("is-active");
+      hoverEl = null;
+      hideTip(false);
+    }
+  }
+
+  function onClick(el, e) {
+    e.stopPropagation();
+    if (pinned === el) {
+      hideTip(true);
+      return;
+    }
+    showTip(el, true);
+  }
+
+  document.querySelectorAll(".term").forEach(function (el) {
+    el.addEventListener("mouseenter", function () { onEnter(el); });
+    el.addEventListener("mouseleave", function () { onLeave(el); });
+    el.addEventListener("click", function (e) { onClick(el, e); });
+  });
+
+  document.addEventListener("click", function () { hideTip(true); });
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") hideTip(true);
+  });
+  window.addEventListener("scroll", function () {
+    if (pinned) showTip(pinned, true);
+    else if (hoverEl) showTip(hoverEl, false);
+  }, true);
+})();
+</script>
+</body>
+</html>
