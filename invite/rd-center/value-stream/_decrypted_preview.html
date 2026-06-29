@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>智能研发中心 FBM/FBA/共享价值流重组终局方案</title>
+  <style>
+    :root {
+      --bg: #f4f7fb;
+      --paper: #ffffff;
+      --ink: #172033;
+      --muted: #64748b;
+      --navy: #0f2a4a;
+      --blue: #2563eb;
+      --teal: #0f766e;
+      --violet: #6d28d9;
+      --amber: #b45309;
+      --line: #dbe4ef;
+      --soft-blue: #eaf2ff;
+      --soft-teal: #e7f7f4;
+      --soft-violet: #f1ecff;
+      --soft-amber: #fff7e6;
+      --shadow: 0 24px 60px rgba(15, 42, 74, 0.10);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", Arial, sans-serif;
+      background:
+        radial-gradient(circle at 12% 8%, rgba(37, 99, 235, 0.12), transparent 30%),
+        radial-gradient(circle at 86% 4%, rgba(15, 118, 110, 0.12), transparent 32%),
+        var(--bg);
+    }
+    main { width: min(1460px, calc(100% - 56px)); margin: 0 auto; padding: 42px 0 56px; }
+    .page-links { display: flex; justify-content: flex-end; gap: 10px; margin-bottom: 16px; }
+    .page-links a {
+      display: inline-flex; align-items: center; min-height: 40px; padding: 0 14px;
+      border: 1px solid var(--line); border-radius: 999px; color: var(--blue);
+      background: rgba(255, 255, 255, 0.86); text-decoration: none; font-size: 13px; font-weight: 800;
+    }
+    .panel { border: 1px solid var(--line); border-radius: 24px; background: rgba(255, 255, 255, 0.92); box-shadow: var(--shadow); }
+    .hero { display: grid; grid-template-columns: minmax(0, 1fr) 390px; gap: 28px; align-items: stretch; margin-bottom: 28px; }
+    .hero-main { padding: 34px 38px; }
+    .kicker { margin: 0 0 10px; color: var(--blue); font-size: 13px; font-weight: 900; letter-spacing: 0.16em; text-transform: uppercase; }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 { margin-bottom: 16px; color: var(--navy); font-size: clamp(34px, 4vw, 58px); line-height: 1.08; letter-spacing: -0.04em; }
+    .lead { max-width: 1120px; margin-bottom: 0; color: var(--ink); font-size: 18px; line-height: 1.8; }
+    .hero-side { padding: 26px; color: #fff; background: linear-gradient(145deg, #0f2a4a, #0f766e); border: none; }
+    .hero-side span { display: block; margin-bottom: 10px; opacity: 0.78; font-size: 12px; font-weight: 900; letter-spacing: 0.12em; }
+    .hero-side strong { display: block; margin-bottom: 12px; font-size: 34px; line-height: 1.1; }
+    .hero-side p { margin-bottom: 0; color: rgba(255, 255, 255, 0.82); line-height: 1.7; }
+    .stats { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 14px; margin-bottom: 28px; }
+    .stat { padding: 18px 20px; border-radius: 18px; background: var(--paper); border: 1px solid var(--line); }
+    .stat span { display: block; color: var(--muted); font-size: 12px; font-weight: 800; letter-spacing: 0.08em; }
+    .stat strong { display: block; margin: 8px 0 4px; color: var(--navy); font-size: 28px; }
+    .stat em { display: block; color: var(--muted); font-size: 13px; font-style: normal; line-height: 1.4; }
+    section { margin-bottom: 28px; padding: 30px; }
+    h2 { margin-bottom: 12px; color: var(--navy); font-size: 30px; letter-spacing: -0.02em; }
+    .section-lead { max-width: 1180px; margin-bottom: 22px; color: var(--muted); font-size: 16px; line-height: 1.75; }
+    .grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+    .grid-3, .streams-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+    .card { padding: 20px; border-radius: 18px; border: 1px solid var(--line); background: var(--paper); }
+    .card h3 { margin-bottom: 10px; color: var(--navy); font-size: 20px; }
+    .card p, .card li { color: var(--muted); line-height: 1.68; font-size: 14px; }
+    .concern { border-left: 5px solid var(--amber); background: var(--soft-amber); }
+    .response { border-left: 5px solid var(--blue); background: var(--soft-blue); }
+    .stream { position: relative; overflow: hidden; padding: 24px; }
+    .stream.fbm { border-color: rgba(37, 99, 235, 0.35); }
+    .stream.fba { border-color: rgba(15, 118, 110, 0.35); }
+    .stream.shared { border-color: rgba(109, 40, 217, 0.35); }
+    .stream-head { display: flex; justify-content: space-between; gap: 14px; align-items: flex-start; margin-bottom: 14px; }
+    .stream-head h3 { margin: 0; font-size: 25px; }
+    .badge { display: inline-flex; align-items: center; padding: 7px 11px; border-radius: 999px; color: var(--navy); background: #eef2f7; font-size: 12px; font-weight: 900; white-space: nowrap; }
+    .fbm .badge { background: var(--soft-blue); color: var(--blue); }
+    .fba .badge { background: var(--soft-teal); color: var(--teal); }
+    .shared .badge { background: var(--soft-violet); color: var(--violet); }
+    table { width: 100%; border-collapse: collapse; overflow: hidden; border-radius: 14px; border: 1px solid var(--line); background: #fff; }
+    th, td { padding: 12px 14px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; font-size: 14px; }
+    th { color: var(--muted); background: #f8fafc; font-size: 12px; letter-spacing: 0.06em; }
+    tr:last-child td, tr:last-child th { border-bottom: none; }
+    .allocation-table th:first-child { width: 190px; color: var(--navy); font-size: 14px; letter-spacing: 0; }
+    .allocation-table th span { display: block; margin-top: 4px; color: var(--muted); font-size: 12px; font-weight: 700; }
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+    .chips span { padding: 8px 10px; border-radius: 999px; color: var(--ink); background: #f8fafc; border: 1px solid var(--line); font-size: 13px; font-weight: 700; }
+    .target-arch { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; align-items: stretch; }
+    .owner-list { display: grid; gap: 10px; margin-top: 12px; }
+    .owner-list div { padding: 12px 14px; border-radius: 14px; background: #f8fafc; border: 1px solid var(--line); color: var(--muted); font-size: 14px; line-height: 1.6; }
+    .roadmap { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; counter-reset: step; }
+    .step { position: relative; padding: 18px; border-radius: 18px; border: 1px solid var(--line); background: #fff; }
+    .step::before { counter-increment: step; content: counter(step); display: inline-grid; place-items: center; width: 30px; height: 30px; margin-bottom: 12px; border-radius: 50%; color: #fff; background: var(--blue); font-weight: 900; }
+    .metrics { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; }
+    .metric { min-height: 132px; padding: 16px; border-radius: 16px; background: #fff; border: 1px solid var(--line); }
+    .metric strong { display: block; margin-bottom: 8px; color: var(--navy); font-size: 16px; }
+    .metric span { color: var(--muted); font-size: 13px; line-height: 1.55; }
+    .integration { display: grid; grid-template-columns: 0.78fr 1.22fr; gap: 18px; align-items: stretch; }
+    .quote-box { padding: 22px; border-radius: 18px; color: #fff; background: linear-gradient(145deg, #0f2a4a, #6d28d9); }
+    .quote-box span { display: block; margin-bottom: 10px; opacity: 0.78; font-size: 12px; font-weight: 900; letter-spacing: 0.12em; }
+    .quote-box strong { display: block; margin-bottom: 12px; font-size: 24px; line-height: 1.3; }
+    .quote-box p { margin: 0; color: rgba(255, 255, 255, 0.82); line-height: 1.7; }
+    footer { color: var(--muted); font-size: 13px; line-height: 1.6; text-align: center; }
+    @media (max-width: 1180px) {
+      main { width: min(100% - 32px, 980px); }
+      .hero, .grid-2, .grid-3, .streams-grid, .target-arch, .roadmap, .metrics, .integration { grid-template-columns: 1fr; }
+      .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <nav class="page-links" aria-label="相关页面">
+      <a href="../org-positioning/">查看组织定位架构页</a>
+    </nav>
+    <header class="hero">
+      <div class="hero-main panel">
+        <p class="kicker">VALUE STREAM REORGANIZATION</p>
+        <h1>智能研发中心 FBM / FBA / 共享价值流重组终局方案</h1>
+        <p class="lead">本方案把咨询报告转化为内部可执行的组织设计项目：先梳理组织架构和人员现状，回应“过于理论化、组织震荡大”的担忧，再形成 FBM、FBA、共享三条并列行政价值流。</p>
+      </div>
+      <aside class="hero-side panel">
+        <span>项目主导人当前待办</span>
+        <strong>梳理架构，盘点人员，更新目标</strong>
+        <p>关键不是把部门硬切成三块，而是对重点人员逐一标注主归属、过渡双归属和分配依据。</p>
+      </aside>
+    </header>
+
+    <div class="stats">
+      <div class="stat"><span>中心总人数</span><strong>164 人</strong><em>L2 163 人 + 中心直属 1 人</em></div>
+      <div class="stat"><span>FBM 明确编组</span><strong>46 人</strong><em>运营 + 项目 + 数据策略</em></div>
+      <div class="stat"><span>FBA 明确编组</span><strong>31 人</strong><em>运营 + 数据策略，不含库存整部</em></div>
+      <div class="stat"><span>共享显性基础</span><strong>11 人</strong><em>其它业务、中心直属、跨流协调</em></div>
+      <div class="stat"><span>三向盘点对象</span><strong>76 人</strong><em>技术/算法/库存/策略/PMO</em></div>
+    </div>
+
+    <section class="panel">
+      <h2>一、对咨询报告的转化判断</h2>
+      <p class="section-lead">大家的担忧集中在两点：报告可能偏理论化，以及完整行政重组可能造成组织震荡。因此本项目的关键不是“证明咨询方案正确”，而是把它转化为一套基于现状盘点的内部组织设计方案。</p>
+      <div class="grid-2">
+        <article class="card concern">
+          <h3>主要担忧</h3>
+          <p>外部报告容易从敏捷方法论出发，给出价值流、Scrum、角色机制等通用建议，但如果没有结合当前部门职责、人员能力、历史协作关系和关键业务压力，落地时会被认为“概念正确、执行悬空”。</p>
+        </article>
+        <article class="card response">
+          <h3>项目回应</h3>
+          <p>先完成组织架构梳理和人员盘点，再提出终局架构与迁移路径。终局采用三条行政价值流，但实施上按业务熟悉度、工作对象和跨流属性逐人分配，避免一次性硬切。</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>二、项目目标更新</h2>
+      <p class="section-lead">项目目标从“讨论敏捷转型建议”升级为“形成组织架构、人员归属、经营责任和落地路径的一体化方案”。</p>
+      <div class="grid-3">
+        <article class="card"><h3>组织架构梳理</h3><p>形成 FBM、FBA、共享三条价值流的终局架构，并解释哪些单元已明确归属、哪些人员需要三向盘点。</p></article>
+        <article class="card"><h3>相关人员盘点</h3><p>对技术实现部、AI 算法研究院、库存管理项目部、业务策略部、项目管理部逐人标注 FBM/FBA/共享方向。</p></article>
+        <article class="card"><h3>经营责任闭环</h3><p>每条价值流最终由技术业务复合型负责人承担目标、优先级、资源容量、交付质量和绩效评价输入。</p></article>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>三、现状盘点：三条价值流的显性基础</h2>
+      <p class="section-lead">先识别已经明确归属的组织单元，再把五个重点部门按 FBM/FBA/共享三方向做人员盘点。库存管理不再默认整部门归入 FBA。</p>
+      <div class="streams-grid">
+        <article class="card stream fbm">
+          <div class="stream-head"><h3>FBM 价值流</h3><span class="badge">明确基础 46 人</span></div>
+          <p>提升 FBM 独立账号的运营效率、策略质量、账号健康与自动化闭环。</p>
+          <table><thead><tr><th>能力域</th><th>当前组织/小组</th><th>人数</th><th>负责人/组长</th></tr></thead><tbody>
+        <tr>
+          <td>前台运营</td>
+          <td>FBM智能运营部</td>
+          <td>26 人</td>
+          <td>谭莉 · 运营高级主管</td>
+        </tr>
+
+        <tr>
+          <td>项目实现</td>
+          <td>FBM智能项目部</td>
+          <td>14 人</td>
+          <td>张华 · FBM智能项目部高级主管</td>
+        </tr>
+
+        <tr>
+          <td>数据策略</td>
+          <td>FBM数据策略组</td>
+          <td>6 人</td>
+          <td>李雨虹</td>
+        </tr></tbody></table>
+          <div class="chips"><span>FBM运营策略</span><span>账号支持</span><span>FBM数据策略</span><span>项目实现</span><span>业务专属产品/研发</span><span>业务专属算法应用</span><span>价值流项目治理</span></div>
+        </article>
+        <article class="card stream fba">
+          <div class="stream-head"><h3>FBA 价值流</h3><span class="badge">明确基础 31 人</span></div>
+          <p>统一 FBA 独立账号、公共账号、库存与策略能力的优先级，减少跨团队等待。</p>
+          <table><thead><tr><th>能力域</th><th>当前组织/小组</th><th>人数</th><th>负责人/组长</th></tr></thead><tbody>
+        <tr>
+          <td>前台运营</td>
+          <td>FBA智能运营部</td>
+          <td>19 人</td>
+          <td>吴楚婷 · 销售高级经理</td>
+        </tr>
+
+        <tr>
+          <td>数据策略</td>
+          <td>FBA数据策略组</td>
+          <td>12 人</td>
+          <td>黄京伟</td>
+        </tr></tbody></table>
+          <div class="chips"><span>FBA运营策略</span><span>FBA数据策略</span><span>FBA库存策略</span><span>业务专属产品/研发</span><span>业务专属算法应用</span><span>价值流项目治理</span></div>
+        </article>
+        <article class="card stream shared">
+          <div class="stream-head"><h3>共享价值流</h3><span class="badge">显性基础 11 人</span></div>
+          <p>承接跨 FBM/FBA、其它业务和中心治理类工作，作为第三条并列行政价值流。</p>
+          <table><thead><tr><th>能力域</th><th>当前组织/小组</th><th>人数</th><th>负责人/组长</th></tr></thead><tbody>
+        <tr>
+          <td>其它业务</td>
+          <td>销售管理部（低价商城）</td>
+          <td>9 人</td>
+          <td>张敏 · 销售高级主管</td>
+        </tr>
+
+        <tr>
+          <td>中心治理</td>
+          <td>中心直属</td>
+          <td>1 人</td>
+          <td>徐盛松 · 中心技术分管</td>
+        </tr>
+
+        <tr>
+          <td>跨流协调</td>
+          <td>智能运营项目部公共协调</td>
+          <td>1 人</td>
+          <td>杨宁海 · 数据分析高级主管</td>
+        </tr></tbody></table>
+          <div class="chips"><span>公共平台</span><span>通用算法</span><span>跨流数据策略</span><span>中心PMO</span><span>组织绩效</span><span>其它业务支持</span><span>跨流项目治理</span></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>四、五部门三方向人员盘点</h2>
+      <p class="section-lead">技术实现部、AI 算法研究院、库存管理项目部、业务策略部、项目管理部是本次人员盘点的重点对象，合计 76 人。这五个组织不按整部门划入某一流，而是按人/角色/工作对象分配到 FBM、FBA、共享三个方向。</p>
+      <table class="allocation-table">
+        <thead><tr><th>现行组织</th><th>FBM 倾向</th><th>FBA 倾向</th><th>共享倾向</th></tr></thead>
+        <tbody>
+        <tr>
+          <th>技术实现部<span>45 人</span></th>
+          <td>熟悉 FBM 系统、账号支持、FBM 项目实现的产品/开发/测试角色。</td>
+          <td>熟悉 FBA 系统、库存联动、FBA 项目实现的产品/开发/测试角色。</td>
+          <td>公共平台、跨业务工程能力、基础架构、采集与通用质量能力。</td>
+        </tr>
+
+        <tr>
+          <th>AI 算法研究院<span>15 人</span></th>
+          <td>服务 FBM 场景的算法课题、账号健康、运营自动化模型。</td>
+          <td>服务 FBA 场景的算法课题、库存/广告/策略模型。</td>
+          <td>通用模型、跨流算法底座、基础科研与可复用算法资产。</td>
+        </tr>
+
+        <tr>
+          <th>库存管理项目部<span>5 人</span></th>
+          <td>FBM 相关库存策略或履约协同能力（如盘点确认存在）。</td>
+          <td>FBA/公共账号库存智能、缺货滞销、周转优化。</td>
+          <td>跨业务库存平台、库存治理方法、公共数据口径。</td>
+        </tr>
+
+        <tr>
+          <th>业务策略部<span>5 人</span></th>
+          <td>FBM 独立账号策略分析、经营洞察和策略实验。</td>
+          <td>FBA 场景策略分析、公共账号策略和库存经营洞察。</td>
+          <td>中心级策略方法、跨流研究、经营指标口径。</td>
+        </tr>
+
+        <tr>
+          <th>项目管理部<span>6 人</span></th>
+          <td>FBM 价值流项目治理、节奏管理和复盘。</td>
+          <td>FBA 价值流项目治理、节奏管理和复盘。</td>
+          <td>中心 PMO、组织绩效、跨流项目与治理机制。</td>
+        </tr></tbody>
+      </table>
+    </section>
+
+    <section class="panel">
+      <h2>五、终局组织：三条并列行政价值流</h2>
+      <p class="section-lead">终局不是弱矩阵，也不是把公共能力松散挂在价值流之外，而是形成 FBM、FBA、共享三条并列行政价值流。共享价值流向 FBM/FBA 配置容量，但自身也对跨流、其它业务和中心治理结果负责。</p>
+      <div class="target-arch">
+        <article class="card stream fbm">
+          <h3>FBM 价值流组织</h3>
+          <p>以 FBM 智能运营、FBM 智能项目、FBM 数据策略为基础，纳入五部门中明确服务 FBM 的人员。</p>
+          <div class="owner-list"><div>目标：运营效率、账号健康、自动化覆盖、策略质量。</div><div>分配依据：当前服务关系、系统归属、业务熟悉度。</div></div>
+        </article>
+        <article class="card stream fba">
+          <h3>FBA 价值流组织</h3>
+          <p>以 FBA 智能运营、FBA 数据策略为基础，纳入五部门中明确服务 FBA 的人员；库存管理需逐人确认归属。</p>
+          <div class="owner-list"><div>目标：利润/销量、库存周转、缺货滞销改善、广告与运营效率。</div><div>分配依据：FBA 场景、公共账号、库存/策略工作对象。</div></div>
+        </article>
+        <article class="card stream shared">
+          <h3>共享价值流组织</h3>
+          <p>承接销售管理部、中心直属、跨流协调，以及五部门中承担公共平台、通用算法、中心治理和其它业务支持的人员。</p>
+          <div class="owner-list"><div>目标：跨流复用、平台稳定、治理效率、其它业务支持。</div><div>分配依据：跨 FBM/FBA、其它业务、中心治理或公共能力。</div></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>六、盘点产出与分配原则</h2>
+      <p class="section-lead">人员盘点不在本方案页硬编未确认名单，而是形成后续交付物：每人/每角色标注“主归属价值流 + 是否过渡双归属 + 分配依据”。</p>
+      <div class="grid-3">
+        <article class="card"><h3>业务熟悉度优先</h3><p>谁长期服务哪条业务线，优先划入对应价值流，减少重组后的学习成本和协同损耗。</p></article>
+        <article class="card"><h3>工作对象次之</h3><p>负责的系统、课题、项目、账号类型决定主归属；跨多对象时明确容量比例和优先级裁决机制。</p></article>
+        <article class="card"><h3>跨流归共享</h3><p>同时服务双流、服务其它业务、或承担中心治理职能的，归入共享价值流，避免双流互相争抢资源。</p></article>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>七、业务结果平衡指标</h2>
+      <p class="section-lead">为了避免“研发/算法直接背销量利润”引发抵触，指标采用平衡计分方式：业务结果是方向，过程与能力指标用于解释结果。</p>
+      <div class="metrics">
+        <div class="metric"><strong>业务结果</strong><span>销售额、利润/毛利、重点策略项目带来的业务改善。</span></div>
+        <div class="metric"><strong>运营效率</strong><span>自动化覆盖率、运营人效、策略执行效率。</span></div>
+        <div class="metric"><strong>库存与履约</strong><span>库存周转、缺货、滞销、履约稳定性。</span></div>
+        <div class="metric"><strong>交付效率</strong><span>需求从提出到上线/运营落地的周期与按期完成率。</span></div>
+        <div class="metric"><strong>组织健康</strong><span>角色清晰度、协同冲突减少、关键人才稳定性。</span></div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>八、分阶段落地路径</h2>
+      <p class="section-lead">终局可以完整行政重组，但推进上要用盘点和试运行降低震荡，逐步从“现状组织”迁移到“三价值流组织”。</p>
+      <div class="roadmap">
+        <article class="step"><h3>事实盘点</h3><p>完成当前组织、三级小组、负责人、关键岗位、历史服务对象和业务熟悉度盘点。</p></article>
+        <article class="step"><h3>三向归属建议</h3><p>形成 FBM/FBA/共享人员归属建议，明确主归属、过渡双归属和分配依据。</p></article>
+        <article class="step"><h3>试运行校准</h3><p>先按价值流运行目标、需求池、优先级和周/月度复盘，验证负责人权责是否成立。</p></article>
+        <article class="step"><h3>行政定型</h3><p>根据业务结果、协同成本、人员稳定性和交付质量，逐步完成行政组织调整。</p></article>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>九、整合组织定位页的价值流章节</h2>
+      <p class="section-lead">组织定位页原章节已经提出 FBM/FBA 两条价值流、需求池、季度目标、治理节奏和风险警示。本页在此基础上升级口径：从“双流 + 松散公共能力”调整为“FBM / FBA / 共享三条并列行政价值流”。</p>
+      <div class="integration">
+        <div class="quote-box">
+          <span>FROM ORG POSITIONING PAGE</span>
+          <strong>保留价值流治理节奏，升级为三条行政价值流</strong>
+          <p>原章节有价值的是识别了 FBM/FBA 的业务边界和治理节奏；需要调整的是，公共能力不再以松散方式存在，而是第三条共享价值流。</p>
+        </div>
+        <div class="grid-3">
+          <article class="card"><h3>延续：FBM/FBA 主流</h3><p>保留两条业务主价值流，分别承接对应业务场景、需求池和目标口径。</p></article>
+          <article class="card"><h3>新增：共享价值流</h3><p>跨双流、其它业务和中心治理正式成为第三条并列行政价值流。</p></article>
+          <article class="card"><h3>保留：风险警示</h3><p>继续强调不要只换名称不换权责。价值流必须拥有目标、优先级、资源配置和复盘机制。</p></article>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      数据来源：d:\OneDrive\Desktop\在职员工20260417.xls；统计口径：在职。本页用于方案讨论与对比，具体人员归属需以进一步盘点为准。当前分组口径校验：明确编组与盘点对象合计 164 人。
+    </footer>
+  </main>
+</body>
+</html>

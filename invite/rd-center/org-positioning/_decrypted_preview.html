@@ -1,0 +1,1768 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>智能研发中心 · 组织定位架构</title>
+  <style>
+    :root {
+      --navy: #0b1f3a;
+      --blue: #1d4ed8;
+      --cyan: #0f766e;
+      --teal: #0d9488;
+      --amber: #b45309;
+      --rose: #be123c;
+      --ink: #102033;
+      --muted: #5b6b80;
+      --line: #d8e3f0;
+      --soft: #eef5ff;
+      --front: #1e40af;
+      --chain: #0f766e;
+      --mid: #4338ca;
+      --back: #475569;
+      --parallel: #64748b;
+      --shadow: 0 20px 60px rgba(11, 31, 58, 0.12);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: "Microsoft YaHei", "PingFang SC", "Segoe UI", Arial, sans-serif;
+      background:
+        radial-gradient(ellipse 80% 50% at 50% -10%, rgba(29, 78, 216, 0.09), transparent),
+        radial-gradient(ellipse 60% 40% at 100% 20%, rgba(15, 118, 110, 0.07), transparent),
+        #f6f9fd;
+      line-height: 1.65;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(11, 31, 58, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(11, 31, 58, 0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      mask-image: linear-gradient(180deg, rgba(0,0,0,0.85), transparent 75%);
+    }
+    .wrap {
+      width: min(1460px, calc(100% - 48px));
+      margin: 0 auto;
+      position: relative;
+    }
+    .page-links {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      padding-top: 22px;
+    }
+    .page-links a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 40px;
+      padding: 0 14px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--blue);
+      background: rgba(255,255,255,0.86);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 800;
+    }
+    .page-links a:hover,
+    .page-links a:focus-visible {
+      outline: 3px solid rgba(29, 78, 216, 0.12);
+      border-color: rgba(29, 78, 216, 0.36);
+    }
+    .kicker {
+      display: inline-flex;
+      padding: 8px 14px;
+      border: 1px solid rgba(29, 78, 216, 0.2);
+      border-radius: 999px;
+      color: var(--blue);
+      background: rgba(255,255,255,0.85);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+    }
+    h1 {
+      margin: 24px 0 16px;
+      color: var(--navy);
+      font-size: clamp(36px, 5vw, 62px);
+      line-height: 1.08;
+      letter-spacing: -0.04em;
+      max-width: 1200px;
+    }
+    .lead {
+      max-width: 1280px;
+      margin: 0;
+      color: var(--muted);
+      font-size: clamp(17px, 1.6vw, 22px);
+    }
+    .meta {
+      margin-top: 20px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    section {
+      padding: 72px 0;
+    }
+    h2 {
+      margin: 0 0 12px;
+      color: var(--navy);
+      font-size: clamp(28px, 3vw, 40px);
+      letter-spacing: -0.03em;
+    }
+    .sec-lead {
+      max-width: 1280px;
+      margin: 0 0 40px;
+      color: var(--muted);
+      font-size: 18px;
+    }
+
+    /* 三层指标条 */
+    .layer-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-top: 48px;
+    }
+    .parallel-banner {
+      margin-top: 20px;
+      padding: 20px 28px;
+      border-radius: 16px;
+      border: 2px dashed var(--parallel);
+      background: rgba(100, 116, 139, 0.06);
+    }
+    .parallel-banner h3 {
+      margin: 0 0 8px;
+      font-size: 17px;
+      color: var(--navy);
+    }
+    .parallel-banner p { margin: 0; font-size: 14px; color: var(--muted); }
+    .cell.parallel {
+      border: 2px dashed var(--parallel);
+      background: #f8fafc;
+      grid-column: 1 / -1;
+    }
+    .cell.parallel h3 { color: var(--parallel); }
+    .cell.parallel .hc { color: var(--parallel); font-size: 36px; }
+    .tier.back .pill { background: var(--back); }
+    .cell.back {
+      border-color: rgba(71, 85, 105, 0.35);
+      background: linear-gradient(180deg, #fff, rgba(71, 85, 105, 0.05));
+    }
+    .cell.back h3, .cell.back .hc { color: var(--back); }
+    .vmap .t-back { background: rgba(71, 85, 105, 0.12); color: var(--back); }
+    .vmap .t-parallel { background: rgba(100, 116, 139, 0.15); color: var(--parallel); }
+    .front-scope {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+      margin-bottom: 10px;
+    }
+    .layer-stat {
+      padding: 28px 32px;
+      border-radius: 20px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.92);
+      box-shadow: var(--shadow);
+    }
+    .layer-stat .tag {
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+    .layer-stat.front .tag { color: var(--front); }
+    .layer-stat.chain .tag { color: var(--chain); }
+    .layer-stat.mid .tag { color: var(--mid); }
+    .layer-stat.back .tag { color: var(--back); }
+    .layer-stat.back .num { color: var(--back); }
+    .layer-stat .num {
+      margin: 12px 0 6px;
+      font-size: 52px;
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -0.04em;
+    }
+    .layer-stat.front .num { color: var(--front); }
+    .layer-stat.chain .num { color: var(--chain); }
+    .layer-stat.mid .num { color: var(--mid); }
+    .layer-stat .pct { color: var(--muted); font-size: 15px; }
+    .layer-stat p { margin: 14px 0 0; font-size: 15px; color: var(--ink); }
+
+    /* 主架构图 */
+    .arch {
+      position: relative;
+      padding: 48px 40px 56px;
+      border-radius: 28px;
+      background: rgba(255,255,255,0.94);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .arch::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: 118px;
+      width: 2px;
+      height: calc(100% - 200px);
+      background: linear-gradient(180deg, transparent, var(--line) 8%, var(--line) 92%, transparent);
+      transform: translateX(-50%);
+      opacity: 0.5;
+    }
+    .arch-title {
+      text-align: center;
+      margin-bottom: 36px;
+    }
+    .arch-title strong {
+      display: block;
+      font-size: 22px;
+      color: var(--navy);
+    }
+    .arch-title span {
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .tier {
+      margin-bottom: 28px;
+    }
+    .tier-label {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+    .tier-label .pill {
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      color: #fff;
+    }
+    .tier.front .pill { background: var(--front); }
+    .tier.chain .pill { background: var(--chain); }
+    .tier.mid .pill { background: var(--mid); }
+    .tier-label .desc {
+      font-size: 15px;
+      color: var(--muted);
+    }
+
+    .tier.front .cells {
+      display: grid;
+      grid-template-columns: 1fr 1fr 0.75fr;
+      gap: 16px;
+    }
+    .cell {
+      padding: 22px 24px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: #fff;
+      position: relative;
+    }
+    .cell h3 {
+      margin: 0 0 8px;
+      font-size: 18px;
+      color: var(--navy);
+    }
+    .cell .hc {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+    }
+    .cell.front h3 { color: var(--front); }
+    .cell.front .hc { color: var(--front); }
+    .cell .sub {
+      margin-top: 10px;
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    .cell .groups {
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px dashed var(--line);
+      font-size: 13px;
+      color: var(--ink);
+    }
+
+    .tier.chain .chain-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    .bu-header {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .bu-header div {
+      text-align: center;
+      padding: 8px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+    }
+    .bu-header .fbm { background: rgba(29,78,216,0.1); color: var(--front); }
+    .bu-header .fba { background: rgba(15,118,110,0.12); color: var(--chain); }
+
+    .chain-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .chain-row.full {
+      grid-template-columns: 1fr;
+    }
+    .chain-box {
+      padding: 16px 18px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, #fff, #f8fbff);
+    }
+    .chain-box.shared {
+      grid-column: 1 / -1;
+      background: linear-gradient(90deg, rgba(15,118,110,0.06), rgba(29,78,216,0.06));
+    }
+    .chain-box h4 {
+      margin: 0 0 6px;
+      font-size: 15px;
+      color: var(--navy);
+    }
+    .chain-box .hc-sm {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--chain);
+    }
+    .chain-box .note { font-size: 12px; color: var(--muted); margin-top: 6px; }
+
+    .flow-arrow {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      margin: 8px 0 20px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .flow-arrow svg { flex-shrink: 0; }
+
+    .tier.mid .mid-bar {
+      display: grid;
+      grid-template-columns: 0.9fr 2.2fr 0.7fr;
+      gap: 16px;
+    }
+    .cell.mid {
+      border-color: rgba(67, 56, 202, 0.25);
+      background: linear-gradient(180deg, #fff, rgba(67, 56, 202, 0.04));
+    }
+    .cell.mid h3 { color: var(--mid); }
+    .cell.mid .hc { color: var(--mid); }
+    .cell.mid.wide .groups {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px 12px;
+    }
+
+    .support-lines {
+      display: flex;
+      justify-content: center;
+      gap: 80px;
+      margin: 20px 0 8px;
+      padding: 16px 0;
+      border-top: 1px dashed var(--line);
+    }
+    .support-line {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--mid);
+      font-weight: 700;
+    }
+
+    /* 价值链表 */
+    table.vmap {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 15px;
+      background: #fff;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--line);
+    }
+    .vmap th, .vmap td {
+      padding: 14px 18px;
+      text-align: left;
+      border-bottom: 1px solid var(--line);
+    }
+    .vmap th {
+      background: var(--navy);
+      color: #fff;
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 0.04em;
+    }
+    .vmap tr:last-child td { border-bottom: none; }
+    .vmap .layer-tag {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .vmap .t-front { background: rgba(29,78,216,0.12); color: var(--front); }
+    .vmap .t-chain { background: rgba(15,118,110,0.12); color: var(--chain); }
+    .vmap .t-mid { background: rgba(67,56,202,0.12); color: var(--mid); }
+
+    .insight-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      max-width: 1280px;
+    }
+    .insight {
+      padding: 24px 28px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.9);
+    }
+    .insight h3 {
+      margin: 0 0 10px;
+      font-size: 17px;
+      color: var(--navy);
+    }
+    .insight p { margin: 0; font-size: 15px; color: var(--muted); }
+
+    .acct {
+      display: inline-block;
+      margin-top: 8px;
+      padding: 3px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .acct-ind { background: rgba(29, 78, 216, 0.12); color: var(--front); }
+    .acct-dual { background: rgba(15, 118, 110, 0.15); color: var(--chain); }
+    .acct-pending { background: rgba(180, 83, 9, 0.12); color: var(--amber); }
+    .cell.lowprice { border-color: rgba(180, 83, 9, 0.35); }
+    .cell.lowprice h3 { color: var(--amber); }
+    .cell.lowprice .hc { color: var(--amber); }
+    .chain-box.fba-col { border-color: rgba(15, 118, 110, 0.35); }
+    .chain-box.fbm-col { border-color: rgba(29, 78, 216, 0.3); }
+    .ext-amz {
+      margin-top: 16px;
+      padding: 14px 20px;
+      border-radius: 12px;
+      border: 1px dashed var(--chain);
+      background: rgba(15, 118, 110, 0.06);
+      font-size: 14px;
+      color: var(--ink);
+      text-align: center;
+    }
+    .ext-amz strong { color: var(--chain); }
+    .acct-matrix {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+      background: #fff;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+    }
+    .acct-matrix th, .acct-matrix td {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+    }
+    .acct-matrix th { background: var(--soft); color: var(--navy); font-size: 13px; }
+    .legend-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 24px;
+      padding: 14px 20px;
+      border-radius: 12px;
+      background: var(--soft);
+      font-size: 13px;
+      color: var(--ink);
+    }
+
+    /* 行政组织层级树 */
+    .org-panel {
+      padding: 40px 36px 44px;
+      border-radius: 28px;
+      background: rgba(255,255,255,0.96);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      margin-bottom: 56px;
+    }
+    .org-panel h2 { margin-top: 0; }
+    .org-dual-hint {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px 24px;
+      margin-bottom: 28px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+    .org-dual-hint span { display: inline-flex; align-items: center; gap: 8px; }
+    .org-l1-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 28px;
+      flex-wrap: wrap;
+      margin-bottom: 8px;
+    }
+    .org-node {
+      position: relative;
+      padding: 16px 20px;
+      border-radius: 14px;
+      border: 2px solid var(--line);
+      background: #fff;
+    }
+    .org-node.l1 {
+      min-width: 320px;
+      border-color: var(--navy);
+      background: linear-gradient(135deg, #0b1f3a, #1e3a5f);
+      color: #fff;
+    }
+    .org-node.l1 .org-name { font-size: 22px; font-weight: 800; }
+    .org-node.l1 .org-meta { font-size: 14px; opacity: 0.85; margin-top: 6px; }
+    .org-node.l1 .org-level-tag {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 4px 10px;
+      border-radius: 6px;
+      background: rgba(255,255,255,0.15);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+    }
+    .org-node.parallel-l1 {
+      border: 2px dashed var(--parallel);
+      background: #f8fafc;
+      color: var(--ink);
+      min-width: 280px;
+    }
+    .org-node.parallel-l1 .org-name { color: var(--navy); font-size: 18px; font-weight: 800; }
+    .org-connector-down {
+      width: 2px;
+      height: 28px;
+      background: var(--line);
+      margin: 0 auto 4px;
+    }
+    .org-l2-bands { display: flex; flex-direction: column; gap: 28px; }
+    .org-band-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--line);
+    }
+    .org-band-header .band-pill {
+      padding: 5px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: 0.06em;
+    }
+    .org-band-header.front .band-pill { background: var(--front); }
+    .org-band-header.chain .band-pill { background: var(--chain); }
+    .org-band-header.mid .band-pill { background: var(--mid); }
+    .org-band-header.back .band-pill { background: var(--back); }
+    .org-band-header .band-meta { font-size: 14px; color: var(--muted); }
+    .org-l2-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 14px;
+      padding-left: 20px;
+      border-left: 3px solid var(--line);
+      margin-left: 8px;
+    }
+    .org-dept {
+      padding: 14px 16px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: #fafbfd;
+    }
+    .org-dept .dept-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .org-dept .dept-name { font-size: 15px; font-weight: 800; color: var(--navy); }
+    .org-dept .dept-hc { font-size: 20px; font-weight: 800; color: var(--muted); }
+    .org-dept .dept-level {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+      margin-bottom: 6px;
+    }
+    .org-l3-list {
+      margin: 0;
+      padding: 8px 0 0 16px;
+      border-top: 1px dashed var(--line);
+      list-style: none;
+      font-size: 13px;
+      color: var(--ink);
+    }
+    .org-l3-list li {
+      position: relative;
+      padding: 4px 0 4px 12px;
+    }
+    .org-l3-list li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 50%;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--line);
+      transform: translateY(-50%);
+    }
+    .org-l3-list .l3-hc { color: var(--muted); font-weight: 700; margin-left: 4px; }
+    .org-dept.no-l3 .dept-note {
+      margin: 8px 0 0;
+      padding-top: 8px;
+      border-top: 1px dashed var(--line);
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .org-footnote {
+      margin-top: 24px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    
+    .bu-columns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      align-items: start;
+    }
+    .bu-col-title {
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      margin-bottom: 12px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      text-align: center;
+    }
+    .bu-col.fbm .bu-col-title { background: rgba(29,78,216,0.1); color: var(--front); }
+    .bu-col.fba .bu-col-title { background: rgba(15,118,110,0.12); color: var(--chain); }
+    .bu-col .org-l2-grid { border-left: none; margin-left: 0; padding-left: 0; }
+    .platform-equal-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+    .platform-equal-grid.platform-single {
+      grid-template-columns: 1fr;
+      max-width: calc(50% - 8px);
+    }
+    .platform-equal-grid .org-dept { height: 100%; }
+    .dept-leader {
+      margin: 0 0 8px;
+      font-size: 13px;
+      color: var(--navy);
+      font-weight: 600;
+    }
+    .org-l1-only { margin-bottom: 4px; }
+    .org-span-row { margin-top: 14px; }
+    .org-span-row .org-l2-grid { border-left: none; margin-left: 0; padding-left: 0; }
+
+    .dept-acct { margin: 0 0 8px; }
+    .dept-acct .acct { font-size: 11px; }
+    .legend-bar.org-legend {
+      display: flex; flex-wrap: wrap; gap: 12px 20px;
+      margin-bottom: 20px; padding: 14px 18px;
+      border-radius: 12px; background: rgba(255,255,255,0.9);
+      border: 1px solid var(--line); font-size: 13px;
+    }
+    /* ORG_EXTRA_CSS_START */
+.org-hierarchy-panel {
+      margin-bottom: 28px;
+    }
+    .org-hierarchy-panel .org-canvas-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .hier-root {
+      display: flex;
+      justify-content: center;
+      margin: 12px 0 10px;
+    }
+    .hier-root-card {
+      min-width: 360px;
+      padding: 16px 24px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #0b1f3a, #1e3a5f);
+      color: #fff;
+      text-align: center;
+      box-shadow: var(--shadow);
+    }
+    .hier-root-card strong {
+      display: block;
+      margin: 4px 0;
+      font-size: 24px;
+      letter-spacing: 0.04em;
+    }
+    .hier-root-card em {
+      display: block;
+      font-style: normal;
+      font-size: 13px;
+      opacity: 0.88;
+    }
+    .hier-level {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+    }
+    .hier-root-card .hier-level {
+      color: rgba(255,255,255,0.72);
+    }
+    .hier-direct {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      margin: 8px auto 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .hier-direct-person {
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--navy);
+      font-weight: 700;
+    }
+    .hier-connector {
+      width: 2px;
+      height: 28px;
+      margin: 10px auto 0;
+      background: var(--line);
+    }
+    .hier-l2-grid {
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 14px;
+      padding-top: 16px;
+      border-top: 2px solid var(--line);
+    }
+    .hier-dept {
+      min-height: 132px;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #fafbfd;
+      box-sizing: border-box;
+    }
+    .hier-dept-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 8px;
+      color: var(--navy);
+      font-weight: 800;
+      font-size: 14px;
+    }
+    .hier-dept-head strong {
+      color: var(--muted);
+      font-size: 18px;
+    }
+    .hier-dept p {
+      margin: 6px 0 8px;
+      font-size: 12px;
+      line-height: 1.4;
+      color: var(--muted);
+      font-weight: 600;
+    }
+    .hier-l3 {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+    .hier-chip {
+      padding: 3px 7px;
+      border-radius: 999px;
+      background: #fff;
+      border: 1px solid var(--line);
+      color: var(--ink);
+      font-size: 11px;
+      line-height: 1.2;
+    }
+    @media (max-width: 1200px) {
+      .hier-l2-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .hier-root-card { min-width: 0; width: 100%; }
+    }
+    .value-stream-panel {
+      padding: 30px;
+      margin-bottom: 32px;
+      border-radius: 20px;
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(248,250,252,0.9));
+      box-shadow: var(--shadow);
+    }
+    .vs-hero {
+      display: grid;
+      grid-template-columns: 1fr minmax(260px, 0.34fr);
+      gap: 24px;
+      align-items: stretch;
+      margin-bottom: 24px;
+    }
+    .vs-kicker {
+      margin: 0 0 8px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+    }
+    .vs-hero h2 {
+      margin: 0 0 10px;
+      color: var(--navy);
+      font-size: 30px;
+    }
+    .vs-hero p {
+      margin: 0;
+      color: var(--ink);
+      font-size: 16px;
+      line-height: 1.75;
+    }
+    .vs-verdict {
+      padding: 18px 20px;
+      border-radius: 16px;
+      background: #0f172a;
+      color: #fff;
+    }
+    .vs-verdict span,
+    .vs-stream-head span,
+    .vs-roadmap span {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      opacity: 0.72;
+    }
+    .vs-verdict strong {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 22px;
+    }
+    .vs-verdict em {
+      display: block;
+      font-style: normal;
+      color: rgba(255,255,255,0.78);
+      line-height: 1.5;
+    }
+    .vs-two-streams {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+    .vs-stream {
+      padding: 20px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: #fff;
+    }
+    .vs-stream.fbm { border-color: rgba(29, 78, 216, 0.35); }
+    .vs-stream.fba { border-color: rgba(15, 118, 110, 0.35); }
+    .vs-stream-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+    .vs-stream-head strong {
+      color: var(--navy);
+      font-size: 22px;
+    }
+    .vs-purpose,
+    .vs-foot {
+      margin: 0 0 12px;
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 14px;
+    }
+    .vs-units {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      margin: 14px 0;
+    }
+    .vs-units span {
+      padding: 8px 10px;
+      border-radius: 10px;
+      background: #f8fafc;
+      color: var(--ink);
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .vs-count {
+      color: var(--navy);
+      font-size: 15px;
+    }
+    .vs-operating-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+    .vs-operating-grid article,
+    .vs-risk {
+      padding: 16px;
+      border-radius: 14px;
+      background: #fff;
+      border: 1px solid var(--line);
+    }
+    .vs-operating-grid h3 {
+      margin: 0 0 8px;
+      color: var(--navy);
+      font-size: 17px;
+    }
+    .vs-operating-grid p,
+    .vs-risk p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.65;
+      font-size: 14px;
+    }
+    .vs-operating-grid span {
+      display: inline-block;
+      margin-top: 10px;
+      color: var(--navy);
+      font-weight: 800;
+      font-size: 13px;
+    }
+    .vs-roadmap {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+    .vs-roadmap div {
+      padding: 14px 16px;
+      border-radius: 14px;
+      background: #f8fafc;
+      border: 1px dashed var(--line);
+    }
+    .vs-roadmap strong {
+      display: block;
+      color: var(--navy);
+      margin-bottom: 6px;
+      font-size: 16px;
+    }
+    .vs-roadmap p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.55;
+      font-size: 13px;
+    }
+    .vs-risk {
+      border-color: rgba(180, 83, 9, 0.35);
+      background: #fffbeb;
+    }
+    .vs-risk strong {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--amber);
+    }
+    @media (max-width: 1100px) {
+      .vs-hero,
+      .vs-two-streams,
+      .vs-operating-grid,
+      .vs-roadmap {
+        grid-template-columns: 1fr;
+      }
+    }
+    .front-bu-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr minmax(240px, 0.88fr);
+      gap: 16px;
+      align-items: stretch;
+    }
+    .front-bu-grid > .bu-col {
+      display: flex;
+      flex-direction: column;
+      min-height: 100%;
+    }
+    .front-bu-grid .org-l2-grid {
+      flex: 1 1 auto;
+      display: flex;
+      min-height: 0;
+    }
+    .front-bu-grid .org-l2-grid > .org-dept {
+      flex: 1 1 auto;
+      width: 100%;
+      min-height: 100%;
+      box-sizing: border-box;
+    }
+    .bu-col.mall .bu-col-title {
+      background: rgba(180, 83, 9, 0.12);
+      color: var(--amber);
+    }
+    .org-band-bs .bs-span-row .org-dept { margin: 0; }
+    .org-band-header.mid-flow .band-pill { background: #6366f1; }
+    .mid-flow-bracket {
+      position: relative;
+      margin: 8px 0 20px;
+      padding: 20px 16px 12px;
+      border: 2px dashed rgba(99, 102, 241, 0.45);
+      border-radius: 16px;
+      background: rgba(99, 102, 241, 0.04);
+    }
+    .mid-flow-bracket > .org-band + .org-band { margin-top: 18px; }
+    .mid-flow-bracket > .org-band:last-child { margin-bottom: 4px; }
+    .mid-flow-bracket-label {
+      position: absolute;
+      top: -11px;
+      left: 20px;
+      padding: 4px 12px;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      color: #4338ca;
+      background: #fff;
+      border: 1px solid rgba(99, 102, 241, 0.35);
+      border-radius: 8px;
+    }
+    .ipt-bu-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.12fr 1fr;
+      gap: 16px;
+      align-items: stretch;
+    }
+    .ipt-bu-grid > .bu-col {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      min-height: 100%;
+    }
+    .ipt-bu-grid .bu-col-title {
+      flex: 0 0 auto;
+      margin-bottom: 10px;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-align: center;
+    }
+    .ipt-bu-grid .bu-col.fbm .bu-col-title {
+      background: rgba(29, 78, 216, 0.1);
+      color: var(--front);
+    }
+    .ipt-bu-grid .bu-col.fba .bu-col-title {
+      background: rgba(15, 118, 110, 0.12);
+      color: var(--chain);
+    }
+    .ipt-bu-grid .bu-col-title-dual {
+      background: linear-gradient(90deg, rgba(29, 78, 216, 0.1), rgba(15, 118, 110, 0.12));
+      color: var(--navy);
+    }
+    .ipt-bu-grid .org-l2-grid {
+      flex: 1 1 auto;
+      display: flex;
+      height: 100%;
+      min-height: 0;
+    }
+    .ipt-bu-grid .org-l2-grid > .org-dept {
+      flex: 1 1 auto;
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      height: 100%;
+      min-height: 100%;
+      box-sizing: border-box;
+    }
+    .ipt-bu-grid .org-l2-grid > .org-dept .org-l3-list {
+      flex: 1 1 auto;
+      margin-bottom: 0;
+    }
+    .ipt-bu-grid .org-l2-grid > .iop-dept .iop-l3-inner {
+      flex: 1 1 auto;
+      align-items: stretch;
+    }
+    .ipt-bu-grid .iop-l3-inner .l3-card {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+    .iop-dept {
+      background: linear-gradient(180deg, rgba(240,253,244,0.9), #fff) !important;
+      border-color: rgba(15,118,110,0.45) !important;
+    }
+    .iop-l3-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+      margin-top: 10px;
+    }
+    .iop-l3-inner .l3-card {
+      margin: 0;
+      padding: 12px 14px;
+      background: rgba(255,255,255,0.85);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-sizing: border-box;
+    }
+    .org-dept.l3-card .dept-name { font-size: 14px; }
+    .dept-acct { margin: 0 0 8px; }
+    .dept-acct .acct { font-size: 11px; }
+    .legend-bar.org-legend {
+      display: flex; flex-wrap: wrap; gap: 12px 20px;
+      margin-bottom: 20px; padding: 14px 18px;
+      border-radius: 12px; background: rgba(255,255,255,0.9);
+      border: 1px solid var(--line); font-size: 13px;
+    }
+    .platform-equal-grid.platform-full {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      max-width: 100%;
+      align-items: stretch;
+    }
+    .platform-equal-grid.platform-full .org-dept {
+      height: 100%;
+      box-sizing: border-box;
+    }
+    .org-band-mid-tech .org-l3-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px 14px;
+    }
+    .org-band-back .org-l2-grid-flat {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr;
+      margin-left: 0;
+      padding-left: 0;
+      border-left: none;
+    }
+    .org-band-back .org-l2-grid-flat > .org-dept {
+      width: 100%;
+      box-sizing: border-box;
+    }
+    /* ORG_EXTRA_CSS_END */
+    .parallel-dept { border: 2px dashed var(--parallel) !important; background: #f8fafc !important; }
+    .front-bu-columns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .front-bu-columns .bu-col-title { margin-bottom: 10px; }
+    .cell-leader { margin-top: 8px; font-size: 12px; color: var(--navy); font-weight: 600; }
+    .tier.mid .mid-bar,
+    .tier.mid .platform-equal-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .tier.back .platform-equal-grid { max-width: 100%; }
+    .tier.back .cells { max-width: none; display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 16px; }
+    .tier.back .cells .cell.back { max-width: none; }
+
+    @media (max-width: 1100px) {
+      .layer-stats { grid-template-columns: repeat(2, 1fr); }
+      .tier.front .cells, .tier.mid .mid-bar, .insight-grid {
+        grid-template-columns: 1fr;
+      }
+      .chain-row, .bu-header { grid-template-columns: 1fr; }
+      .cell.mid.wide .groups { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <nav class="page-links" aria-label="相关页面">
+      <a href="../value-stream/">查看价值流重组终局方案</a>
+    </nav>
+    <header class="hero">
+      <div class="kicker">ORGANIZATION POSITIONING · 2026-04-17</div>
+      <h1>智能研发中心组织定位架构</h1>
+      <p class="lead">按<strong>业务流阅读顺序</strong>呈现组织定位（前台运营 → 业务策略 → 智能项目团队 → 中台技术 → 后台管理）；业务策略与智能项目团队标注<strong>中台·业务流</strong>。</p>
+      
+
+      <div class="layer-stats">
+        <div class="layer-stat front">
+          <div class="tag">前台运营</div>
+          <div class="num">54</div>
+          <div class="pct">中心 33%</div>
+          <p>FBM/FBA 智能运营 + 低价商城</p>
+        </div>
+        <div class="layer-stat chain">
+          <div class="tag">智能项目团队</div>
+          <div class="num">38</div>
+          <div class="pct">中心 23%</div>
+          <p>中台·业务流 · 三并行二级项目部</p>
+        </div>
+        <div class="layer-stat mid">
+          <div class="tag">中台技术</div>
+          <div class="num">60</div>
+          <div class="pct">中心 37%</div>
+          <p>中台技术域 · 算法 + 工程</p>
+        </div>
+        <div class="layer-stat back">
+          <div class="tag">后台管理</div>
+          <div class="num">6</div>
+          <div class="pct">中心 4%</div>
+          <p>项目治理、组织绩效及体系建设</p>
+        </div>
+      </div>
+</header>
+
+    <section id="hierarchy" class="org-panel org-hierarchy-panel">
+      <div class="org-canvas-toolbar">
+        <h2>传统组织架构图</h2>
+        <div class="org-toolbar-meta">行政层级简图 · 1 级中心 → 2 级部门/项目部 → 3 级组</div>
+      </div>
+      <div class="hier-root">
+        <div class="hier-root-card">
+          <span class="hier-level">1 级中心</span>
+          <strong>智能研发中心</strong>
+          <em>在职 164 · L2 合计 163 + 中心直属 1</em>
+        </div>
+      </div>
+      <div class="hier-direct">
+        <span class="hier-level">中心直属</span>
+        <span class="hier-direct-person">徐盛松 · 中心技术分管 · 1</span>
+      </div>
+      <div class="hier-connector"></div>
+      <div class="hier-l2-grid">
+          <div class="hier-dept">
+            <div class="hier-dept-head">
+              <span>FBM 智能运营部</span>
+              <strong>26</strong>
+            </div>
+            <p>负责人：谭莉 · 运营高级主管</p>
+            <div class="hier-l3"><span class="hier-chip">FBM运营1组 · 7</span><span class="hier-chip">FBM策略管理组 · 6</span><span class="hier-chip">FBM运营2组 · 6</span><span class="hier-chip">账号支持组 · 6</span></div>
+          </div>
+          <div class="hier-dept">
+            <div class="hier-dept-head">
+              <span>FBA 智能运营部</span>
+              <strong>19</strong>
+            </div>
+            <p>负责人：吴楚婷 · 销售高级经理</p>
+            <div class="hier-l3"><span class="hier-chip">FBA策略管理组 · 7</span><span class="hier-chip">FBA运营1组 · 6</span><span class="hier-chip">FBA运营2组 · 5</span></div>
+          </div>
+          <div class="hier-dept">
+            <div class="hier-dept-head">
+              <span>销售管理部</span>
+              <strong>9</strong>
+            </div>
+            <p>负责人：张敏 · 销售高级主管</p>
+            
+          </div>
+          <div class="hier-dept">
+            <div class="hier-dept-head">
+              <span>业务策略部</span>
+              <strong>5</strong>
+            </div>
+            <p>负责人：郑树炜</p>
+            
+          </div>
+          <div class="hier-dept">
+            <div class="hier-dept-head">
+              <span>FBM 智能项目部</span>
+              <strong>14</strong>
+            </div>
+            <p>负责人：张华 · FBM智能项目部高级主管</p>
+            <div class="hier-l3"><span class="hier-chip">数据策略组 · 7</span><span class="hier-chip">后端实现组 · 6</span></div>
+          </div>
+          <div class="hier-dept">
+            <div class="hier-dept-head">
+              <span>智能运营项目部</span>
+              <strong>19</strong>
+            </div>
+            <p>负责人：杨宁海 · 数据分析高级主管</p>
+            <div class="hier-l3"><span class="hier-chip">FBA数据策略组 · 12</span><span class="hier-chip">FBM数据策略组 · 6</span></div>
+          </div>
+          <div class="hier-dept">
+            <div class="hier-dept-head">
+              <span>库存管理项目部</span>
+              <strong>5</strong>
+            </div>
+            <p>负责人：张晓辉（分管）</p>
+            
+          </div>
+          <div class="hier-dept">
+            <div class="hier-dept-head">
+              <span>技术实现部</span>
+              <strong>45</strong>
+            </div>
+            <p>负责人：胡凯 · 技术实现部经理</p>
+            <div class="hier-l3"><span class="hier-chip">测试组 · 9</span><span class="hier-chip">智能开发组 · 7</span><span class="hier-chip">运营开发组 · 7</span><span class="hier-chip">产品组 · 6</span><span class="hier-chip">前端&采集组 · 5</span><span class="hier-chip">有品开发组 · 4</span><span class="hier-chip">百货开发组 · 4</span></div>
+          </div>
+          <div class="hier-dept">
+            <div class="hier-dept-head">
+              <span>AI 算法研究院</span>
+              <strong>15</strong>
+            </div>
+            <p>负责人：徐盛松 · 中心技术分管（分管）</p>
+            <div class="hier-l3"><span class="hier-chip">极光研究组 · 7</span><span class="hier-chip">星核研究组 · 6</span><span class="hier-chip">凌云研究组 · 1</span></div>
+          </div>
+          <div class="hier-dept">
+            <div class="hier-dept-head">
+              <span>项目管理部</span>
+              <strong>6</strong>
+            </div>
+            <p>负责人：张晓辉 · 项目管理高级经理</p>
+            
+          </div>
+      </div>
+    </section>
+
+
+    <section id="org" class="org-panel">
+      <div class="org-canvas-toolbar">
+        <h2>组织定位架构</h2>
+        <div class="legend-bar org-legend org-legend-compact">
+          <span><span class="acct acct-ind">仅独立账号</span> 独立账号</span>
+          <span><span class="acct acct-dual">独立+公共</span> FBA 数据策略/库存</span>
+          <span><span class="acct acct-ind">中台·业务流</span> 中台·业务流</span>
+          <span class="org-toolbar-meta">1→2→3 级 · 在职口径 · 阅读顺序=业务流</span>
+        </div>
+      </div>
+      <div class="org-l1-bar">
+        <span class="org-l1-name">智能研发中心</span>
+        <span class="org-l1-meta">1 级 · 在职 164 人 · L2合计 163 + 中心直属 1</span>
+      </div>
+
+      <div class="org-l2-bands">
+        <div class="org-band org-band-front">
+          <div class="org-band-header front">
+            <span class="band-pill">前台运营</span>
+            <span class="band-meta">54 在职 · FBM | FBA | 低价商城</span>
+          </div>
+          <div class="front-bu-grid">
+            <div class="bu-col fbm">
+              <div class="bu-col-title">FBM 业务单元</div>
+              <div class="org-l2-grid">            <div class="org-dept">
+              <div class="dept-level">2 级部门</div>
+              <div class="dept-head">
+                <span class="dept-name">FBM 智能运营部</span>
+                <span class="dept-hc">26</span>
+              </div>
+              <p class="dept-leader">负责人：谭莉 · 运营高级主管</p>
+              <div class="dept-acct"><span class="acct acct-ind">仅独立账号</span></div>
+              <ul class="org-l3-list"><li>3 级 · FBM运营1组 <span class="l3-hc">7</span> · 组长 伍姝衡</li><li>3 级 · FBM策略管理组 <span class="l3-hc">6</span> · 组长 伍姝衡</li><li>3 级 · FBM运营2组 <span class="l3-hc">6</span> · 组长 康珂皓</li><li>3 级 · 账号支持组 <span class="l3-hc">6</span> · 组长 唐焱玫</li></ul>
+              
+            </div></div>
+            </div>
+            <div class="bu-col fba">
+              <div class="bu-col-title">FBA 业务单元</div>
+              <div class="org-l2-grid">            <div class="org-dept">
+              <div class="dept-level">2 级部门</div>
+              <div class="dept-head">
+                <span class="dept-name">FBA 智能运营部</span>
+                <span class="dept-hc">19</span>
+              </div>
+              <p class="dept-leader">负责人：吴楚婷 · 销售高级经理</p>
+              <div class="dept-acct"><span class="acct acct-ind">仅独立账号</span></div>
+              <ul class="org-l3-list"><li>3 级 · FBA策略管理组 <span class="l3-hc">7</span> · 组长 张雪梅</li><li>3 级 · FBA运营1组 <span class="l3-hc">6</span> · 组长 赖润芝</li><li>3 级 · FBA运营2组 <span class="l3-hc">5</span> · 组长 黄玮</li></ul>
+              
+            </div></div>
+            </div>
+            <div class="bu-col mall">
+              <div class="bu-col-title">低价商城</div>
+              <div class="org-l2-grid">            <div class="org-dept">
+              <div class="dept-level">2 级部门</div>
+              <div class="dept-head">
+                <span class="dept-name">销售管理部</span>
+                <span class="dept-hc">9</span>
+              </div>
+              <p class="dept-leader">负责人：张敏 · 销售高级主管</p>
+              
+              
+              
+            </div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mid-flow-bracket">
+          <div class="mid-flow-bracket-label">中台 · 业务流 + 技术域</div>
+
+          <div class="org-band org-band-bs org-band-bs-compact">
+            <div class="org-band-header mid-flow">
+              <span class="band-pill">业务策略部</span>
+              <span class="band-meta">5 在职 · 服务独立账号的数据分析及策略研究</span>
+            </div>
+            <div class="bs-span-row">            <div class="org-dept">
+              <div class="dept-level">2 级部门 · 中台业务流</div>
+              <div class="dept-head">
+                <span class="dept-name">业务策略部</span>
+                <span class="dept-hc">5</span>
+              </div>
+              <p class="dept-leader">负责人：郑树炜</p>
+              <div class="dept-acct"><span class="acct acct-ind">仅独立账号</span></div>
+              
+              <p class="dept-note">定位：服务独立账号的数据分析及策略研究</p>
+            </div></div>
+          </div>
+
+          <div class="org-band org-band-ipt">
+            <div class="org-band-header chain">
+              <span class="band-pill">智能项目团队</span>
+              <span class="band-meta">38 在职 · 三并行二级项目部</span>
+            </div>
+
+            <div class="ipt-bu-grid">
+              <div class="bu-col fbm">
+                <div class="bu-col-title">FBM 业务单元</div>
+                <div class="org-l2-grid">            <div class="org-dept">
+              <div class="dept-level">2 级 · 项目部</div>
+              <div class="dept-head">
+                <span class="dept-name">FBM 智能项目部</span>
+                <span class="dept-hc">14</span>
+              </div>
+              <p class="dept-leader">负责人：张华 · FBM智能项目部高级主管</p>
+              <div class="dept-acct"><span class="acct acct-ind">仅独立账号</span></div>
+              <ul class="org-l3-list"><li>3 级 · 数据策略组 <span class="l3-hc">7</span> · 组长 沈伯潜</li><li>3 级 · 后端实现组 <span class="l3-hc">6</span> · 组长 戴宝山</li></ul>
+              
+            </div></div>
+              </div>
+              <div class="bu-col iop">
+                <div class="bu-col-title bu-col-title-dual">FBM │ FBA · 双单元</div>
+                <div class="org-l2-grid">            <div class="org-dept iop-dept">
+              <div class="dept-level">2 级 · 项目部</div>
+              <div class="dept-head">
+                <span class="dept-name">智能运营项目部</span>
+                <span class="dept-hc">19</span>
+              </div>
+              <p class="dept-leader">负责人：杨宁海 · 数据分析高级主管</p>
+              <div class="iop-l3-inner">
+            <div class="org-dept l3-card fbm">
+              <div class="dept-level">3 级组</div>
+              <div class="dept-head">
+                <span class="dept-name">FBM数据策略组</span>
+                <span class="dept-hc">6</span>
+              </div>
+              <p class="dept-leader">组长 李雨虹</p>
+              <div class="dept-acct"><span class="acct acct-ind">仅独立账号</span></div>
+            </div>
+            <div class="org-dept l3-card fba">
+              <div class="dept-level">3 级组</div>
+              <div class="dept-head">
+                <span class="dept-name">FBA数据策略组</span>
+                <span class="dept-hc">12</span>
+              </div>
+              <p class="dept-leader">组长 黄京伟</p>
+              <div class="dept-acct"><span class="acct acct-dual">独立 + 公共账号</span></div>
+            </div>
+              </div>
+            </div></div>
+              </div>
+              <div class="bu-col fba">
+                <div class="bu-col-title">FBA 业务单元</div>
+                <div class="org-l2-grid">            <div class="org-dept">
+              <div class="dept-level">2 级 · 项目部</div>
+              <div class="dept-head">
+                <span class="dept-name">库存管理项目部</span>
+                <span class="dept-hc">5</span>
+              </div>
+              <p class="dept-leader">负责人：张晓辉 · 项目管理高级经理（分管）</p>
+              <div class="dept-acct"><span class="acct acct-dual">独立 + 公共账号</span></div>
+              
+              
+            </div></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="org-band org-band-mid-tech">
+            <div class="org-band-header mid">
+              <span class="band-pill">中台技术</span>
+              <span class="band-meta">60 在职 · 通用服务</span>
+            </div>
+            <div class="platform-equal-grid platform-full">            <div class="org-dept">
+              <div class="dept-level">2 级部门</div>
+              <div class="dept-head">
+                <span class="dept-name">技术实现部</span>
+                <span class="dept-hc">45</span>
+              </div>
+              <p class="dept-leader">负责人：胡凯 · 技术实现部经理</p>
+              <div class="dept-acct"><span class="acct acct-pending">按需求池服务</span></div>
+              <ul class="org-l3-list"><li>3 级 · 测试组 <span class="l3-hc">9</span> · 组长 关依林</li><li>3 级 · 智能开发组 <span class="l3-hc">7</span> · 组长 罗友军</li><li>3 级 · 运营开发组 <span class="l3-hc">7</span> · 组长 王翔宇</li><li>3 级 · 产品组 <span class="l3-hc">6</span> · 组长 胡凯</li><li>3 级 · 前端&采集组 <span class="l3-hc">5</span> · 组长 宋宁</li><li>3 级 · 有品开发组 <span class="l3-hc">4</span> · 组长 覃光贤</li><li>3 级 · 百货开发组 <span class="l3-hc">4</span> · 组长 宋宁</li></ul>
+              
+            </div>
+            <div class="org-dept">
+              <div class="dept-level">2 级部门</div>
+              <div class="dept-head">
+                <span class="dept-name">AI 算法研究院</span>
+                <span class="dept-hc">15</span>
+              </div>
+              <p class="dept-leader">负责人：徐盛松 · 中心技术分管（分管）</p>
+              <div class="dept-acct"><span class="acct acct-pending">按需求池服务</span></div>
+              <ul class="org-l3-list"><li>3 级 · 极光研究组 <span class="l3-hc">7</span> · 组长 金平艳</li><li>3 级 · 星核研究组 <span class="l3-hc">6</span> · 组长 严海强</li><li>3 级 · 凌云研究组 <span class="l3-hc">1</span> · 组长 伍佳俊</li></ul>
+              
+            </div></div>
+          </div>
+        </div>
+
+        <div class="org-band org-band-back">
+          <div class="org-band-header back">
+            <span class="band-pill">后台管理</span>
+            <span class="band-meta">6 在职 · 项目治理、组织绩效及体系建设</span>
+          </div>
+          <div class="org-l2-grid org-l2-grid-flat">            <div class="org-dept">
+              <div class="dept-level">2 级部门</div>
+              <div class="dept-head">
+                <span class="dept-name">项目管理部</span>
+                <span class="dept-hc">6</span>
+              </div>
+              <p class="dept-leader">负责人：张晓辉 · 项目管理高级经理</p>
+              
+              
+              <p class="dept-note">定位：项目治理、组织绩效及体系建设</p>
+            </div></div>
+        </div>
+      </div>
+      <p class="org-footnote">2 级 10 个组织 · L2 合计 163 · 中心直属 1 · 中心 164</p>
+    </section>
+
+
+    <section id="value-stream" class="value-stream-panel">
+      <div class="vs-hero">
+        <div>
+          <p class="vs-kicker">VALUE STREAM PROPOSAL</p>
+          <h2>价值流重组方案已独立成页：FBM / FBA / 共享三条价值流</h2>
+          <p>本组织定位页保留行政层级和业务定位主图；价值流重组已升级为独立方案页，重点说明三条并列行政价值流，以及技术、算法、库存、业务策略、项目管理五部门如何按 FBM / FBA / 共享三方向盘点分配。</p>
+        </div>
+        <div class="vs-verdict">
+          <span>方案入口</span>
+          <strong>三价值流终局方案</strong>
+          <em>避免在组织图中保留旧版“双流 + 共享池”口径。</em>
+        </div>
+      </div>
+
+      <div class="vs-operating-grid">
+        <article>
+          <h3>FBM 价值流</h3>
+          <p>承接 FBM 明确业务单元，以及五部门盘点后归属 FBM 的人员。</p>
+        </article>
+        <article>
+          <h3>FBA 价值流</h3>
+          <p>承接 FBA 明确业务单元，以及五部门盘点后归属 FBA 的人员；库存管理不再默认整部划入。</p>
+        </article>
+        <article>
+          <h3>共享价值流</h3>
+          <p>承接跨双流、其它业务和中心治理，作为第三条并列行政价值流。</p>
+        </article>
+      </div>
+
+      <div class="vs-risk">
+        <strong>查看完整方案</strong>
+        <p><a href="../value-stream/">打开 FBM / FBA / 共享价值流重组终局方案</a>，查看五部门三方向人员盘点矩阵、终局组织架构和分阶段落地路径。</p>
+      </div>
+    </section>
+
+
+<section id="accounts">
+      <h2>账号服务边界</h2>
+      <p class="sec-lead">本中心 FBM/FBA 智能运营仅<strong>独立账号</strong>；FBA 侧数据策略、库存管理等可标注<strong>独立 + 公共账号</strong>。<strong>低价商城（销售管理部）不按账号类型分类</strong>。</p>
+      <table class="acct-matrix">
+        <thead>
+          <tr>
+            <th>组织</th>
+            <th>定位层</th>
+            <th>独立账号</th>
+            <th>公共账号</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>FBA / FBM 智能运营部</td>
+            <td>前台运营</td>
+            <td>是</td>
+            <td>否</td>
+          </tr>
+          <tr>
+            <td>销售管理部</td>
+            <td>前台 · 低价商城 · 不按账号类型分类</td>
+            <td colspan="2">—</td>
+          </tr>
+          <tr>
+            <td>业务策略部</td>
+            <td>中台业务流 · 服务独立账号的数据分析及策略研究</td>
+            <td>是（仅独立账号）</td>
+            <td>否</td>
+          </tr>
+          <tr>
+            <td>FBM 数据策略组 / FBM 智能项目部</td>
+            <td>智能项目团队 · FBM</td>
+            <td>是</td>
+            <td>否</td>
+          </tr>
+          <tr>
+            <td>FBA 数据策略组 / 库存管理项目部</td>
+            <td>智能项目团队 · FBA</td>
+            <td>是</td>
+            <td>是（中心内公共账号能力）</td>
+          </tr>
+          <tr>
+            <td>AI 算法研究院 / 技术实现部</td>
+            <td>中台技术</td>
+            <td colspan="2">按需求池服务（不按账号类型设部）</td>
+          </tr>
+          <tr>
+            <td>项目管理部</td>
+            <td>后台管理 · 项目治理、组织绩效及体系建设</td>
+            <td colspan="2">不按账号类型设部</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+<section id="map">
+      <h2>价值链 × 组织映射</h2>
+      <p class="sec-lead">环节顺序体现业务流与智能项目团队分工；含定位层与账号服务对象。</p>
+      <table class="vmap">
+        <thead>
+          <tr>
+            <th>价值链环节</th>
+            <th>组织</th>
+            <th>人数</th>
+            <th>定位层</th>
+            <th>业务单元</th>
+            <th>账号服务</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>数据分析与策略研究</td>
+            <td>业务策略部</td>
+            <td>4</td>
+            <td><span class="layer-tag t-chain">中台业务流</span></td>
+            <td>独立账号</td>
+            <td>服务独立账号的数据分析及策略研究</td>
+          </tr>
+          <tr>
+            <td>数据策略</td>
+            <td>智能运营项目部 · FBM/FBA 组</td>
+            <td>14</td>
+            <td><span class="layer-tag t-chain">智能项目团队</span></td>
+            <td>分列</td>
+            <td>FBM 仅独立；FBA 独立+公共</td>
+          </tr>
+          <tr>
+            <td>FBM 系统实现</td>
+            <td>FBM 智能项目部</td>
+            <td>13</td>
+            <td><span class="layer-tag t-chain">智能项目团队</span></td>
+            <td>FBM</td>
+            <td>仅独立账号</td>
+          </tr>
+          <tr>
+            <td>库存智能</td>
+            <td>库存管理项目部</td>
+            <td>5</td>
+            <td><span class="layer-tag t-chain">智能项目团队</span></td>
+            <td>FBA</td>
+            <td>独立 + 公共账号</td>
+          </tr>
+          <tr>
+            <td>销售运营</td>
+            <td>FBA / FBM 智能运营部</td>
+            <td>42</td>
+            <td><span class="layer-tag t-front">前台</span></td>
+            <td>分设</td>
+            <td>仅独立账号</td>
+          </tr>
+          <tr>
+            <td>低价商城</td>
+            <td>销售管理部</td>
+            <td>9</td>
+            <td><span class="layer-tag t-front">前台</span></td>
+            <td>低价商城</td>
+            <td>不按账号类型分类</td>
+          </tr>
+          <tr>
+            <td>算法能力</td>
+            <td>AI 算法研究院</td>
+            <td>10</td>
+            <td><span class="layer-tag t-mid">中台</span></td>
+            <td>全部</td>
+            <td>需求池</td>
+          </tr>
+          <tr>
+            <td>研发工程</td>
+            <td>技术实现部</td>
+            <td>45</td>
+            <td><span class="layer-tag t-mid">中台</span></td>
+            <td>全部</td>
+            <td>需求池</td>
+          </tr>
+          <tr>
+            <td>项目治理</td>
+            <td>项目管理部</td>
+            <td>6</td>
+            <td><span class="layer-tag t-back">后台</span></td>
+            <td>全部</td>
+            <td>项目治理、组织绩效及体系建设</td>
+          </tr>
+</tbody>
+      </table>
+    </section>
+
+    <section id="insight">
+      <h2>定位视角要点</h2>
+      <div class="insight-grid">
+        <div class="insight">
+          <h3>项目管理部 = 后台</h3>
+          <p>项目治理、组织绩效及体系建设；与算法/工程中台区分。</p>
+        </div>
+        <div class="insight">
+          <h3>业务策略部定位</h3>
+          <p>服务独立账号的数据分析及策略研究。</p>
+        </div>
+        <div class="insight">
+          <h3>FBA 智能团队双服务对象</h3>
+          <p>对 FBA 侧独立账号与公共账号两类场景交付数据策略与系统能力；与业务策略部（仅独立账号）分工明确。</p>
+        </div>
+        <div class="insight">
+          <h3>低价商城独立前台线</h3>
+          <p>销售管理部跟进低价商城，与 FBA/FBM 智能运营并列；<strong>不按账号类型分类</strong>。</p>
+        </div>
+                <div class="insight">
+          <h3>中台 · 业务流 vs 技术域</h3>
+          <p>业务策略部、智能项目团队行政属中台，图中按价值链排列并括注「中台·业务流」；算法院与技术实现部归「中台技术」。</p>
+        </div>
+        <div class="insight">
+          <h3>队伍偏新</h3>
+          <p>司龄 &lt;1 年占 37%，近 90 天入职 19 人；前台运营岗集中，需 playbook 与中台交付规范同步建设。</p>
+        </div>
+      </div>
+    </section>
+
+    <footer style="padding: 40px 0 80px; color: var(--muted); font-size: 14px;">
+      在职人数来自《在职员工20260417.xls》（仅统计在岗，不含编制满编）· 打开本 HTML 文件即可全屏汇报
+    </footer>
+  </div>
+</body>
+</html>
