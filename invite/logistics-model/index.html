@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>物流优选数学模型 · 全链路总成本测算器</title>
+<style>
+  :root{
+    --bg:#f5f7fa; --card:#ffffff; --ink:#1f2937; --muted:#6b7280;
+    --line:#e5e7eb; --brand:#2563eb; --brand-dark:#1d4ed8; --ok:#059669;
+    --warn:#d97706; --bad:#dc2626;
+    /* 六项成本配色 */
+    --c1:#3b82f6; --c2:#8b5cf6; --c3:#06b6d4; --c4:#f59e0b; --c5:#ef4444; --c6:#10b981;
+    --radius:12px; --shadow:0 1px 3px rgba(0,0,0,.06),0 8px 24px rgba(0,0,0,.05);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    line-height:1.6;font-size:15px}
+  .wrap{max-width:1120px;margin:0 auto;padding:28px 20px 80px}
+  header.top{margin-bottom:22px}
+  header.top h1{font-size:24px;margin:0 0 6px;letter-spacing:.5px}
+  header.top p{margin:0;color:var(--muted);font-size:14px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    box-shadow:var(--shadow);padding:20px 22px;margin-bottom:20px}
+  .card h2{font-size:17px;margin:0 0 4px;display:flex;align-items:center;gap:8px}
+  .card h2 .idx{width:24px;height:24px;border-radius:6px;background:var(--brand);color:#fff;
+    font-size:13px;display:inline-flex;align-items:center;justify-content:center;flex:none}
+  .card .sub{color:var(--muted);font-size:13px;margin:0 0 16px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+  .field label{display:block;font-size:13px;color:var(--muted);margin-bottom:5px}
+  .field label b{color:var(--ink);font-weight:600}
+  .field input,.field select{width:100%;padding:9px 11px;border:1px solid var(--line);
+    border-radius:8px;font-size:14px;background:#fff;color:var(--ink);transition:border .15s}
+  .field input:focus,.field select:focus{outline:none;border-color:var(--brand)}
+  .field .hint{font-size:11.5px;color:#9ca3af;margin-top:3px}
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  .methods th,.methods td{padding:8px 6px;text-align:center;border-bottom:1px solid var(--line)}
+  .methods th{font-size:12.5px;color:var(--muted);font-weight:600}
+  .methods input{width:100%;padding:7px 8px;border:1px solid var(--line);border-radius:7px;text-align:center;font-size:14px}
+  .methods input[type=text]{text-align:left}
+  .btn{border:none;border-radius:8px;padding:10px 18px;font-size:14px;cursor:pointer;font-weight:600;transition:.15s}
+  .btn-primary{background:var(--brand);color:#fff}
+  .btn-primary:hover{background:var(--brand-dark)}
+  .btn-ghost{background:#f1f5f9;color:var(--ink)}
+  .btn-ghost:hover{background:#e2e8f0}
+  .btn-sm{padding:5px 10px;font-size:12.5px}
+  .toolbar{display:flex;gap:10px;align-items:center;margin-top:14px;flex-wrap:wrap}
+  .del{color:var(--bad);background:none;border:none;cursor:pointer;font-size:18px;line-height:1}
+  /* 推荐卡 */
+  .reco{display:flex;flex-wrap:wrap;gap:18px;align-items:center;
+    background:linear-gradient(135deg,#eff6ff,#f0fdf4);border:1px solid #d1fae5;
+    border-radius:var(--radius);padding:18px 22px}
+  .reco .big{font-size:15px;color:var(--muted)}
+  .reco .name{font-size:26px;font-weight:700;color:var(--ok)}
+  .reco .save{font-size:14px;color:var(--muted)}
+  .reco .save b{color:var(--ok)}
+  /* 结果表 */
+  .result-tbl th,.result-tbl td{padding:10px 8px;text-align:right;border-bottom:1px solid var(--line);font-size:13.5px}
+  .result-tbl th:first-child,.result-tbl td:first-child{text-align:left}
+  .result-tbl thead th{color:var(--muted);font-weight:600;border-bottom:2px solid var(--line)}
+  .result-tbl .total-row td{font-weight:700;border-top:2px solid var(--line);border-bottom:none;font-size:14.5px}
+  .result-tbl .best{background:#f0fdf4}
+  .result-tbl .best td:first-child::after{content:" ★";color:var(--ok)}
+  .dot{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:6px;vertical-align:middle}
+  /* 图表 */
+  .chart-row{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+  .chart-row .lbl{width:120px;flex:none;font-size:13.5px;text-align:right}
+  .chart-row .bar-wrap{flex:1;background:#f1f5f9;border-radius:6px;overflow:hidden;height:30px;display:flex}
+  .chart-row .seg{height:100%;transition:width .4s}
+  .chart-row .val{width:110px;flex:none;font-size:13px;color:var(--muted)}
+  .legend{display:flex;flex-wrap:wrap;gap:14px;margin:6px 0 18px;font-size:12.5px;color:var(--muted)}
+  .legend span{display:flex;align-items:center}
+  /* 计算过程 */
+  details.proc{border:1px solid var(--line);border-radius:10px;margin-bottom:12px;overflow:hidden}
+  details.proc>summary{cursor:pointer;padding:12px 16px;background:#f8fafc;font-weight:600;font-size:14px;list-style:none}
+  details.proc>summary::-webkit-details-marker{display:none}
+  details.proc>summary::before{content:"▸ ";color:var(--brand)}
+  details.proc[open]>summary::before{content:"▾ "}
+  .proc-body{padding:6px 18px 16px}
+  .step{padding:10px 0;border-bottom:1px dashed var(--line)}
+  .step:last-child{border-bottom:none}
+  .step .t{font-size:13.5px;font-weight:600;margin-bottom:2px}
+  .step .f{font-size:13px;color:var(--muted);font-family:"Consolas","Menlo",monospace}
+  .step .r{font-size:13.5px;color:var(--brand-dark);font-weight:600}
+  .note{background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:10px 14px;font-size:13px;color:#92400e;margin-top:12px}
+  .formula-box{background:#f8fafc;border-radius:10px;padding:14px 18px;font-size:13.5px}
+  .formula-box li{margin-bottom:8px}
+  .formula-box code{background:#eef2ff;color:#3730a3;padding:1px 6px;border-radius:4px;font-size:12.5px}
+  @media(max-width:640px){
+    .chart-row .lbl{width:70px}.chart-row .val{width:80px;font-size:11.5px}
+    .methods{overflow-x:auto;display:block}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <h1>物流优选数学模型 · 全链路总成本测算器</h1>
+    <p>换更快的物流会让运费变贵，却能省下在途压款、仓储、呆滞与断货的隐藏开销。本工具把这六笔账算成一个总成本，帮你找出真正最省钱的物流方式。</p>
+  </header>
+
+  <!-- 1. 全局参数 -->
+  <section class="card">
+    <h2><span class="idx">1</span>基础参数</h2>
+    <p class="sub">销量、备货节奏、资金与仓储相关的通用参数（对所有物流方式一致）。</p>
+    <div class="grid">
+      <div class="field"><label><b>日均销量</b>（件/天）</label><input type="number" id="d" value="30"><div class="hint">平均每天卖多少</div></div>
+      <div class="field"><label><b>销量波动系数</b>（0=恒定）</label><input type="number" id="cv" value="0.8" step="0.05"><div class="hint">越大越忽高忽低，0.3小 / 0.8大</div></div>
+      <div class="field"><label><b>备货周期</b>（天）</label><input type="number" id="R" value="30"><div class="hint">多久补一次货</div></div>
+      <div class="field"><label><b>目标服务水平</b>（%）</label><input type="number" id="sl" value="97" step="0.5"><div class="hint">不断货的把握，越高安全库存越多</div></div>
+      <div class="field"><label><b>单位货值</b>（元/件，成本）</label><input type="number" id="c" value="800"></div>
+      <div class="field"><label><b>资金成本年利率</b>（%）</label><input type="number" id="r" value="15" step="0.5"><div class="hint">压一年货相当于损失的利息</div></div>
+      <div class="field"><label><b>仓租</b>（元/件·月）</label><input type="number" id="w" value="0.8" step="0.1"></div>
+      <div class="field"><label><b>呆滞+销毁年损耗率</b>（%）</label><input type="number" id="phi" value="8" step="0.5"><div class="hint">一年内卖不掉打折/销毁的比例</div></div>
+      <div class="field"><label><b>断货单位损失</b>（元/件）</label><input type="number" id="p" value="600"><div class="hint">缺一件货丢掉的毛利/急发溢价</div></div>
+      <div class="field"><label><b>分析周期</b>（天）</label><input type="number" id="period" value="365"><div class="hint">按此周期折算总成本</div></div>
+    </div>
+  </section>
+
+  <!-- 2. 物流方式 -->
+  <section class="card">
+    <h2><span class="idx">2</span>候选物流方式</h2>
+    <p class="sub">填写每种物流的时效与运费。越快通常运费越贵；「时效波动」指到货天数不稳定的程度（可填 0）。</p>
+    <table class="methods">
+      <thead><tr>
+        <th style="width:26%">名称</th>
+        <th>时效天数（在途）</th>
+        <th>时效波动（±天）</th>
+        <th>单位运费（元/件）</th>
+        <th style="width:44px"></th>
+      </tr></thead>
+      <tbody id="methodBody"></tbody>
+    </table>
+    <div class="toolbar">
+      <button class="btn btn-ghost btn-sm" id="addRow">+ 添加物流方式</button>
+      <button class="btn btn-primary" id="calc" style="margin-left:auto">开始测算</button>
+    </div>
+  </section>
+
+  <!-- 3. 结果 -->
+  <section id="results" style="display:none">
+    <section class="card">
+      <h2><span class="idx">3</span>推荐结论</h2>
+      <div class="reco">
+        <div>
+          <div class="big">全链路总成本最优方案</div>
+          <div class="name" id="bestName">—</div>
+        </div>
+        <div class="save" id="saveText"></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2><span class="idx">4</span>各项成本明细对比</h2>
+      <p class="sub">单位：元 / 分析周期。★ 为总成本最低方案。</p>
+      <div style="overflow-x:auto">
+        <table class="result-tbl" id="resultTable"></table>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2><span class="idx">5</span>成本构成对比图</h2>
+      <p class="sub">条形长度=总成本（越短越省），颜色段=各项成本占比。</p>
+      <div class="legend" id="legend"></div>
+      <div id="chart"></div>
+    </section>
+
+    <section class="card">
+      <h2><span class="idx">6</span>计算过程与公式逻辑</h2>
+      <div class="formula-box">
+        <p style="margin-top:0"><b>总成本 = 六项之和：</b></p>
+        <ul>
+          <li>① <b>运费</b>：<code>单位运费 × 周期总销量</code></li>
+          <li>② <b>在途资金占用</b>：货在路上压的钱 = <code>日销量 × 时效天数 × 货值 × 资金成本率</code>。时效越长，路上压的货越多。</li>
+          <li>③ <b>在仓资金+仓租</b>：仓库里的货 = 周期库存(备货周期一半) + 安全库存，占用资金并产生仓租。</li>
+          <li>④ <b>呆滞/销毁</b>：<code>在仓库存 × 货值 × 年损耗率</code>。仓库囤得越多，烂在手里的越多。</li>
+          <li>⑤ <b>断货损失</b>：预期缺货件数 × 单位损失。安全库存越少、时效越长，越容易断货。</li>
+          <li>⑥ <b>安全库存</b>（关键联动项）：<code>安全系数 × √((时效+备货周期)×日波动² + 日销量²×时效波动²)</code>。
+            <br>销量恒定时波动为 0 → 安全库存为 0 → <b>时效只影响在途，不影响在仓</b>；销量一波动，时效就通过这一项传导到仓储和呆滞成本。</li>
+        </ul>
+      </div>
+      <div style="height:14px"></div>
+      <div id="procList"></div>
+    </section>
+  </section>
+</div>
+
+<script>
+/* ===== 数学工具：正态分布相关 ===== */
+function erf(x){
+  const s=x<0?-1:1;x=Math.abs(x);
+  const a1=0.254829592,a2=-0.284496736,a3=1.421413741,a4=-1.453152027,a5=1.061405429,pp=0.3275911;
+  const t=1/(1+pp*x);
+  const y=1-(((((a5*t+a4)*t)+a3)*t+a2)*t+a1)*t*Math.exp(-x*x);
+  return s*y;
+}
+function normCdf(z){return 0.5*(1+erf(z/Math.SQRT2));}
+function normPdf(z){return Math.exp(-z*z/2)/Math.sqrt(2*Math.PI);}
+function lossFunc(z){return normPdf(z)-z*(1-normCdf(z));} // 标准正态损失函数 G(z)
+// 逆正态（Acklam 近似），把服务水平% → 安全系数 z
+function invNorm(p){
+  if(p<=0)return -6;if(p>=1)return 6;
+  const a=[-3.969683028665376e+01,2.209460984245205e+02,-2.759285104469687e+02,1.383577518672690e+02,-3.066479806614716e+01,2.506628277459239e+00];
+  const b=[-5.447609879822406e+01,1.615858368580409e+02,-1.556989798598866e+02,6.680131188771972e+01,-1.328068155288572e+01];
+  const c=[-7.784894002430293e-03,-3.223964580411365e-01,-2.400758277161838e+00,-2.549732539343734e+00,4.374664141464968e+00,2.938163982698783e+00];
+  const dd=[7.784695709041462e-03,3.224671290700398e-01,2.445134137142996e+00,3.754408661907416e+00];
+  const pl=0.02425,ph=1-pl;let q,r;
+  if(p<pl){q=Math.sqrt(-2*Math.log(p));return (((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5])/((((dd[0]*q+dd[1])*q+dd[2])*q+dd[3])*q+1);}
+  if(p<=ph){q=p-0.5;r=q*q;return (((((a[0]*r+a[1])*r+a[2])*r+a[3])*r+a[4])*r+a[5])*q/(((((b[0]*r+b[1])*r+b[2])*r+b[3])*r+b[4])*r+1);}
+  q=Math.sqrt(-2*Math.log(1-p));return -(((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5])/((((dd[0]*q+dd[1])*q+dd[2])*q+dd[3])*q+1);
+}
+
+/* ===== 物流方式表 ===== */
+const defaults=[
+  {name:"普通海运",L:40,sL:4,f:6},
+  {name:"海空联运",L:18,sL:2,f:10},
+  {name:"空运",L:6,sL:1,f:22}
+];
+const body=document.getElementById('methodBody');
+function addRow(m={name:"",L:20,sL:0,f:10}){
+  const tr=document.createElement('tr');
+  tr.innerHTML=`
+    <td><input type="text" class="m-name" value="${m.name}" placeholder="如 空运"></td>
+    <td><input type="number" class="m-L" value="${m.L}"></td>
+    <td><input type="number" class="m-sL" value="${m.sL}"></td>
+    <td><input type="number" class="m-f" value="${m.f}"></td>
+    <td><button class="del" title="删除">×</button></td>`;
+  tr.querySelector('.del').onclick=()=>tr.remove();
+  body.appendChild(tr);
+}
+defaults.forEach(addRow);
+document.getElementById('addRow').onclick=()=>addRow();
+
+/* ===== 数值格式 ===== */
+const yuan=n=>"¥"+Math.round(n).toLocaleString('zh-CN');
+const num=(n,d=0)=>Number(n).toLocaleString('zh-CN',{maximumFractionDigits:d});
+const COST_KEYS=[
+  {k:'freight',label:'① 运费',color:'var(--c1)'},
+  {k:'transit',label:'② 在途资金',color:'var(--c2)'},
+  {k:'warehouse',label:'③ 在仓资金+仓租',color:'var(--c3)'},
+  {k:'obsolete',label:'④ 呆滞/销毁',color:'var(--c4)'},
+  {k:'stockout',label:'⑤ 断货损失',color:'var(--c5)'},
+];
+
+/* ===== 主计算 ===== */
+function compute(){
+  const g={
+    d:+document.getElementById('d').value,
+    cv:+document.getElementById('cv').value,
+    R:+document.getElementById('R').value,
+    sl:+document.getElementById('sl').value/100,
+    c:+document.getElementById('c').value,
+    r:+document.getElementById('r').value/100,
+    w:+document.getElementById('w').value,
+    phi:+document.getElementById('phi').value/100,
+    p:+document.getElementById('p').value,
+    period:+document.getElementById('period').value
+  };
+  const z=invNorm(g.sl);
+  const sigmaD=g.cv*g.d;              // 日销量标准差
+  const D=g.d*g.period;              // 周期总销量
+  const factor=g.period/365;         // 年率折算到周期
+  const rentDaily=g.w/30;            // 仓租：元/件·天
+
+  const rows=[];
+  document.querySelectorAll('#methodBody tr').forEach(tr=>{
+    const name=tr.querySelector('.m-name').value||'未命名';
+    const L=+tr.querySelector('.m-L').value;
+    const sL=+tr.querySelector('.m-sL').value;
+    const f=+tr.querySelector('.m-f').value;
+
+    // 需求在时效期内的波动（含销量波动+时效波动）
+    const sigmaDDLT=Math.sqrt((L+g.R)*sigmaD*sigmaD + g.d*g.d*sL*sL);
+    const SS=z*sigmaDDLT;                       // 安全库存(件)
+    const cycle=g.R*g.d/2;                      // 周期库存(件)
+    const onHand=cycle+SS;                      // 在仓平均库存(件)
+    const pipeline=g.d*L;                       // 在途库存(件)
+
+    // 六项成本
+    const freight=f*D;
+    const transit=pipeline*g.c*g.r*factor;      // 在途仅占资金
+    const whCapital=onHand*g.c*g.r*factor;
+    const whRent=onHand*rentDaily*g.period;
+    const warehouse=whCapital+whRent;
+    const obsolete=onHand*g.c*g.phi*factor;
+    const cycles=g.period/g.R;
+    const shortUnits=cycles*sigmaDDLT*lossFunc(z);
+    const stockout=shortUnits*g.p;
+
+    const total=freight+transit+warehouse+obsolete+stockout;
+    rows.push({name,L,sL,f,sigmaDDLT,SS,cycle,onHand,pipeline,
+      whCapital,whRent,shortUnits,
+      freight,transit,warehouse,obsolete,stockout,total});
+  });
+
+  render(rows,g,z);
+}
+
+/* ===== 渲染 ===== */
+function render(rows,g,z){
+  document.getElementById('results').style.display='block';
+  const best=rows.reduce((a,b)=>b.total<a.total?b:a);
+  const worst=rows.reduce((a,b)=>b.total>a.total?b:a);
+
+  // 推荐
+  document.getElementById('bestName').textContent=best.name;
+  const save=worst.total-best.total;
+  const pct=worst.total>0?(save/worst.total*100):0;
+  document.getElementById('saveText').innerHTML= rows.length>1
+    ? `相比最贵方案「${worst.name}」，每 ${g.period} 天节省 <b>${yuan(save)}</b>（约 ${pct.toFixed(1)}%）。<br>安全系数 z=${z.toFixed(2)}（服务水平 ${(g.sl*100).toFixed(1)}%）`
+    : `安全系数 z=${z.toFixed(2)}`;
+
+  // 结果表
+  const tbl=document.getElementById('resultTable');
+  let head='<thead><tr><th>物流方式</th><th>时效(天)</th>'+
+    COST_KEYS.map(c=>`<th><span class="dot" style="background:${c.color}"></span>${c.label.replace(/^[①②③④⑤]\s/,'')}</th>`).join('')+
+    '<th>总成本</th></tr></thead>';
+  let bodyH='<tbody>';
+  rows.forEach(r=>{
+    const cls=r===best?'class="best"':'';
+    bodyH+=`<tr ${cls}><td>${r.name}</td><td>${r.L}</td>`+
+      COST_KEYS.map(c=>`<td>${yuan(r[c.k])}</td>`).join('')+
+      `<td><b>${yuan(r.total)}</b></td></tr>`;
+  });
+  bodyH+='</tbody>';
+  tbl.innerHTML=head+bodyH;
+
+  // 图例
+  document.getElementById('legend').innerHTML=COST_KEYS.map(c=>
+    `<span><span class="dot" style="background:${c.color}"></span>${c.label}</span>`).join('');
+
+  // 图表
+  const maxTotal=Math.max(...rows.map(r=>r.total));
+  const chart=document.getElementById('chart');
+  chart.innerHTML=rows.map(r=>{
+    const wPct=maxTotal>0?(r.total/maxTotal*100):0;
+    const segs=COST_KEYS.map(c=>{
+      const inner=r.total>0?(r[c.k]/r.total*100):0;
+      return `<div class="seg" style="width:${inner}%;background:${c.color}" title="${c.label}: ${yuan(r[c.k])}"></div>`;
+    }).join('');
+    const star=r===best?' ★':'';
+    return `<div class="chart-row">
+      <div class="lbl">${r.name}${star}</div>
+      <div class="bar-wrap" style="width:${wPct}%">${segs}</div>
+      <div class="val">${yuan(r.total)}</div>
+    </div>`;
+  }).join('');
+
+  // 计算过程
+  const proc=document.getElementById('procList');
+  const factor=g.period/365, rentDaily=g.w/30, sigmaD=g.cv*g.d, D=g.d*g.period;
+  proc.innerHTML=rows.map(r=>{
+    const open=r===best?'open':'';
+    const steps=[
+      ['需求波动 σ',`√((时效${r.L}+备货${g.R}) × 日波动${num(sigmaD,1)}² + 日销量${g.d}² × 时效波动${r.sL}²)`,`${num(r.sigmaDDLT,1)} 件`],
+      ['安全库存 SS',`z(${z.toFixed(2)}) × σ(${num(r.sigmaDDLT,1)})`,`${num(r.SS,0)} 件`],
+      ['在仓平均库存',`周期库存 ${num(r.cycle,0)} + 安全库存 ${num(r.SS,0)}`,`${num(r.onHand,0)} 件`],
+      ['在途库存',`日销量 ${g.d} × 时效 ${r.L}`,`${num(r.pipeline,0)} 件`],
+      ['① 运费',`单位运费 ${r.f} × 周期销量 ${num(D,0)}`,yuan(r.freight)],
+      ['② 在途资金',`${num(r.pipeline,0)}件 × 货值${g.c} × 利率${(g.r*100)}% × ${factor.toFixed(2)}`,yuan(r.transit)],
+      ['③ 在仓资金+仓租',`资金 ${yuan(r.whCapital)} + 仓租 ${yuan(r.whRent)}`,yuan(r.warehouse)],
+      ['④ 呆滞/销毁',`${num(r.onHand,0)}件 × 货值${g.c} × 损耗率${(g.phi*100)}% × ${factor.toFixed(2)}`,yuan(r.obsolete)],
+      ['⑤ 断货损失',`预期缺货 ${num(r.shortUnits,1)}件 × 单位损失 ${g.p}`,yuan(r.stockout)],
+    ];
+    return `<details class="proc" ${open}>
+      <summary>${r.name} — 总成本 ${yuan(r.total)}${r===best?' ★ 最优':''}</summary>
+      <div class="proc-body">
+        ${steps.map(s=>`<div class="step"><div class="t">${s[0]}</div><div class="f">${s[1]}</div><div class="r">= ${s[2]}</div></div>`).join('')}
+      </div>
+    </details>`;
+  }).join('');
+
+  document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+document.getElementById('calc').onclick=compute;
+compute(); // 首次加载即用默认值演示
+</script>
+
+<!-- 文档访问门禁（轻量分享控制，非后端鉴权） -->
+<script>
+  (function () {
+    const docGateKey = "cizenDocGate:logistics-model";
+    const docPassword = "666";
+
+    if (sessionStorage.getItem(docGateKey) === "ok") {
+      return;
+    }
+
+    const overlay = document.createElement("div");
+    overlay.setAttribute("role", "dialog");
+    overlay.setAttribute("aria-modal", "true");
+    overlay.style.cssText = "position:fixed;inset:0;z-index:9999;display:grid;place-items:center;padding:24px;background:linear-gradient(180deg,rgba(245,247,250,.98),rgba(239,246,255,.98));font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;color:#1f2937;";
+    overlay.innerHTML = `
+      <form id="doc-gate-form" style="width:min(440px,100%);padding:28px;border:1px solid #e5e7eb;border-radius:18px;background:#fff;box-shadow:0 24px 76px rgba(15,23,42,.14);">
+        <h1 style="margin:0 0 10px;color:#111827;font-size:26px;line-height:1.2;">文档访问</h1>
+        <p style="margin:0 0 18px;color:#6b7280;">请输入本文档密码后查看内容。</p>
+        <label for="doc-gate-password" style="display:block;margin-bottom:8px;font-weight:700;color:#111827;">文档密码</label>
+        <input id="doc-gate-password" type="password" autocomplete="off" placeholder="请输入文档密码" style="width:100%;min-height:48px;padding:0 14px;border:1px solid #e5e7eb;border-radius:12px;font:inherit;">
+        <div id="doc-gate-message" style="display:none;margin-top:12px;padding:10px 12px;border-radius:10px;color:#dc2626;background:#fef2f2;font-size:14px;"></div>
+        <button type="submit" style="width:100%;min-height:46px;margin-top:18px;border:0;border-radius:12px;color:#fff;background:#2563eb;font:inherit;font-weight:700;cursor:pointer;">进入文档</button>
+      </form>`;
+    document.body.appendChild(overlay);
+
+    const form = overlay.querySelector("#doc-gate-form");
+    const input = overlay.querySelector("#doc-gate-password");
+    const message = overlay.querySelector("#doc-gate-message");
+    input.focus();
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      if (input.value.trim() === docPassword) {
+        sessionStorage.setItem(docGateKey, "ok");
+        overlay.remove();
+        return;
+      }
+      message.textContent = "文档密码不正确，请确认后重试。";
+      message.style.display = "block";
+    });
+  })();
+</script>
+</body>
+</html>
