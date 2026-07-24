@@ -1,0 +1,842 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="description" content="《从项目到产品》与 Flow Framework 团队授课材料：理解价值流、四类 Flow Item、五类 Flow Metric，以及从项目制转向产品运营模式的组织变革。">
+  <link rel="icon" href="data:,">
+  <title>从项目到产品 · 团队授课材料 · cizen.net</title>
+  <style>
+    :root {
+      --paper: #f2efe6;
+      --paper-deep: #e8e2d5;
+      --ink: #161715;
+      --muted: #62645e;
+      --line: #c9c3b6;
+      --red: #e4472f;
+      --green: #1f6d52;
+      --yellow: #e7b84b;
+      --blue: #315f83;
+      --white: #fffdf7;
+      --slide-w: 1600;
+      --slide-h: 900;
+      --shadow: 0 24px 90px rgba(28, 25, 18, .16);
+    }
+
+    * { box-sizing: border-box; }
+    html { background: #262721; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      overflow: hidden;
+      color: var(--ink);
+      background: #262721;
+      font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", Arial, sans-serif;
+      text-rendering: optimizeLegibility;
+    }
+
+    button, a { font: inherit; }
+    a { color: inherit; }
+
+    .deck {
+      position: fixed;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      padding: 22px;
+    }
+
+    .slide {
+      position: absolute;
+      width: 1600px;
+      height: 900px;
+      padding: 58px 68px 52px;
+      overflow: hidden;
+      opacity: 0;
+      pointer-events: none;
+      transform-origin: center center;
+      background:
+        linear-gradient(rgba(22, 23, 21, .045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(22, 23, 21, .045) 1px, transparent 1px),
+        var(--paper);
+      background-size: 32px 32px;
+      box-shadow: var(--shadow);
+      transition: opacity 180ms ease;
+    }
+
+    .slide.active { opacity: 1; pointer-events: auto; }
+    .slide::after {
+      content: attr(data-page);
+      position: absolute;
+      right: 68px;
+      bottom: 34px;
+      color: var(--muted);
+      font: 700 18px/1 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      letter-spacing: .08em;
+    }
+
+    .topline {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      padding-bottom: 18px;
+      border-bottom: 2px solid var(--ink);
+      font: 700 17px/1.2 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .topline .section { color: var(--red); }
+
+    h1, h2, h3, p { margin-top: 0; }
+    h1, h2, .serif {
+      font-family: "Songti SC", "STSong", "Noto Serif CJK SC", Georgia, serif;
+    }
+    h1 {
+      max-width: 1290px;
+      margin: 76px 0 34px;
+      font-size: 112px;
+      line-height: .96;
+      letter-spacing: -.055em;
+      font-weight: 900;
+    }
+    h2 {
+      max-width: 1320px;
+      margin: 40px 0 30px;
+      font-size: 72px;
+      line-height: 1.05;
+      letter-spacing: -.045em;
+    }
+    h3 {
+      margin-bottom: 12px;
+      font-size: 27px;
+      line-height: 1.22;
+      letter-spacing: -.02em;
+    }
+    p, li { font-size: 23px; line-height: 1.55; }
+    .lead { max-width: 1160px; color: #343630; font-size: 31px; line-height: 1.48; }
+    .muted { color: var(--muted); }
+    .red { color: var(--red); }
+    .green { color: var(--green); }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 9px 14px;
+      color: var(--white);
+      background: var(--ink);
+      font: 800 18px/1 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+    .eyebrow::before { content: ""; width: 10px; height: 10px; background: var(--red); }
+
+    .thesis {
+      max-width: 1300px;
+      margin-top: 42px;
+      padding: 24px 30px;
+      border-left: 12px solid var(--red);
+      background: var(--white);
+      font: 800 30px/1.45 "Songti SC", "STSong", serif;
+    }
+
+    .footer-mark {
+      position: absolute;
+      left: 68px;
+      bottom: 34px;
+      color: var(--muted);
+      font: 700 16px/1 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+
+    .cover .book-meta {
+      display: flex;
+      gap: 22px;
+      align-items: center;
+      margin-top: 24px;
+      color: var(--muted);
+      font-size: 21px;
+    }
+    .cover .book-meta b { color: var(--ink); }
+    .cover .signal-block {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      width: 470px;
+      height: 245px;
+      display: grid;
+      place-items: center;
+      color: var(--white);
+      background: var(--red);
+      font: 900 36px/1.2 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      transform: rotate(-3deg) translate(18px, 14px);
+    }
+
+    .agenda {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0 42px;
+      margin-top: 30px;
+    }
+    .agenda-item {
+      display: grid;
+      grid-template-columns: 78px 1fr;
+      gap: 18px;
+      align-items: start;
+      padding: 22px 0;
+      border-top: 1px solid var(--line);
+    }
+    .agenda-item:nth-child(-n+2) { border-top: 3px solid var(--ink); }
+    .agenda-num {
+      color: var(--red);
+      font: 900 38px/1 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+    .agenda-item p { margin: 6px 0 0; color: var(--muted); font-size: 19px; }
+
+    .split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      margin-top: 24px;
+    }
+    .column {
+      padding: 28px 30px;
+      border: 2px solid var(--ink);
+      background: rgba(255, 253, 247, .72);
+    }
+    .column.dark { color: var(--white); background: var(--ink); }
+    .column h3 { font-size: 34px; }
+    .column ul { margin: 18px 0 0; padding-left: 26px; }
+    .column li { margin: 9px 0; font-size: 21px; }
+
+    .flow-chain {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      align-items: stretch;
+      margin-top: 54px;
+      border: 3px solid var(--ink);
+      background: var(--white);
+    }
+    .flow-step {
+      position: relative;
+      min-height: 210px;
+      display: grid;
+      align-content: center;
+      gap: 12px;
+      padding: 22px;
+      border-right: 1px solid var(--ink);
+      text-align: center;
+    }
+    .flow-step:last-child { border-right: 0; }
+    .flow-step::after {
+      content: "→";
+      position: absolute;
+      z-index: 2;
+      right: -19px;
+      top: 82px;
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      color: var(--white);
+      background: var(--red);
+      border-radius: 50%;
+      font-weight: 900;
+    }
+    .flow-step:last-child::after { display: none; }
+    .flow-step b { font-size: 22px; }
+    .flow-step span { color: var(--muted); font-size: 17px; }
+    .wait-band {
+      margin-top: 24px;
+      display: grid;
+      grid-template-columns: 20% 80%;
+      border: 2px solid var(--ink);
+      font-weight: 800;
+      text-align: center;
+    }
+    .wait-band span { padding: 14px; }
+    .wait-band .work { color: var(--white); background: var(--green); }
+    .wait-band .wait { color: var(--white); background: var(--red); }
+
+    .compare-table {
+      margin-top: 26px;
+      border: 3px solid var(--ink);
+      background: var(--white);
+    }
+    .compare-row {
+      display: grid;
+      grid-template-columns: 260px 1fr 1fr;
+      min-height: 67px;
+      border-bottom: 1px solid var(--line);
+    }
+    .compare-row:last-child { border-bottom: 0; }
+    .compare-row > div { display: flex; align-items: center; padding: 13px 19px; border-right: 1px solid var(--line); font-size: 19px; }
+    .compare-row > div:last-child { border-right: 0; }
+    .compare-row.head { color: var(--white); background: var(--ink); font-weight: 900; }
+    .compare-row .label { font-weight: 800; }
+    .compare-row .to { background: rgba(31, 109, 82, .08); }
+
+    .architecture {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1fr 92px 1fr;
+      gap: 16px;
+      align-items: center;
+      margin-top: 30px;
+    }
+    .blackbox {
+      min-height: 390px;
+      padding: 34px;
+      color: var(--white);
+      background: var(--ink);
+      border: 4px solid var(--ink);
+    }
+    .blackbox.light { color: var(--ink); background: var(--white); }
+    .blackbox h3 { margin-bottom: 24px; font: 900 40px/1.1 "Songti SC", serif; }
+    .blackbox ul { margin: 0; padding-left: 28px; }
+    .blackbox li { margin: 12px 0; font-size: 21px; }
+    .bridge {
+      display: grid;
+      place-items: center;
+      width: 92px;
+      height: 92px;
+      color: var(--white);
+      background: var(--red);
+      border-radius: 50%;
+      font: 900 42px/1 ui-monospace, monospace;
+    }
+
+    .items-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      margin-top: 35px;
+    }
+    .item-card {
+      position: relative;
+      min-height: 390px;
+      padding: 26px;
+      border: 3px solid var(--ink);
+      background: var(--white);
+    }
+    .item-card:nth-child(1) { border-top: 16px solid var(--green); }
+    .item-card:nth-child(2) { border-top: 16px solid var(--red); }
+    .item-card:nth-child(3) { border-top: 16px solid var(--yellow); }
+    .item-card:nth-child(4) { border-top: 16px solid var(--blue); }
+    .item-card .code { color: var(--muted); font: 800 17px/1 ui-monospace, monospace; }
+    .item-card h3 { margin-top: 28px; font: 900 38px/1 "Songti SC", serif; }
+    .item-card p { font-size: 20px; }
+    .item-card .example { position: absolute; left: 26px; right: 26px; bottom: 26px; padding-top: 16px; border-top: 1px solid var(--line); color: var(--muted); font-size: 17px; }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 14px;
+      margin-top: 36px;
+    }
+    .metric {
+      min-height: 405px;
+      padding: 22px;
+      border: 2px solid var(--ink);
+      background: rgba(255,255,255,.62);
+    }
+    .metric .abbr { color: var(--red); font: 900 18px/1 ui-monospace, monospace; }
+    .metric h3 { margin: 28px 0 16px; font: 900 31px/1.05 "Songti SC", serif; }
+    .metric p { font-size: 18px; }
+    .metric .question { margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--line); font-weight: 800; font-size: 18px; }
+
+    .result-map {
+      display: grid;
+      grid-template-columns: 1fr 120px 1fr;
+      gap: 22px;
+      align-items: center;
+      margin-top: 38px;
+    }
+    .result-side { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .result-box { min-height: 170px; padding: 22px; border: 2px solid var(--ink); background: var(--white); }
+    .result-box h3 { font-family: "Songti SC", serif; font-size: 31px; }
+    .result-box p { color: var(--muted); font-size: 18px; }
+    .connector { text-align: center; color: var(--red); font: 900 64px/1 ui-monospace, monospace; }
+
+    .triad {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      margin-top: 42px;
+      border: 3px solid var(--ink);
+    }
+    .triad > div { min-height: 405px; padding: 30px; border-right: 2px solid var(--ink); background: var(--white); }
+    .triad > div:last-child { border-right: 0; }
+    .triad h3 { font: 900 39px/1.1 "Songti SC", serif; }
+    .triad p { color: var(--muted); font-size: 20px; }
+    .triad .misfit { margin-top: 24px; padding: 15px; color: var(--white); background: var(--red); font-weight: 800; font-size: 17px; }
+
+    .team-map {
+      display: grid;
+      grid-template-columns: 1.2fr .8fr .8fr;
+      gap: 18px;
+      margin-top: 36px;
+    }
+    .team-card { min-height: 405px; padding: 28px; border: 3px solid var(--ink); background: var(--white); }
+    .team-card.primary { color: var(--white); background: var(--green); border-color: var(--green); }
+    .team-card h3 { font: 900 41px/1 "Songti SC", serif; }
+    .team-card ul { margin: 24px 0 0; padding-left: 25px; }
+    .team-card li { margin: 10px 0; font-size: 20px; }
+    .team-card .warning { margin-top: 24px; padding: 14px; color: var(--ink); background: var(--yellow); font-weight: 800; font-size: 17px; }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 30px;
+    }
+    .step {
+      min-height: 205px;
+      padding: 22px;
+      border: 2px solid var(--ink);
+      background: var(--white);
+    }
+    .step .n { display: block; margin-bottom: 17px; color: var(--red); font: 900 30px/1 ui-monospace, monospace; }
+    .step h3 { font-size: 26px; }
+    .step p { color: var(--muted); font-size: 18px; }
+
+    .questions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 30px;
+    }
+    .question-card { min-height: 155px; display: grid; grid-template-columns: 66px 1fr; gap: 18px; align-items: start; padding: 22px; border-top: 3px solid var(--ink); background: rgba(255,255,255,.48); }
+    .question-card .q { color: var(--red); font: 900 36px/1 ui-monospace, monospace; }
+    .question-card p { margin: 0; font: 800 23px/1.42 "Songti SC", serif; }
+
+    .closing h2 { max-width: 1300px; font-size: 89px; }
+    .closing .manifesto {
+      margin-top: 48px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    .manifesto > div { min-height: 210px; padding: 24px; border: 3px solid var(--ink); background: var(--white); }
+    .manifesto b { display: block; margin-bottom: 16px; color: var(--red); font: 900 21px/1 ui-monospace, monospace; }
+    .manifesto span { font: 900 28px/1.3 "Songti SC", serif; }
+
+    .sources {
+      columns: 2;
+      column-gap: 50px;
+      margin: 32px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+    .sources li { break-inside: avoid; margin: 0 0 18px; padding: 0 0 18px; border-bottom: 1px solid var(--line); font-size: 18px; }
+    .sources a { color: var(--blue); text-decoration-thickness: 1px; text-underline-offset: 4px; }
+
+    .controls {
+      position: fixed;
+      z-index: 50;
+      left: 50%;
+      bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px;
+      color: var(--white);
+      background: rgba(15, 16, 14, .9);
+      border: 1px solid rgba(255,255,255,.15);
+      border-radius: 999px;
+      backdrop-filter: blur(14px);
+      transform: translateX(-50%);
+    }
+    .controls button, .controls a {
+      min-width: 42px;
+      min-height: 42px;
+      display: grid;
+      place-items: center;
+      padding: 0 13px;
+      border: 0;
+      border-radius: 999px;
+      color: var(--white);
+      background: transparent;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .controls button:hover, .controls a:hover, .controls button:focus-visible, .controls a:focus-visible { background: rgba(255,255,255,.13); outline: none; }
+    .counter { min-width: 74px; text-align: center; font: 700 14px/1 ui-monospace, monospace; }
+    .progress { position: fixed; z-index: 60; left: 0; top: 0; height: 5px; background: var(--red); transition: width 180ms ease; }
+
+    .overview {
+      position: fixed;
+      z-index: 100;
+      inset: 0;
+      display: none;
+      overflow: auto;
+      padding: 34px;
+      color: var(--white);
+      background: rgba(20,21,18,.97);
+    }
+    .overview.open { display: block; }
+    .overview-head { max-width: 1220px; margin: 0 auto 24px; display: flex; justify-content: space-between; align-items: center; gap: 20px; }
+    .overview-head h2 { margin: 0; color: var(--white); font: 800 34px/1.2 sans-serif; }
+    .overview-head button { min-width: 44px; min-height: 44px; border: 1px solid rgba(255,255,255,.2); border-radius: 50%; color: var(--white); background: transparent; cursor: pointer; }
+    .thumbs { max-width: 1220px; margin: auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .thumb { min-height: 170px; padding: 18px; border: 1px solid rgba(255,255,255,.17); color: var(--white); background: #30312b; cursor: pointer; text-align: left; }
+    .thumb:hover, .thumb:focus-visible { border-color: var(--red); outline: none; }
+    .thumb b { display: block; color: var(--red); font: 800 13px/1 ui-monospace, monospace; }
+    .thumb span { display: block; margin-top: 20px; font: 800 22px/1.3 "Songti SC", serif; }
+
+    @media (max-width: 760px) {
+      body { overflow: auto; background: var(--paper-deep); }
+      .deck { position: static; display: block; padding: 0; }
+      .slide {
+        position: relative;
+        width: auto !important;
+        height: auto !important;
+        min-height: 100svh;
+        margin: 0;
+        padding: 34px 22px 70px;
+        opacity: 1;
+        pointer-events: auto;
+        transform: none !important;
+        border-bottom: 8px solid var(--ink);
+        box-shadow: none;
+      }
+      .slide::after { right: 22px; bottom: 22px; }
+      .footer-mark { left: 22px; bottom: 22px; }
+      h1 { margin-top: 46px; font-size: 57px; }
+      h2 { margin-top: 30px; font-size: 43px; }
+      .lead { font-size: 22px; }
+      p, li { font-size: 18px; }
+      .cover .signal-block { position: static; width: 100%; height: auto; margin-top: 34px; padding: 28px; transform: rotate(-1deg); }
+      .agenda, .split, .items-grid, .metrics, .result-map, .result-side, .triad, .team-map, .steps, .questions, .closing .manifesto { grid-template-columns: 1fr; }
+      .architecture { grid-template-columns: 1fr; }
+      .bridge { margin: auto; transform: rotate(90deg); }
+      .flow-chain { grid-template-columns: 1fr; }
+      .flow-step { min-height: 130px; border-right: 0; border-bottom: 1px solid var(--ink); }
+      .flow-step::after { right: calc(50% - 19px); top: auto; bottom: -19px; transform: rotate(90deg); }
+      .compare-row { grid-template-columns: 1fr; }
+      .compare-row > div { border-right: 0; border-bottom: 1px solid var(--line); }
+      .result-map .connector { transform: rotate(90deg); }
+      .triad > div { border-right: 0; border-bottom: 2px solid var(--ink); }
+      .controls, .progress { display: none; }
+      .sources { columns: 1; }
+      .topline { font-size: 13px; }
+    }
+
+    @media print {
+      @page { size: 16in 9in; margin: 0; }
+      html, body { background: #fff; overflow: visible; }
+      .deck { position: static; display: block; padding: 0; }
+      .slide { position: relative; width: 1600px !important; height: 900px !important; opacity: 1; transform: none !important; page-break-after: always; box-shadow: none; }
+      .controls, .progress, .overview { display: none !important; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="progress" id="progress" aria-hidden="true"></div>
+  <main class="deck" id="deck" aria-label="从项目到产品团队授课演示稿">
+    <section class="slide cover active" data-title="封面" data-page="01 / 15">
+      <div class="topline"><span>TEAM LEARNING / VALUE STREAM</span><span class="section">PROJECT → PRODUCT</span></div>
+      <div class="eyebrow">Mik Kersten · Flow Framework</div>
+      <h1>从项目到产品</h1>
+      <p class="lead">数字化时代，如何从临时项目、职能交接和资源利用率，转向长期产品价值流、稳定团队与端到端业务结果。</p>
+      <div class="book-meta"><b>团队授课材料</b><span>·</span><span>价值流组织与产品运营模式</span></div>
+      <div class="signal-block">STOP STARTING.<br>START FINISHING.</div>
+      <span class="footer-mark">cizen.net · OPEN LEARNING</span>
+    </section>
+
+    <section class="slide" data-title="今天讨论什么" data-page="02 / 15">
+      <div class="topline"><span>AGENDA</span><span class="section">共同语言</span></div>
+      <h2>今天，我们要回答六个问题</h2>
+      <div class="agenda">
+        <div class="agenda-item"><span class="agenda-num">01</span><div><h3>为什么项目制会失效？</h3><p>项目完成，不等于客户价值实现。</p></div></div>
+        <div class="agenda-item"><span class="agenda-num">02</span><div><h3>什么是产品价值流？</h3><p>从客户需求到业务结果的长期闭环。</p></div></div>
+        <div class="agenda-item"><span class="agenda-num">03</span><div><h3>价值流里流动什么？</h3><p>Feature、Defect、Risk、Debt。</p></div></div>
+        <div class="agenda-item"><span class="agenda-num">04</span><div><h3>如何衡量流动？</h3><p>速度、时间、效率、负载与分布。</p></div></div>
+        <div class="agenda-item"><span class="agenda-num">05</span><div><h3>组织怎么随之改变？</h3><p>团队、架构与业务结构必须对齐。</p></div></div>
+        <div class="agenda-item"><span class="agenda-num">06</span><div><h3>我们如何开始试点？</h3><p>先跑通一条价值流，再逐步扩展。</p></div></div>
+      </div>
+      <span class="footer-mark">方向：从“管项目”转向“管价值流”</span>
+    </section>
+
+    <section class="slide" data-title="项目制为何失效" data-page="03 / 15">
+      <div class="topline"><span>WHY PROJECTS FAIL</span><span class="section">临时结构 vs 长期价值</span></div>
+      <h2>项目可以结束，<span class="red">客户价值流不会结束</span></h2>
+      <div class="split">
+        <div class="column dark"><h3>项目的默认假设</h3><ul><li>有明确起止时间</li><li>范围可以提前确定</li><li>人员临时组建</li><li>按时间、预算、范围验收</li><li>交付后移交、结项、解散</li></ul></div>
+        <div class="column"><h3>数字产品的真实世界</h3><ul><li>客户需求持续变化</li><li>功能要不断演进</li><li>缺陷与风险持续出现</li><li>架构和技术债必须治理</li><li>运营数据不断触发新决策</li></ul></div>
+      </div>
+      <div class="thesis">真正的问题不是“项目有没有按时完成”，而是“客户是否持续获得价值，组织是否拥有持续交付能力”。</div>
+      <span class="footer-mark">项目是临时容器；产品是长期责任</span>
+    </section>
+
+    <section class="slide" data-title="价值在哪里停住" data-page="04 / 15">
+      <div class="topline"><span>SEE THE FLOW</span><span class="section">工作很忙 ≠ 价值在流动</span></div>
+      <h2>从需求到客户，<span class="red">等待</span>往往比工作更久</h2>
+      <div class="flow-chain">
+        <div class="flow-step"><b>业务机会</b><span>客户问题 / 战略目标</span></div>
+        <div class="flow-step"><b>立项排期</b><span>审批 / 争资源</span></div>
+        <div class="flow-step"><b>产品分析</b><span>需求 / 方案</span></div>
+        <div class="flow-step"><b>技术开发</b><span>设计 / 实现</span></div>
+        <div class="flow-step"><b>测试验收</b><span>修复 / 等反馈</span></div>
+        <div class="flow-step"><b>发布运营</b><span>上线 / 推广</span></div>
+        <div class="flow-step"><b>客户结果</b><span>采用 / 收益</span></div>
+      </div>
+      <div class="wait-band"><span class="work">真实工作时间</span><span class="wait">排队、交接、审批、阻塞、返工</span></div>
+      <p class="lead" style="margin-top:24px">价值流管理先问：工作在系统里停在哪里？而不是先问：谁还不够忙？</p>
+      <span class="footer-mark">优化系统，不是催促个人</span>
+    </section>
+
+    <section class="slide" data-title="从项目到产品" data-page="05 / 15">
+      <div class="topline"><span>OPERATING MODEL SHIFT</span><span class="section">管理对象改变</span></div>
+      <h2>不是改一个名字，而是改变整套管理系统</h2>
+      <div class="compare-table">
+        <div class="compare-row head"><div>管理维度</div><div>项目思维</div><div>产品 / 价值流思维</div></div>
+        <div class="compare-row"><div class="label">组织对象</div><div>临时项目</div><div class="to">长期产品价值流</div></div>
+        <div class="compare-row"><div class="label">团队</div><div>临时借调、完成后解散</div><div class="to">稳定、跨职能、端到端</div></div>
+        <div class="compare-row"><div class="label">资金</div><div>按项目立项和预算</div><div class="to">按价值流持续投资、动态调整</div></div>
+        <div class="compare-row"><div class="label">成功标准</div><div>时间、预算、范围</div><div class="to">客户价值、业务结果、流动能力</div></div>
+        <div class="compare-row"><div class="label">管理重点</div><div>资源利用率和任务完成</div><div class="to">减少等待、WIP和交付周期</div></div>
+        <div class="compare-row"><div class="label">终点</div><div>验收、移交、结项</div><div class="to">持续运营、学习、演进</div></div>
+      </div>
+      <span class="footer-mark">产品模式 = 长期责任 + 持续反馈 + 动态投资</span>
+    </section>
+
+    <section class="slide" data-title="打通业务与技术黑箱" data-page="06 / 15">
+      <div class="topline"><span>FLOW FRAMEWORK</span><span class="section">共同语言</span></div>
+      <h2>让业务与技术看见同一条价值流</h2>
+      <div class="architecture">
+        <div class="blackbox"><h3>业务黑箱</h3><ul><li>战略与投资</li><li>客户与市场</li><li>收入与成本</li><li>经营目标</li><li>优先级决策</li></ul></div>
+        <div class="bridge">↔</div>
+        <div class="blackbox light"><h3>技术黑箱</h3><ul><li>需求与开发</li><li>测试与发布</li><li>缺陷与风险</li><li>架构与技术债</li><li>工具与交付过程</li></ul></div>
+      </div>
+      <div class="thesis">Flow Framework 用“工作类型 + 流动指标 + 业务结果”，把技术活动翻译成业务可以理解和决策的语言。</div>
+      <span class="footer-mark">业务不只看结果；技术不只看产出</span>
+    </section>
+
+    <section class="slide" data-title="四类Flow Item" data-page="07 / 15">
+      <div class="topline"><span>WHAT FLOWS?</span><span class="section">4 FLOW ITEMS</span></div>
+      <h2>价值流里不只有 Feature</h2>
+      <div class="items-grid">
+        <article class="item-card"><span class="code">01 / VALUE</span><h3>Feature</h3><p>向客户或业务交付新的、可感知的产品价值。</p><div class="example"><b>例：</b>自动补货建议、商品机会评分、新履约方式。</div></article>
+        <article class="item-card"><span class="code">02 / QUALITY</span><h3>Defect</h3><p>修复影响客户体验、稳定性或产品质量的问题。</p><div class="example"><b>例：</b>计算错误、数据延迟、页面故障、线上事故。</div></article>
+        <article class="item-card"><span class="code">03 / PROTECTION</span><h3>Risk</h3><p>处理安全、隐私、合规、治理与业务连续性风险。</p><div class="example"><b>例：</b>权限、隐私、平台合规、安全漏洞。</div></article>
+        <article class="item-card"><span class="code">04 / FUTURE FLOW</span><h3>Debt</h3><p>偿还阻碍未来交付的技术债、架构债和流程债。</p><div class="example"><b>例：</b>模块重构、平台化、接口化、自动化测试。</div></article>
+      </div>
+      <span class="footer-mark">Feature创造新价值；其余三类保护已有价值与未来能力</span>
+    </section>
+
+    <section class="slide" data-title="工作分布" data-page="08 / 15">
+      <div class="topline"><span>FLOW DISTRIBUTION</span><span class="section">投资组合的真实镜子</span></div>
+      <h2>我们把能力花在哪里，决定产品会走向哪里</h2>
+      <div class="result-map">
+        <div class="result-side">
+          <div class="result-box"><h3 class="green">Feature</h3><p>新价值与增长</p></div>
+          <div class="result-box"><h3 class="red">Defect</h3><p>质量恢复与客户信任</p></div>
+          <div class="result-box"><h3 style="color:#99710e">Risk</h3><p>安全、合规与风险保护</p></div>
+          <div class="result-box"><h3 style="color:var(--blue)">Debt</h3><p>未来速度与可持续能力</p></div>
+        </div>
+        <div class="connector">→</div>
+        <div class="column"><h3>不存在固定的“最佳比例”</h3><ul><li>探索期：Feature可能更高</li><li>质量危机：Defect必须上升</li><li>合规窗口：Risk成为优先</li><li>架构制约：Debt需要保护投入</li><li>比例必须与产品阶段和业务结果联动</li></ul></div>
+      </div>
+      <div class="thesis">只做 Feature，会制造短期繁荣和长期失速；只做基础建设，也会失去客户价值。</div>
+      <span class="footer-mark">Flow Distribution = 看得见的能力配置</span>
+    </section>
+
+    <section class="slide" data-title="五类Flow Metric" data-page="09 / 15">
+      <div class="topline"><span>HOW DOES IT FLOW?</span><span class="section">5 FLOW METRICS</span></div>
+      <h2>从“大家很忙”转向“价值流得怎么样”</h2>
+      <div class="metrics">
+        <article class="metric"><span class="abbr">VELOCITY</span><h3>流量</h3><p>一定周期内完成多少 Flow Item。</p><div class="question">完成速率如何？</div></article>
+        <article class="metric"><span class="abbr">TIME</span><h3>流动时间</h3><p>从进入价值流，到客户真正获得价值的总时间。</p><div class="question">客户要等多久？</div></article>
+        <article class="metric"><span class="abbr">EFFICIENCY</span><h3>流动效率</h3><p>活跃工作时间占总流动时间的比例。</p><div class="question">时间花在工作还是等待？</div></article>
+        <article class="metric"><span class="abbr">LOAD</span><h3>流动负载</h3><p>当前同时进行中的工作数量，即价值流层面的 WIP。</p><div class="question">是否启动得太多？</div></article>
+        <article class="metric"><span class="abbr">DISTRIBUTION</span><h3>流动分布</h3><p>Feature、Defect、Risk、Debt 的能力投入比例。</p><div class="question">能力花在哪里？</div></article>
+      </div>
+      <span class="footer-mark">Flow Metrics 用来诊断系统，不用来评价个人</span>
+    </section>
+
+    <section class="slide" data-title="连接业务结果" data-page="10 / 15">
+      <div class="topline"><span>FLOW → OUTCOME</span><span class="section">不能为了流动而流动</span></div>
+      <h2>流动改善，必须连接业务结果</h2>
+      <div class="result-map">
+        <div class="column dark"><h3>流动指标</h3><ul><li>Flow Velocity</li><li>Flow Time</li><li>Flow Efficiency</li><li>Flow Load</li><li>Flow Distribution</li></ul></div>
+        <div class="connector">→</div>
+        <div class="result-side">
+          <div class="result-box"><h3>Value</h3><p>收入、续费、转化、采用率、持续出单。</p></div>
+          <div class="result-box"><h3>Cost</h3><p>单位交付成本、运营成本、获客成本。</p></div>
+          <div class="result-box"><h3>Quality</h3><p>缺陷率、退货率、事故、投诉、返工。</p></div>
+          <div class="result-box"><h3>Happiness</h3><p>客户满意、员工体验、团队健康、流失率。</p></div>
+        </div>
+      </div>
+      <div class="thesis">Velocity 上升，但价值、质量或幸福感下降，不是真正的成功。</div>
+      <span class="footer-mark">Output不是Outcome；流动不是目的，价值才是</span>
+    </section>
+
+    <section class="slide" data-title="三种结构对齐" data-page="11 / 15">
+      <div class="topline"><span>ALIGN THE SYSTEM</span><span class="section">业务 × 技术 × 组织</span></div>
+      <h2>三种结构不对齐，Feature 就会跨部门排队</h2>
+      <div class="triad">
+        <div><h3>业务结构</h3><p>客户、产品、收入、成本、经营目标和战略投资。</p><div class="misfit">错位表现：优先级争夺，目标无法落到工作。</div></div>
+        <div><h3>技术架构</h3><p>系统、模块、平台、接口、数据与技术约束。</p><div class="misfit">错位表现：一个需求跨多个系统和组件排队。</div></div>
+        <div><h3>组织结构</h3><p>团队边界、职责、决策权、治理与协作方式。</p><div class="misfit">错位表现：对结果负责，却没有端到端能力。</div></div>
+      </div>
+      <div class="thesis">组织不应围绕技术组件或职能方便来设计，而应尽量围绕客户价值流来设计。</div>
+      <span class="footer-mark">康威定律：沟通结构会塑造系统结构</span>
+    </section>
+
+    <section class="slide" data-title="GST、PST与技术中心" data-page="12 / 15">
+      <div class="topline"><span>TEAM DESIGN</span><span class="section">价值流组织映射</span></div>
+      <h2>谁对结果负责，谁提供复用能力？</h2>
+      <div class="team-map">
+        <div class="team-card primary"><h3>GST</h3><p>价值流对齐的长期增长团队</p><ul><li>明确客户与业务价值</li><li>稳定跨职能成员</li><li>对北极星指标负责</li><li>管理四类 Flow Item</li><li>具备端到端交付与运营能力</li></ul></div>
+        <div class="team-card"><h3>PST</h3><p>平台 / 赋能型支撑团队</p><ul><li>沉淀共性能力</li><li>减少重复建设</li><li>提供标准服务</li><li>帮助GST提升能力</li></ul><div class="warning">风险：变成被动接单和排队中心</div></div>
+        <div class="team-card"><h3>技术中心</h3><p>技术基座与复杂能力</p><ul><li>平台化</li><li>服务化</li><li>接口化</li><li>数据化</li><li>MCP化</li></ul><div class="warning">目标：降低依赖成本，而不是增加审批</div></div>
+      </div>
+      <span class="footer-mark">GST管结果；PST管复用；技术中心管基座</span>
+    </section>
+
+    <section class="slide" data-title="最小试点" data-page="13 / 15">
+      <div class="topline"><span>START SMALL</span><span class="section">一条价值流，六步试点</span></div>
+      <h2>不要一次性重构全公司，先跑通一条价值流</h2>
+      <div class="steps">
+        <div class="step"><span class="n">01</span><h3>定义产品价值流</h3><p>客户、价值、起点、终点和长期产品是什么？</p></div>
+        <div class="step"><span class="n">02</span><h3>建立稳定团队</h3><p>明确GST、PST、技术中心的成员、权限与边界。</p></div>
+        <div class="step"><span class="n">03</span><h3>统一四类工作</h3><p>在同一价值流中识别Feature、Defect、Risk、Debt。</p></div>
+        <div class="step"><span class="n">04</span><h3>采集流动基线</h3><p>先记录Flow Time、Flow Load、Flow Distribution。</p></div>
+        <div class="step"><span class="n">05</span><h3>连接业务结果</h3><p>选少量Value、Cost、Quality、Happiness指标。</p></div>
+        <div class="step"><span class="n">06</span><h3>周期复盘调整</h3><p>看瓶颈、WIP、工作分布和投资是否需要变化。</p></div>
+      </div>
+      <span class="footer-mark">先证明一种新运行方式可行，再规模化</span>
+    </section>
+
+    <section class="slide" data-title="团队讨论" data-page="14 / 15">
+      <div class="topline"><span>TEAM DISCUSSION</span><span class="section">把概念连接到当前项目</span></div>
+      <h2>请团队一起回答</h2>
+      <div class="questions">
+        <div class="question-card"><span class="q">Q1</span><p>我们的“产品价值流”服务谁？起点和终点在哪里？</p></div>
+        <div class="question-card"><span class="q">Q2</span><p>一个Feature从提出到客户使用，最长的等待在哪里？</p></div>
+        <div class="question-card"><span class="q">Q3</span><p>GST是否拥有对结果负责所需的资源与决策权？</p></div>
+        <div class="question-card"><span class="q">Q4</span><p>PST与技术中心在减少依赖，还是制造新的排队？</p></div>
+        <div class="question-card"><span class="q">Q5</span><p>我们当前的Feature、Defect、Risk、Debt投入是否失衡？</p></div>
+        <div class="question-card"><span class="q">Q6</span><p>哪一条价值流最适合用90天做最小试点？</p></div>
+      </div>
+      <span class="footer-mark">概念只有进入真实问题，才会变成组织能力</span>
+    </section>
+
+    <section class="slide closing" data-title="结语与来源" data-page="15 / 15">
+      <div class="topline"><span>TAKEAWAY</span><span class="section">PROJECT → PRODUCT</span></div>
+      <h2>从项目到产品，本质是从<span class="red">交付任务</span>转向<span class="green">持续创造价值</span></h2>
+      <div class="manifesto">
+        <div><b>01 / 管理对象</b><span>围绕长期产品价值流，而不是临时项目。</span></div>
+        <div><b>02 / 管理系统</b><span>度量端到端流动，而不是局部忙碌。</span></div>
+        <div><b>03 / 管理结果</b><span>连接客户和业务结果，而不是只看产出。</span></div>
+      </div>
+      <ul class="sources">
+        <li>Mik Kersten, <em>Project to Product</em>, IT Revolution, 2018.</li>
+        <li><a href="https://itrevolution.com/product/project-to-product/">IT Revolution · 官方书籍页</a></li>
+        <li><a href="https://flowframework.org/">Flow Framework · 官方站</a></li>
+        <li><a href="https://flowframework.org/ffc-discover/">Flow Framework · 核心概念与指标</a></li>
+      </ul>
+      <span class="footer-mark">© cizen.net · 团队学习材料</span>
+    </section>
+  </main>
+
+  <div class="controls" aria-label="演示控制">
+    <a href="../" title="返回公开分享">⌂</a>
+    <button type="button" id="prev" aria-label="上一页">←</button>
+    <span class="counter" id="counter">01 / 15</span>
+    <button type="button" id="next" aria-label="下一页">→</button>
+    <button type="button" id="overviewBtn" aria-label="打开总览" title="总览（O）">▦</button>
+    <button type="button" id="printBtn" aria-label="打印或导出PDF" title="打印 / PDF">⎙</button>
+    <button type="button" id="fullscreenBtn" aria-label="全屏" title="全屏（F）">⛶</button>
+  </div>
+
+  <aside class="overview" id="overview" aria-hidden="true">
+    <div class="overview-head"><h2>演示总览</h2><button type="button" id="closeOverview" aria-label="关闭总览">×</button></div>
+    <div class="thumbs" id="thumbs"></div>
+  </aside>
+
+  <script>
+    (() => {
+      const slides = [...document.querySelectorAll('.slide')];
+      const deck = document.getElementById('deck');
+      const progress = document.getElementById('progress');
+      const counter = document.getElementById('counter');
+      const overview = document.getElementById('overview');
+      const thumbs = document.getElementById('thumbs');
+      let index = Math.max(0, Math.min(slides.length - 1, Number(localStorage.getItem('p2p-slide') || 0)));
+
+      function isMobile() { return window.matchMedia('(max-width: 760px)').matches; }
+      function fit() {
+        if (isMobile()) {
+          slides.forEach(slide => slide.style.transform = 'none');
+          return;
+        }
+        const scale = Math.min((window.innerWidth - 44) / 1600, (window.innerHeight - 44) / 900);
+        slides.forEach(slide => slide.style.transform = `scale(${scale})`);
+      }
+      function show(nextIndex, updateHash = true) {
+        index = (nextIndex + slides.length) % slides.length;
+        slides.forEach((slide, i) => slide.classList.toggle('active', i === index));
+        counter.textContent = `${String(index + 1).padStart(2, '0')} / ${String(slides.length).padStart(2, '0')}`;
+        progress.style.width = `${((index + 1) / slides.length) * 100}%`;
+        localStorage.setItem('p2p-slide', String(index));
+        if (updateHash) history.replaceState(null, '', `#${index + 1}`);
+        document.title = `${slides[index].dataset.title} · 从项目到产品 · cizen.net`;
+      }
+      function toggleOverview(force) {
+        const open = typeof force === 'boolean' ? force : !overview.classList.contains('open');
+        overview.classList.toggle('open', open);
+        overview.setAttribute('aria-hidden', String(!open));
+      }
+
+      slides.forEach((slide, i) => {
+        const button = document.createElement('button');
+        const number = document.createElement('b');
+        const title = document.createElement('span');
+        button.className = 'thumb';
+        button.type = 'button';
+        number.textContent = String(i + 1).padStart(2, '0');
+        title.textContent = slide.dataset.title || `第 ${i + 1} 页`;
+        button.append(number, title);
+        button.addEventListener('click', () => { show(i); toggleOverview(false); });
+        thumbs.appendChild(button);
+      });
+
+      document.getElementById('prev').addEventListener('click', () => show(index - 1));
+      document.getElementById('next').addEventListener('click', () => show(index + 1));
+      document.getElementById('overviewBtn').addEventListener('click', () => toggleOverview());
+      document.getElementById('closeOverview').addEventListener('click', () => toggleOverview(false));
+      document.getElementById('printBtn').addEventListener('click', () => window.print());
+      document.getElementById('fullscreenBtn').addEventListener('click', () => {
+        if (!document.fullscreenElement) document.documentElement.requestFullscreen?.();
+        else document.exitFullscreen?.();
+      });
+
+      window.addEventListener('keydown', event => {
+        if (overview.classList.contains('open') && event.key === 'Escape') { toggleOverview(false); return; }
+        if (['ArrowRight', 'PageDown', ' '].includes(event.key)) { event.preventDefault(); show(index + 1); }
+        if (['ArrowLeft', 'PageUp'].includes(event.key)) { event.preventDefault(); show(index - 1); }
+        if (event.key === 'Home') show(0);
+        if (event.key === 'End') show(slides.length - 1);
+        if (event.key.toLowerCase() === 'o') toggleOverview();
+        if (event.key.toLowerCase() === 'f') document.getElementById('fullscreenBtn').click();
+      });
+      window.addEventListener('resize', fit);
+      window.addEventListener('hashchange', () => {
+        const n = Number(location.hash.slice(1));
+        if (Number.isInteger(n) && n >= 1 && n <= slides.length) show(n - 1, false);
+      });
+
+      const initial = Number(location.hash.slice(1));
+      if (Number.isInteger(initial) && initial >= 1 && initial <= slides.length) index = initial - 1;
+      fit();
+      show(index, false);
+    })();
+  </script>
+</body>
+</html>
