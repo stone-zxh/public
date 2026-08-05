@@ -19,7 +19,7 @@
       --gold:#a8762b;
       --blue:#315f79;
       --max:1180px;
-      --reading:760px;
+      --reading:970px;
       --serif:"Noto Serif SC","Source Han Serif SC","Songti SC","STSong",SimSun,serif;
       --sans:"Microsoft YaHei","PingFang SC","Segoe UI",Arial,sans-serif;
     }
@@ -30,7 +30,7 @@
     a:hover{color:var(--red)}
     .progress{position:fixed;z-index:20;top:0;left:0;width:100%;height:3px;background:transparent}
     .progress span{display:block;width:0;height:100%;background:var(--red)}
-    .sitebar{display:flex;align-items:center;justify-content:space-between;gap:18px;width:min(var(--max),calc(100% - 40px));margin:0 auto;padding:22px 0;font-family:var(--sans);font-size:.78rem}
+    .sitebar{display:flex;align-items:center;justify-content:space-between;gap:18px;width:min(var(--max),calc(100% - 40px));margin:0 auto;padding:22px 0;font-family:var(--sans);font-size:.82rem}
     .brand{color:var(--night);font-weight:800;text-decoration:none;letter-spacing:.04em}
     .sitebar nav{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
     .sitebar nav a{padding:7px 10px;border-radius:999px;color:var(--muted);text-decoration:none}
@@ -40,22 +40,23 @@
     .hero-inner{position:relative;z-index:1;width:min(var(--max),calc(100% - 40px));margin:0 auto;padding:92px 0 84px}
     .eyebrow{display:flex;align-items:center;gap:12px;margin-bottom:28px;color:#cbbf9d;font-family:var(--sans);font-size:.74rem;letter-spacing:.17em;text-transform:uppercase}
     .eyebrow::before{content:"";width:42px;height:1px;background:#cbbf9d}
-    h1{max-width:980px;margin:0;font-size:clamp(2.7rem,6.5vw,5.4rem);line-height:1.05;letter-spacing:-.045em;font-weight:750;text-wrap:balance}
-    h1 span{display:block;white-space:nowrap}
-    .title-part{font-style:normal}
+    h1{max-width:none;margin:0;font-size:clamp(2.6rem,5.4vw,4.6rem);line-height:1.05;letter-spacing:-.045em;font-weight:750;white-space:nowrap}
+    h1>span{display:inline;white-space:nowrap}
+    .title-part{display:inline;font-style:normal}
     .hero-lead{max-width:760px;margin:34px 0 0;color:#c8c9bf;font-size:clamp(1.05rem,1.6vw,1.3rem);line-height:1.75}
     .hero-meta{display:flex;gap:22px;flex-wrap:wrap;margin-top:42px;color:#9da69f;font-family:var(--sans);font-size:.75rem}
     .premise{width:min(960px,calc(100% - 40px));margin:-28px auto 0;position:relative;z-index:3;padding:24px 28px;background:#fffdf7;border:1px solid var(--line);box-shadow:0 18px 50px rgba(27,30,25,.08);display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:start}
     .premise strong{font-family:var(--sans);font-size:.75rem;letter-spacing:.1em;color:var(--red);white-space:nowrap}
     .premise p{margin:0;color:#41443e}
-    .layout{display:grid;grid-template-columns:210px minmax(0,var(--reading));gap:70px;width:min(1040px,calc(100% - 40px));margin:78px auto 0;align-items:start}
-    .toc{position:sticky;top:26px;font-family:var(--sans);font-size:.76rem}
+    .layout{display:grid;grid-template-columns:180px minmax(0,var(--reading));gap:30px;width:min(var(--max),calc(100% - 40px));margin:78px auto 0;align-items:start}
+    .toc{position:sticky;top:26px;font-family:var(--sans);font-size:.8rem}
     .toc p{margin:0 0 14px;color:var(--muted);font-weight:800;letter-spacing:.09em}
     .toc ol{list-style:none;padding:0;margin:0;border-left:1px solid var(--line)}
     .toc li{margin:0}
     .toc a{display:block;padding:7px 0 7px 15px;color:#6a6c65;text-decoration:none;border-left:2px solid transparent;margin-left:-1px}
     .toc a:hover,.toc a.active{color:var(--green);border-left-color:var(--green)}
     article{min-width:0}
+    article>section>p,article>section>h2,article>section>h3,article>section>blockquote{max-width:760px}
     section{scroll-margin-top:30px;margin:0 0 88px}
     .section-kicker{margin:0 0 10px;color:var(--red);font-family:var(--sans);font-size:.72rem;letter-spacing:.13em;text-transform:uppercase;font-weight:800}
     h2{margin:0 0 24px;font-size:clamp(1.85rem,4vw,2.65rem);line-height:1.2;letter-spacing:-.035em;text-wrap:balance}
@@ -63,15 +64,14 @@
     p{margin:0 0 1.15rem}
     .lead{font-size:1.16rem;color:#41433e;line-height:1.8}
     blockquote{margin:34px 0;padding:4px 0 4px 24px;border-left:3px solid var(--red);font-size:1.14rem;color:#42443e}
-    .map{margin:42px 0;border:1px solid var(--line);background:#fffdf8}
-    .map-head{display:flex;align-items:end;justify-content:space-between;gap:20px;padding:24px 26px;border-bottom:1px solid var(--line)}
-    .map-head strong{font-size:1.08rem}
-    .map-head span{font-family:var(--sans);font-size:.72rem;color:var(--muted);text-align:right}
-    .layer{display:grid;grid-template-columns:86px 170px 1fr;gap:18px;padding:22px 26px;border-bottom:1px solid var(--line);align-items:start}
-    .layer:last-of-type{border-bottom:0}
-    .layer-no{font-family:var(--sans);font-size:.72rem;color:var(--red);letter-spacing:.08em}
-    .layer h3{margin:0;color:var(--ink);font-size:1.08rem}
-    .layer p{margin:0;color:var(--muted);font-size:.92rem}
+    .axis-map{margin:42px 0;border:1px solid var(--line);background:#fffdf8}
+    .axis-map-head{display:flex;align-items:end;justify-content:space-between;gap:20px;padding:24px 26px;border-bottom:1px solid var(--line)}
+    .axis-map-head strong{font-size:1.08rem}
+    .axis-map-head span{font-family:var(--sans);font-size:.72rem;color:var(--muted);text-align:right}
+    .axis-scroll{overflow-x:auto;overscroll-behavior-inline:contain}
+    .axis-scroll svg{display:block;width:100%;min-width:860px;height:auto}
+    .axis-hint{display:none;margin:0;padding:10px 18px;border-bottom:1px solid var(--line);color:var(--green);background:#edf2ed;font-family:var(--sans);font-size:.74rem;font-weight:700;text-align:center}
+    .axis-map figcaption{padding:14px 20px;border-top:1px solid var(--line);color:var(--muted);font-family:var(--sans);font-size:.72rem;text-align:center}
     .tool-band{padding:22px 26px;background:var(--night);color:#edf0e8}
     .tool-band>p{margin:0 0 14px;color:#aeb9b1;font-family:var(--sans);font-size:.72rem;letter-spacing:.08em}
     .tools{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
@@ -121,7 +121,7 @@
     .ending-inner{max-width:800px;margin:0 auto}
     .ending h2{font-size:clamp(2rem,5vw,3.8rem)}
     .ending p{color:#b9c0b9;font-size:1.08rem}
-    .sources{width:min(var(--reading),calc(100% - 40px));margin:72px auto;font-family:var(--sans);font-size:.78rem;color:var(--muted)}
+    .sources{width:min(var(--reading),calc(100% - 40px));margin:72px auto;font-family:var(--sans);font-size:.82rem;color:var(--muted)}
     .sources h2{font-family:var(--serif);font-size:1.5rem;color:var(--ink)}
     .sources ol{padding-left:1.25rem}
     .sources li{margin:.7rem 0;overflow-wrap:anywhere}
@@ -131,7 +131,6 @@
       .layout{grid-template-columns:1fr;margin-top:62px}
       .toc{position:static;padding:18px 20px;background:#fffdf8;border:1px solid var(--line)}
       .toc ol{display:grid;grid-template-columns:1fr 1fr}
-      .layer{grid-template-columns:64px 145px 1fr}
     }
     @media(max-width:640px){
       html{font-size:17px}
@@ -139,17 +138,17 @@
       .sitebar nav a{min-height:44px;display:flex;align-items:center}
       .hero-inner{width:min(100% - 32px,var(--max));padding:68px 0 66px}
       h1{font-size:clamp(2.45rem,14vw,4rem);letter-spacing:-.04em}
-      h1 span{white-space:normal}
+      h1{white-space:normal}
+      h1>span{display:block;white-space:normal}
       .title-part{display:block;white-space:nowrap}
       .hero-lead{font-size:1.03rem}
       .premise{width:calc(100% - 28px);grid-template-columns:1fr;padding:20px}
       .layout{width:calc(100% - 32px);gap:48px}
       .toc ol{grid-template-columns:1fr}
       section{margin-bottom:66px}
-      .map-head{align-items:start;flex-direction:column}
-      .map-head span{text-align:left}
-      .layer{grid-template-columns:44px 1fr;padding:19px 18px;gap:12px}
-      .layer p{grid-column:2}
+      .axis-map-head{align-items:start;flex-direction:column}
+      .axis-map-head span{text-align:left}
+      .axis-hint{display:block}
       .tool-band{padding:20px 18px}
       .tools,.axes{grid-template-columns:1fr}
       .cycle{grid-template-columns:1fr}
@@ -217,12 +216,49 @@
           <p class="lead">我们常从一个具体问题开始：下一步该怎么做？当方法失效，我们会继续追问它为什么这样设计、凭什么判断有效，以及什么塑造了判断标准。</p>
           <p>这些问题确实有深浅之分，但不构成一条严格、单向、人人通用的六层阶梯。更准确的理解是：我们在四类思考对象之间往返，并用反思工具持续校正。</p>
 
-          <div class="map" role="figure" aria-label="四类思考对象、三种反思工具与三个基础维度">
-            <div class="map-head"><strong>一张可校正的认知地图</strong><span>不是能力高低排序 · 可以上下往返<br>向上追问假设与标准 · 向下返回验证与行动</span></div>
-            <div class="layer"><span class="layer-no">04 / 背景</span><h3>什么塑造了这些标准？</h3><p>范式、世界观、专业共同体与历史经验，决定我们习惯提出什么问题、认可什么证据、忽略什么代价。</p></div>
-            <div class="layer"><span class="layer-no">03 / 裁决</span><h3>凭什么判断它好？</h3><p>数据有效、逻辑自洽、伦理可接受、组织可承载和长期有价值，可能彼此冲突。</p></div>
-            <div class="layer"><span class="layer-no">02 / 设计</span><h3>为什么这样设计？</h3><p>方法背后的因果假设、资源约束、适用条件与组合原则。</p></div>
-            <div class="layer"><span class="layer-no">01 / 行动</span><h3>我具体怎么做？</h3><p>步骤、工具、流程与行为。最终所有追问都要回到可执行、可验证的现实行动。</p></div>
+          <figure class="axis-map" aria-labelledby="axis-title axis-caption">
+            <div class="axis-map-head"><strong id="axis-title">双轴认知地图</strong><span>纵轴：问题追问到哪一层<br>横轴：判断如何经受验证并持续更新</span></div>
+            <p class="axis-hint">← 左右滑动查看完整图 →</p>
+            <div class="axis-scroll" tabindex="0" aria-label="可横向滚动查看完整双轴图">
+              <svg viewBox="0 0 1000 570" role="img" aria-label="纵轴为行动、设计、裁决、背景四类思考对象，横轴为定义问题到修正知识的七步可靠性循环">
+                <defs>
+                  <marker id="arrow-green" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#245a48"/></marker>
+                  <marker id="arrow-red" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#8a352a"/></marker>
+                </defs>
+                <rect x="0" y="0" width="1000" height="570" fill="#fffdf8"/>
+
+                <text x="52" y="278" transform="rotate(-90 52 278)" font-family="Microsoft YaHei, sans-serif" font-size="16" font-weight="700" fill="#8a352a">追问深度 · 可以上下往返</text>
+                <line x1="92" y1="460" x2="92" y2="58" stroke="#8a352a" stroke-width="2" marker-end="url(#arrow-red)"/>
+
+                <rect x="122" y="58" width="830" height="82" fill="#e5ece7"/>
+                <rect x="122" y="148" width="830" height="82" fill="#f1eadc"/>
+                <rect x="122" y="238" width="830" height="82" fill="#edf1eb"/>
+                <rect x="122" y="328" width="830" height="82" fill="#f4efe4"/>
+
+                <g font-family="Microsoft YaHei, sans-serif">
+                  <text x="145" y="88" font-size="14" font-weight="700" fill="#8a352a">04 · 背景</text><text x="145" y="118" font-size="20" font-weight="700" fill="#181915">范式、世界观、共同体</text><text x="430" y="110" font-size="15" fill="#62645d">什么塑造了问题、证据与价值标准？</text>
+                  <text x="145" y="178" font-size="14" font-weight="700" fill="#8a352a">03 · 裁决</text><text x="145" y="208" font-size="20" font-weight="700" fill="#181915">证据、价值、适用边界</text><text x="430" y="200" font-size="15" fill="#62645d">凭什么判断它有效、可接受和值得？</text>
+                  <text x="145" y="268" font-size="14" font-weight="700" fill="#8a352a">02 · 设计</text><text x="145" y="298" font-size="20" font-weight="700" fill="#181915">机制、约束、方法论</text><text x="430" y="290" font-size="15" fill="#62645d">方法为什么这样设计，依赖什么条件？</text>
+                  <text x="145" y="358" font-size="14" font-weight="700" fill="#8a352a">01 · 行动</text><text x="145" y="388" font-size="20" font-weight="700" fill="#181915">步骤、工具、现实试验</text><text x="430" y="380" font-size="15" fill="#62645d">下一步具体做什么，怎样获得反馈？</text>
+                </g>
+
+                <path d="M165 365 C225 365 220 285 285 285 S360 205 425 205 S500 365 565 365 S640 195 705 195 S780 365 845 365 S905 105 940 105" fill="none" stroke="#245a48" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow-green)"/>
+                <g fill="#fff" stroke="#245a48" stroke-width="3"><circle cx="165" cy="365" r="7"/><circle cx="285" cy="285" r="7"/><circle cx="425" cy="205" r="7"/><circle cx="565" cy="365" r="7"/><circle cx="705" cy="195" r="7"/><circle cx="845" cy="365" r="7"/><circle cx="940" cy="105" r="7"/></g>
+                <text x="748" y="82" font-family="Microsoft YaHei, sans-serif" font-size="13" font-weight="700" fill="#245a48">示意轨迹：不是固定路线</text>
+
+                <line x1="122" y1="462" x2="954" y2="462" stroke="#315f79" stroke-width="2" marker-end="url(#arrow-green)"/>
+                <text x="122" y="448" font-family="Microsoft YaHei, sans-serif" font-size="16" font-weight="700" fill="#315f79">验证与更新时间 →</text>
+                <g font-family="Microsoft YaHei, sans-serif" font-size="14" text-anchor="middle">
+                  <g><rect x="122" y="480" width="104" height="54" rx="4" fill="#17201d"/><text x="174" y="502" fill="#cbbf9d">01</text><text x="174" y="522" fill="#fff">定义问题</text></g>
+                  <g><rect x="238" y="480" width="104" height="54" rx="4" fill="#17201d"/><text x="290" y="502" fill="#cbbf9d">02</text><text x="290" y="522" fill="#fff">暴露前提</text></g>
+                  <g><rect x="354" y="480" width="104" height="54" rx="4" fill="#17201d"/><text x="406" y="502" fill="#cbbf9d">03</text><text x="406" y="522" fill="#fff">建立模型</text></g>
+                  <g><rect x="470" y="480" width="104" height="54" rx="4" fill="#17201d"/><text x="522" y="502" fill="#cbbf9d">04</text><text x="522" y="522" fill="#fff">获取证据</text></g>
+                  <g><rect x="586" y="480" width="104" height="54" rx="4" fill="#17201d"/><text x="638" y="502" fill="#cbbf9d">05</text><text x="638" y="522" fill="#fff">不确定判断</text></g>
+                  <g><rect x="702" y="480" width="104" height="54" rx="4" fill="#17201d"/><text x="754" y="502" fill="#cbbf9d">06</text><text x="754" y="522" fill="#fff">行动反馈</text></g>
+                  <g><rect x="818" y="480" width="104" height="54" rx="4" fill="#17201d"/><text x="870" y="502" fill="#cbbf9d">07</text><text x="870" y="522" fill="#fff">修正知识</text></g>
+                </g>
+              </svg>
+            </div>
             <div class="tool-band">
               <p>贯穿每一层的反思工具</p>
               <div class="tools">
@@ -236,7 +272,8 @@
               <div class="axis"><strong>认识论</strong><span>我们如何获得并辩护知识？</span></div>
               <div class="axis"><strong>价值论</strong><span>什么值得追求，什么代价不可接受？</span></div>
             </div>
-          </div>
+            <figcaption id="axis-caption">同一个问题会在四类思考对象之间上下移动；每一次判断还要沿横轴接受证据、行动和反馈的校正。</figcaption>
+          </figure>
 
           <h3>行动层：我具体怎么做？</h3>
           <p>行动层处理步骤、工具、流程与行为。例如采用番茄工作法、召开复盘会、设置补货点，或在决策前列出三个选项。它的优势是直接、可执行；风险是把“完成动作”误当成“解决问题”。</p>
