@@ -1,0 +1,783 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light" />
+  <title>从FDE走红看AI行业趋势与未来组织角色｜研讨材料</title>
+  <style>
+    :root {
+      --paper: #f5f2ea;
+      --surface: #fffdf8;
+      --ink: #17211d;
+      --muted: #4f5d55;
+      --line: #d9d5ca;
+      --forest: #174c3c;
+      --forest-2: #236b55;
+      --sand: #e9dfc7;
+      --gold: #a46f20;
+      --rust: #9b4d35;
+      --blue: #315e73;
+      --shadow: 0 16px 48px rgba(23, 33, 29, .08);
+      --radius: 18px;
+      --measure: 780px;
+      --wide: 1180px;
+      --body-size: 17px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        linear-gradient(rgba(23,76,60,.025) 1px, transparent 1px),
+        var(--paper);
+      background-size: 100% 32px;
+      font-family: "Noto Sans CJK SC", "Source Han Sans SC", "Microsoft YaHei", sans-serif;
+      font-size: var(--body-size);
+      line-height: 1.75;
+      text-rendering: optimizeLegibility;
+    }
+
+    a { color: var(--forest-2); text-underline-offset: 3px; }
+    button { font: inherit; }
+    .keep { white-space: nowrap; }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      min-height: 58px;
+      padding: 8px max(20px, calc((100vw - var(--wide)) / 2));
+      background: rgba(245, 242, 234, .94);
+      border-bottom: 1px solid rgba(23, 76, 60, .16);
+      backdrop-filter: blur(12px);
+    }
+    .brand { font-size: 14px; font-weight: 760; letter-spacing: .06em; color: var(--forest); text-decoration: none; }
+    .controls { display: flex; align-items: center; gap: 8px; }
+    .meeting-nav { display: none; align-items: center; gap: 6px; padding-left: 8px; border-left: 1px solid var(--line); }
+    .meeting-nav .control { min-width: 40px; padding-inline: 10px; }
+    .slide-count { min-width: 58px; color: var(--muted); font-size: 13px; text-align: center; font-variant-numeric: tabular-nums; }
+    .control {
+      min-height: 40px;
+      padding: 8px 13px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--surface);
+      color: var(--ink);
+      cursor: pointer;
+    }
+    .control:hover, .control:focus-visible { border-color: var(--forest); outline: none; }
+    .control.active { color: white; background: var(--forest); border-color: var(--forest); }
+
+    .progress { position: fixed; inset: 58px 0 auto; z-index: 31; height: 3px; background: transparent; }
+    .progress > span { display: block; height: 100%; width: 0; background: var(--gold); }
+
+    .hero {
+      min-height: 82vh;
+      display: grid;
+      align-items: center;
+      padding: 88px 24px 70px;
+      background:
+        radial-gradient(circle at 80% 20%, rgba(164,111,32,.13), transparent 28%),
+        radial-gradient(circle at 12% 78%, rgba(23,76,60,.12), transparent 26%);
+      border-bottom: 1px solid var(--line);
+    }
+    .hero-inner { width: min(var(--wide), 100%); margin: auto; }
+    .eyebrow { margin: 0 0 16px; color: var(--rust); font-weight: 750; letter-spacing: .1em; font-size: 14px; }
+    h1 {
+      max-width: 1160px;
+      margin: 0;
+      font-family: "Noto Serif CJK SC", "Source Han Serif SC", "Songti SC", SimSun, serif;
+      font-size: clamp(42px, 6vw, 82px);
+      line-height: 1.12;
+      letter-spacing: -.035em;
+      text-wrap: balance;
+    }
+    .hero-lead {
+      max-width: 860px;
+      margin: 28px 0 0;
+      font-size: clamp(19px, 2vw, 27px);
+      line-height: 1.6;
+      color: #34453d;
+    }
+    .hero-verdict {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 18px;
+      align-items: start;
+      max-width: 920px;
+      margin-top: 38px;
+      padding-top: 24px;
+      border-top: 2px solid var(--forest);
+    }
+    .hero-verdict b { color: var(--forest); }
+    .stamp {
+      display: inline-grid;
+      place-items: center;
+      width: 68px;
+      aspect-ratio: 1;
+      border: 2px solid var(--forest);
+      border-radius: 50%;
+      color: var(--forest);
+      font-weight: 850;
+      line-height: 1.1;
+      text-align: center;
+      transform: rotate(-6deg);
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 210px minmax(0, 1fr);
+      gap: 42px;
+      width: min(var(--wide), calc(100% - 40px));
+      margin: 0 auto;
+      padding: 52px 0 120px;
+    }
+    .toc {
+      position: sticky;
+      top: 88px;
+      align-self: start;
+      max-height: calc(100vh - 110px);
+      overflow: auto;
+      padding-right: 12px;
+    }
+    .toc-label { margin-bottom: 12px; color: var(--muted); font-size: 12px; letter-spacing: .12em; font-weight: 750; }
+    .toc a {
+      display: block;
+      padding: 8px 10px;
+      border-left: 2px solid var(--line);
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.35;
+      text-decoration: none;
+    }
+    .toc a:hover, .toc a.active { color: var(--forest); border-left-color: var(--forest); background: rgba(23,76,60,.05); }
+
+    main { min-width: 0; }
+    section {
+      scroll-margin-top: 82px;
+      padding: 76px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    section:first-child { padding-top: 20px; }
+    .section-no { color: var(--rust); font-size: 13px; font-weight: 800; letter-spacing: .12em; }
+    h2 {
+      margin: 10px 0 20px;
+      font-family: "Noto Serif CJK SC", "Source Han Serif SC", "Songti SC", SimSun, serif;
+      font-size: clamp(30px, 4vw, 50px);
+      line-height: 1.24;
+      letter-spacing: -.025em;
+      text-wrap: balance;
+    }
+    h3 { margin: 34px 0 12px; font-size: 21px; line-height: 1.4; }
+    p { max-width: var(--measure); margin: 12px 0; }
+    .lead { max-width: 860px; font-size: 21px; line-height: 1.65; color: #34453d; }
+    .verdict-line {
+      max-width: 900px;
+      margin: 28px 0;
+      padding: 22px 0;
+      border-block: 1px solid var(--forest);
+      color: var(--forest);
+      font-family: "Noto Serif CJK SC", "Songti SC", SimSun, serif;
+      font-size: clamp(24px, 3vw, 36px);
+      line-height: 1.45;
+      font-weight: 700;
+    }
+
+    .shift {
+      display: grid;
+      grid-template-columns: 1fr 56px 1fr;
+      align-items: stretch;
+      max-width: 1000px;
+      margin: 34px 0;
+    }
+    .shift-panel { padding: 28px; border: 1px solid var(--line); background: var(--surface); }
+    .shift-panel:first-child { border-radius: var(--radius) 0 0 var(--radius); }
+    .shift-panel:last-child { border-radius: 0 var(--radius) var(--radius) 0; border-color: rgba(23,76,60,.45); background: #f1f6f2; }
+    .shift-arrow { display: grid; place-items: center; background: var(--forest); color: white; font-size: 26px; }
+    .shift-title { color: var(--muted); font-size: 13px; font-weight: 800; letter-spacing: .1em; }
+    .shift strong { display: block; margin: 12px 0; font-size: 22px; line-height: 1.45; }
+
+    .loop {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(130px, 1fr));
+      gap: 0;
+      margin: 38px 0;
+      overflow-x: auto;
+      padding-bottom: 10px;
+    }
+    .loop-step {
+      position: relative;
+      min-width: 145px;
+      padding: 22px 18px 24px;
+      border-block: 1px solid var(--line);
+      border-left: 1px solid var(--line);
+      background: var(--surface);
+    }
+    .loop-step:first-child { border-radius: var(--radius) 0 0 var(--radius); }
+    .loop-step:last-child { border-right: 1px solid var(--line); border-radius: 0 var(--radius) var(--radius) 0; }
+    .loop-step::after {
+      content: "→";
+      position: absolute;
+      right: -12px;
+      top: 50%;
+      z-index: 2;
+      display: grid;
+      place-items: center;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      color: white;
+      background: var(--forest);
+      transform: translateY(-50%);
+    }
+    .loop-step:last-child::after { content: "↻"; right: 8px; top: 18px; background: var(--gold); }
+    .loop-step small { display: block; color: var(--rust); font-weight: 800; }
+    .loop-step b { display: block; margin-top: 8px; line-height: 1.35; }
+
+    .role-family {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin: 34px 0;
+    }
+    .role {
+      min-height: 210px;
+      padding: 24px;
+      border-top: 4px solid var(--forest);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+    .role:nth-child(2) { border-color: var(--blue); }
+    .role:nth-child(3) { border-color: var(--gold); }
+    .role:nth-child(4) { border-color: var(--rust); }
+    .role .index { color: var(--muted); font-size: 12px; font-weight: 800; }
+    .role h3 { margin: 12px 0 8px; font-size: 20px; }
+    .role p { color: var(--muted); font-size: 15px; line-height: 1.65; }
+
+    .table-wrap { margin: 32px 0; overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
+    table { width: 100%; min-width: 900px; border-collapse: collapse; font-size: 15px; line-height: 1.55; }
+    th, td { padding: 18px; vertical-align: top; text-align: left; border-bottom: 1px solid var(--line); }
+    th { position: sticky; top: 0; background: #e8eee9; color: var(--forest); font-size: 13px; letter-spacing: .04em; }
+    tbody tr:last-child td { border-bottom: 0; }
+    tbody tr:hover { background: #fbf8ef; }
+    td:first-child { font-weight: 760; white-space: nowrap; }
+
+    .path-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+      margin: 34px 0;
+    }
+    .path {
+      padding: 26px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+    }
+    .path h3 { margin-top: 0; color: var(--forest); }
+    .path dl { display: grid; grid-template-columns: 90px 1fr; margin: 0; font-size: 15px; }
+    .path dt, .path dd { margin: 0; padding: 9px 0; border-top: 1px dashed var(--line); }
+    .path dt { color: var(--muted); font-weight: 700; }
+
+    .boundary {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin: 34px 0;
+    }
+    .boundary > div { padding: 28px; border-radius: var(--radius); }
+    .boundary .team { color: white; background: var(--forest); }
+    .boundary .person { background: var(--sand); }
+    .boundary h3 { margin-top: 0; }
+    ul { max-width: 800px; padding-left: 1.25em; }
+    li { margin: 8px 0; }
+
+    .workshop {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 28px;
+      margin-top: 34px;
+    }
+    .axis-card { padding: 28px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
+    .axis-card h3 { margin-top: 0; }
+    .axis { margin: 22px 0; }
+    .axis-label { display: flex; justify-content: space-between; gap: 12px; color: var(--muted); font-size: 13px; }
+    .axis-line { position: relative; height: 10px; margin-top: 7px; border-radius: 999px; background: linear-gradient(90deg, var(--sand), var(--forest)); }
+    .axis-line::after { content: ""; position: absolute; left: 50%; top: -4px; width: 2px; height: 18px; background: var(--ink); opacity: .35; }
+    .questions { counter-reset: q; margin: 0; padding: 0; list-style: none; }
+    .questions li { counter-increment: q; display: grid; grid-template-columns: 36px 1fr; gap: 12px; padding: 14px 0; border-bottom: 1px solid var(--line); }
+    .questions li::before { content: counter(q); display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; color: white; background: var(--rust); font-weight: 800; }
+
+    .anti-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin: 32px 0; }
+    .anti { padding: 20px 22px; border: 1px solid rgba(155,77,53,.28); background: #fff9f3; }
+    .anti b { color: var(--rust); }
+
+    .decision-box { margin: 34px 0; padding: 30px; border: 2px solid var(--forest); border-radius: var(--radius); background: #f2f7f3; }
+    .decision-box h3 { margin-top: 0; }
+    .decision-box label { display: grid; grid-template-columns: 28px 1fr; gap: 10px; padding: 10px 0; cursor: pointer; }
+    .decision-box input { width: 20px; height: 20px; accent-color: var(--forest); }
+
+    .sources { font-size: 14px; color: var(--muted); }
+    .sources li { overflow-wrap: anywhere; }
+
+    .meeting-mode {
+      --body-size: 22px;
+      background: var(--paper);
+    }
+    .meeting-mode .meeting-nav { display: flex; }
+    .meeting-mode .layout { grid-template-columns: 1fr; width: min(1360px, calc(100% - 60px)); }
+    .meeting-mode .toc { display: none; }
+    .meeting-mode section { min-height: calc(100vh - 60px); display: flex; flex-direction: column; justify-content: center; padding-block: 78px; scroll-snap-align: start; }
+    .meeting-mode main { scroll-snap-type: y proximity; }
+    .meeting-mode p, .meeting-mode ul { max-width: 1000px; }
+    .meeting-mode .role p, .meeting-mode .path dl, .meeting-mode .anti { font-size: 19px; }
+    .meeting-mode .role h3, .meeting-mode .path h3 { font-size: 24px; }
+    .meeting-mode table { font-size: 19px; }
+    .meeting-mode th { font-size: 16px; }
+    .meeting-mode .sources { font-size: 17px; }
+
+    .print-only { display: none; }
+    footer { padding: 28px 24px 44px; text-align: center; color: var(--muted); font-size: 13px; }
+
+    @media (max-width: 980px) {
+      .layout { grid-template-columns: 1fr; }
+      .toc { display: none; }
+      .role-family { grid-template-columns: repeat(2, 1fr); }
+      .workshop, .boundary { grid-template-columns: 1fr; }
+      .hero { min-height: auto; }
+      h1 { font-size: clamp(40px, 8vw, 64px); }
+    }
+
+    @media (max-width: 640px) {
+      body { --body-size: 16px; }
+      .topbar { padding-inline: 14px; }
+      .brand { max-width: 120px; line-height: 1.2; }
+      .control { min-width: 44px; padding: 8px 11px; }
+      .hero { padding: 72px 18px 50px; }
+      h1 { font-size: 38px; letter-spacing: -.02em; }
+      .hero-lead { font-size: 18px; }
+      .hero-verdict { grid-template-columns: 1fr; }
+      .layout { width: min(100% - 28px, var(--wide)); padding-top: 20px; }
+      section { padding: 58px 0; }
+      h2 { font-size: 31px; }
+      .shift { grid-template-columns: 1fr; gap: 0; }
+      .shift-panel:first-child { border-radius: var(--radius) var(--radius) 0 0; }
+      .shift-panel:last-child { border-radius: 0 0 var(--radius) var(--radius); }
+      .shift-arrow { height: 44px; }
+      .role-family, .path-grid, .anti-grid { grid-template-columns: 1fr; }
+      .loop { grid-template-columns: repeat(6, 150px); }
+      .controls .label { display: none; }
+      .meeting-nav { padding-left: 0; border-left: 0; }
+      .slide-count { display: none; }
+      .meeting-mode .layout { width: calc(100% - 28px); }
+      .keep { white-space: normal; }
+    }
+
+    @media print {
+      @page { size: A4; margin: 15mm; }
+      body { background: white; font-size: 11.5pt; }
+      .topbar, .progress, .toc { display: none !important; }
+      .hero { min-height: auto; padding: 20mm 0 12mm; break-after: page; background: none; }
+      h1 { font-size: 34pt; }
+      .layout { display: block; width: 100%; padding: 0; }
+      section { padding: 12mm 0; break-inside: avoid; }
+      .role-family, .path-grid, .boundary, .workshop { break-inside: avoid; }
+      .print-only { display: block; }
+      .control { display: none; }
+      a { color: inherit; text-decoration: none; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      * { transition: none !important; animation: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="../">← 返回 cizen.net</a>
+    <div class="controls" aria-label="显示控制">
+      <button class="control active" id="readMode" type="button">阅读<span class="label">模式</span></button>
+      <button class="control" id="meetingMode" type="button">会议<span class="label">模式</span></button>
+      <button class="control" id="printBtn" type="button" aria-label="打印或导出 PDF">打印</button>
+      <div class="meeting-nav" aria-label="会议章节导航">
+        <button class="control" id="prevSlide" type="button" aria-label="上一章节">←</button>
+        <span class="slide-count" id="slideCount">1 / 10</span>
+        <button class="control" id="nextSlide" type="button" aria-label="下一章节">→</button>
+      </div>
+    </div>
+  </header>
+  <div class="progress" aria-hidden="true"><span id="progressBar"></span></div>
+
+  <section class="hero" id="top">
+    <div class="hero-inner">
+      <p class="eyebrow">AI行业趋势与组织角色启示 · 公开研讨材料 · 2026</p>
+      <h1>FDE 为什么突然火了？<br>因为 AI 的竞争，正在从“模型”走向“真实价值”。</h1>
+      <p class="hero-lead">FDE 是深入业务现场、把前沿技术转化为生产结果的复合型工程角色。它的走红为我们提供了一个观察窗口：从行业价值瓶颈，到组织能力组合，再到不同专业人才的未来转型。</p>
+      <div class="hero-verdict">
+        <div class="stamp">核心<br>线索</div>
+        <div><b>把 FDE 当作观察 AI 产业变化的一扇窗口。</b><br>AI能力越来越强，组织能否把它接入工作流、形成生产系统、推动采用并持续学习，正在成为新的竞争分水岭。</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="layout">
+    <nav class="toc" aria-label="页面目录">
+      <div class="toc-label">理解路径</div>
+      <a href="#signal">01 一个岗位的信号</a>
+      <a href="#shifts">02 AI行业四大转向</a>
+      <a href="#logic">03 底层价值逻辑</a>
+      <a href="#roles">04 新角色正在涌现</a>
+      <a href="#organization">05 未来组织能力组合</a>
+      <a href="#talent">06 不同人才的转型路径</a>
+      <a href="#model">07 对公司组织的启发</a>
+      <a href="#opportunity">08 机会与风险</a>
+      <a href="#discussion">09 回到我们的讨论</a>
+      <a href="#sources">10 参考来源</a>
+    </nav>
+
+    <main>
+      <section id="signal">
+        <div class="section-no">01 · 一个岗位的信号</div>
+        <h2>FDE并不新，<br>为什么偏偏在AI时代重新走红？</h2>
+        <p class="lead">Palantir 很早就用 Forward Deployed Engineer 深入复杂客户现场；现在 OpenAI 设置 FDE 与 AI Deployment Engineer，Anthropic 大量招聘 Applied AI Architect，AI应用公司还出现了 Agent Product Manager 等角色。名称不同，方向高度一致。</p>
+        <div class="shift">
+          <div class="shift-panel">
+            <div class="shift-title">过去的软件主叙事</div>
+            <strong>造出标准产品，再规模化销售</strong>
+            <p>产品与研发在后方完成能力，客户负责配置、采用和组织改变。</p>
+          </div>
+          <div class="shift-arrow" aria-hidden="true">→</div>
+          <div class="shift-panel">
+            <div class="shift-title">AI时代暴露的新矛盾</div>
+            <strong>通用能力很强，但真实价值高度依赖现场</strong>
+            <p>工作流、数据、系统、权限、评测、信任和改变方式共同决定结果。</p>
+          </div>
+        </div>
+        <div class="verdict-line">岗位走红的底层原因：技术供给变强之后，“把技术变成结果”的能力反而更稀缺。</div>
+        <p>OpenAI 对 FDE 的成功标准不是完成 Demo，而是生产采用、可衡量的工作流影响，以及能够反馈到产品和模型路线图的评测信号。<a href="#src-openai">[3]</a></p>
+      </section>
+
+      <section id="shifts">
+        <div class="section-no">02 · AI行业四大转向</div>
+        <h2>FDE热潮背后，<br>AI价值创造方式正在发生四个转向。</h2>
+        <div class="path-grid">
+          <article class="path">
+            <h3>转向一｜从模型稀缺到场景稀缺</h3>
+            <dl>
+              <dt>过去</dt><dd>更强的模型和算法本身就是主要壁垒</dd>
+              <dt>现在</dt><dd>基础模型可获得性提升，差异更多来自工作流、领域数据、集成和持续优化</dd>
+              <dt>启示</dt><dd>“知道哪里值得用、如何真正用起来”变得更重要</dd>
+            </dl>
+          </article>
+          <article class="path">
+            <h3>转向二｜从功能交付到结果闭环</h3>
+            <dl>
+              <dt>过去</dt><dd>需求完成、功能上线、模型精度达标</dd>
+              <dt>现在</dt><dd>生产可靠、用户采用、工作流改变、业务结果可衡量</dd>
+              <dt>启示</dt><dd>完成定义向价值链后端延伸，角色必须跨过传统交接边界</dd>
+            </dl>
+          </article>
+          <article class="path">
+            <h3>转向三｜从人使用工具到人机共同工作</h3>
+            <dl>
+              <dt>过去</dt><dd>AI辅助单点任务，人仍按原流程工作</dd>
+              <dt>现在</dt><dd>Agent进入流程，人开始分派、校验、协同和治理数字劳动</dd>
+              <dt>启示</dt><dd>组织设计对象从“岗位”扩展为“人—Agent—流程”系统</dd>
+            </dl>
+          </article>
+          <article class="path">
+            <h3>转向四｜从专业分段到能力组合</h3>
+            <dl>
+              <dt>过去</dt><dd>产品、算法、开发、实施分段交付</dd>
+              <dt>现在</dt><dd>围绕问题快速组合业务、产品、技术、数据和变革能力</dd>
+              <dt>启示</dt><dd>专业深度仍重要，但价值越来越产生于接口处</dd>
+            </dl>
+          </article>
+        </div>
+        <p>微软把这种趋势概括为由“按需智能、人机团队和 Agent Boss”构成的 Frontier Firm；这是一家厂商提出的趋势框架，不是确定预言，但它提示管理者开始重新设计工作与组织，而不只是采购工具。<a href="#src-ms">[7]</a></p>
+      </section>
+
+      <section id="logic">
+        <div class="section-no">03 · 底层价值逻辑</div>
+        <h2>模型输出只是起点，<br>AI价值来自持续学习的生产回路。</h2>
+        <div class="loop" aria-label="AI价值闭环">
+          <div class="loop-step"><small>01</small><b>高价值问题</b><span>真实决策与工作流</span></div>
+          <div class="loop-step"><small>02</small><b>方案与评测</b><span>模型、规则、数据和护栏</span></div>
+          <div class="loop-step"><small>03</small><b>生产集成</b><span>系统、权限、成本与可靠性</span></div>
+          <div class="loop-step"><small>04</small><b>采用改变</b><span>用户信任、行为与流程重构</span></div>
+          <div class="loop-step"><small>05</small><b>结果反馈</b><span>业务影响、错误与新问题</span></div>
+          <div class="loop-step"><small>06</small><b>能力复用</b><span>产品、组件、评测与方法</span></div>
+        </div>
+        <p class="lead">AI系统之所以难，不是因为每个环节都必须由一个人完成，而是因为任何一个环节都不能无人负责，环节之间还必须形成短反馈。</p>
+        <div class="boundary">
+          <div class="team">
+            <h3>价值飞轮</h3>
+            <ul>
+              <li>现场问题让产品与模型更真实</li>
+              <li>产品与平台让下一次落地更轻</li>
+              <li>生产反馈让评测和治理持续进化</li>
+              <li>复用收益反过来支持更难的新探索</li>
+            </ul>
+          </div>
+          <div class="person">
+            <h3>真正的壁垒</h3>
+            <ul>
+              <li>不是堆更多模型，而是更快找到高价值问题</li>
+              <li>不是做更多定制，而是让定制持续减少</li>
+              <li>不是一次性交付，而是组织学习速度</li>
+              <li>不是个人英雄，而是完整系统能力</li>
+            </ul>
+          </div>
+        </div>
+        <p>MIT NANDA 的初步研究将大量 GenAI 项目停滞归因于工作流脆弱、缺少情境学习以及与日常操作错位；其“95%”比例受样本与定义限制，只适合作为方向性警示。<a href="#src-mit">[8]</a></p>
+      </section>
+
+      <section id="roles">
+        <div class="section-no">04 · 新角色正在涌现</div>
+        <h2>FDE之外，<br>哪些连接技术与价值的复合角色正在出现？</h2>
+        <div class="role-family">
+          <article class="role"><span class="index">DISCOVER</span><h3>AI机会与工作流设计</h3><p>理解业务、用户和流程，判断哪里值得使用AI，重构人与Agent的分工。</p></article>
+          <article class="role"><span class="index">BUILD</span><h3>应用AI构建与评测</h3><p>组合模型、数据、Prompt、Agent和软件，建立业务与技术联合评测。</p></article>
+          <article class="role"><span class="index">DEPLOY</span><h3>生产部署与采用</h3><p>解决集成、权限、安全、可靠性和改变管理，让能力真正进入日常工作。</p></article>
+          <article class="role"><span class="index">SCALE</span><h3>能力抽象与平台化</h3><p>识别跨场景共性，沉淀组件、接口、评测、治理和自助能力。</p></article>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>市场上出现的名称</th><th>强调的价值</th><th>共同底层能力</th></tr></thead>
+            <tbody>
+              <tr><td>Forward Deployed Engineer</td><td>深入现场、端到端构建、生产结果与产品反馈</td><td rowspan="5">业务理解 × AI技术 × 软件工程 × 评测 × 推进改变 × 知识复用</td></tr>
+              <tr><td>AI Deployment Engineer</td><td>从用例、架构和原型推进到可靠生产与规模采用</td></tr>
+              <tr><td>Applied AI Architect</td><td>把通用模型能力转化为行业与企业解决方案</td></tr>
+              <tr><td>Agent Product Manager</td><td>把Agent当成需要训练、评测和运营的数字成员</td></tr>
+              <tr><td>Agent Boss / Human-Agent Lead</td><td>分派、协调、校验和治理人机团队</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>这些名称来自不同企业和趋势报告，边界并不统一。它们共同提示：问题发现、应用构建、生产采用与能力复用正在成为不可缺失的责任。</p>
+        <div class="verdict-line">如果价值必须在真实场景中闭环，组织问题就会从“AI团队放在哪里”，转向“这些责任由谁承担、哪一环最弱、如何形成反馈”。</div>
+      </section>
+
+      <section id="organization">
+        <div class="section-no">05 · 未来AI组织能力组合</div>
+        <h2>未来的AI组织，<br>更像四种能力相互咬合。</h2>
+        <div class="path-grid">
+          <article class="path">
+            <h3>① 面向结果的跨职能团队</h3>
+            <dl>
+              <dt>负责</dt><dd>真实问题、快速验证、生产采用和业务结果</dd>
+              <dt>构成</dt><dd>业务、产品、算法/AI、开发、数据等稳定协作</dd>
+              <dt>关键</dt><dd>不把AI工作再次变成向专业团队提需求</dd>
+            </dl>
+          </article>
+          <article class="path">
+            <h3>② 面向复用的产品与平台能力</h3>
+            <dl>
+              <dt>负责</dt><dd>跨场景模型、评测、数据、工具、接口与治理</dd>
+              <dt>目标</dt><dd>让新场景更快、更稳、更低成本地接入</dd>
+              <dt>关键</dt><dd>以采用和认知负荷下降衡量，而不是功能数量</dd>
+            </dl>
+          </article>
+          <article class="path">
+            <h3>③ 面向深度的专业共同体</h3>
+            <dl>
+              <dt>负责</dt><dd>专业标准、技术深度、评审、导师与人才成长</dd>
+              <dt>保留</dt><dd>关键算法、工程、数据与安全等稀缺能力</dd>
+              <dt>关键</dt><dd>保护深度，但不重新变成资源池和排队中心</dd>
+            </dl>
+          </article>
+          <article class="path">
+            <h3>④ 面向变化的组合与治理</h3>
+            <dl>
+              <dt>负责</dt><dd>价值排序、资源取舍、风险边界和停止决策</dd>
+              <dt>对象</dt><dd>不只管理项目，也管理AI能力和人机工作系统</dd>
+              <dt>关键</dt><dd>既避免野蛮自动化，也避免治理拖慢学习</dd>
+            </dl>
+          </article>
+        </div>
+        <div class="verdict-line">组织的核心设计问题，从“AI团队放在哪里”变成“问题、能力、专业和治理如何形成闭环”。</div>
+      </section>
+
+      <section id="talent">
+        <div class="section-no">06 · 人才转型路径</div>
+        <h2>算法之外，<br>哪些专业正在成为AI价值闭环的一部分？</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>原专业</th><th>可带入的新价值</th><th>需要跨过的关键边界</th><th>可能成长方向</th></tr></thead>
+            <tbody>
+              <tr><td>算法工程师</td><td>模型、数据、实验和技术边界</td><td>从离线指标走向业务问题、生产工程与采用</td><td>应用AI、评测、关键算法攻坚</td></tr>
+              <tr><td>开发工程师</td><td>架构、编码、集成、部署和可靠性</td><td>理解模型行为、业务语境和价值评测</td><td>AI应用工程、Agent工程、AI部署</td></tr>
+              <tr><td>产品经理</td><td>用户、流程、需求与价值判断</td><td>补足AI与工程深度，能做技术取舍和快速原型</td><td>AI产品发现、工作流设计、Agent产品</td></tr>
+              <tr><td>数据人员</td><td>数据口径、质量、分析、指标和管道</td><td>进入模型评测、应用构建和生产反馈</td><td>AI评测、数据产品、智能决策系统</td></tr>
+              <tr><td>实施/解决方案</td><td>现场语境、沟通、项目推进和采用</td><td>补足生产级工程与产品反哺能力</td><td>AI部署、应用架构、客户成功工程</td></tr>
+              <tr><td>业务专家</td><td>领域知识、判断标准、例外和真实约束</td><td>形成AI素养、流程设计与人机协作能力</td><td>AI业务Owner、Agent运营与训练</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="boundary">
+          <div class="team"><h3>共同底线</h3><ul><li>理解AI能做什么、不能做什么</li><li>围绕真实结果而不是技术热度工作</li><li>能与相邻专业形成短反馈</li><li>让经验进入团队和组织资产</li></ul></div>
+          <div class="person"><h3>允许差异</h3><ul><li>有人更强于问题和产品</li><li>有人更强于算法和评测</li><li>有人更强于系统和生产</li><li>有人更强于抽象和平台化</li></ul></div>
+        </div>
+        <p>世界经济论坛的 2025 报告同时强调 AI/大数据等技术技能和分析、创造、韧性、领导与协作等人类技能；未来角色更可能要求二者组合，而不是用一方替代另一方。<a href="#src-wef">[9]</a></p>
+      </section>
+
+      <section id="model">
+        <div class="section-no">07 · 对公司组织的启发</div>
+        <h2>回到我们的组织，<br>不必先复制岗位，可以先补齐责任。</h2>
+        <p class="lead">公司已经在向价值流团队转型。FDE案例提供的启发，不是再增加一层新组织，而是检查现有团队是否覆盖了从经营问题到AI价值的完整闭环。</p>
+        <div class="shift">
+          <div class="shift-panel">
+            <div class="shift-title">面向业务结果的团队</div>
+            <strong>更接近GST（增长/业务结果团队）的责任</strong>
+            <p>发现问题、设计实验、组合能力、推动采用、验证经营结果。</p>
+          </div>
+          <div class="shift-arrow" aria-hidden="true">↔</div>
+          <div class="shift-panel">
+            <div class="shift-title">面向长期复用的团队</div>
+            <strong>更接近PST（产品/平台支撑团队）的责任</strong>
+            <p>抽象共性、建设模型与平台能力、评测治理、降低接入成本。</p>
+          </div>
+        </div>
+        <div class="workshop">
+          <div class="axis-card">
+            <h3>检查每支团队是否缺少这些责任</h3>
+            <ol class="questions">
+              <li>谁负责识别最值得使用AI的经营问题？</li>
+              <li>谁把模糊问题转成可验证方案？</li>
+              <li>谁让方案可靠进入生产并推动采用？</li>
+              <li>谁对业务与技术联合评测负责？</li>
+              <li>谁判断哪些经验值得跨团队复用？</li>
+              <li>谁保护专业深度并培养下一批人才？</li>
+            </ol>
+          </div>
+          <div class="axis-card">
+            <h3>未来角色设计的六个维度</h3>
+            <div class="axis"><div class="axis-label"><span>远离现场</span><b>业务接近度</b><span>深入工作流</span></div><div class="axis-line"></div></div>
+            <div class="axis"><div class="axis-label"><span>明确任务</span><b>模糊问题处理</b><span>自主定义验证</span></div><div class="axis-line"></div></div>
+            <div class="axis"><div class="axis-label"><span>单项技术</span><b>系统构建</b><span>生产闭环</span></div><div class="axis-line"></div></div>
+            <div class="axis"><div class="axis-label"><span>局部优化</span><b>价值责任</b><span>经营结果</span></div><div class="axis-line"></div></div>
+            <div class="axis"><div class="axis-label"><span>单场景</span><b>抽象复用</b><span>平台产品化</span></div><div class="axis-line"></div></div>
+            <div class="axis"><div class="axis-label"><span>个人经验</span><b>组织学习</b><span>能力资产</span></div><div class="axis-line"></div></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="opportunity">
+        <div class="section-no">08 · 机会与风险</div>
+        <h2>角色融合会让哪些工作方式失效，<br>又会创造哪些成长空间？</h2>
+        <div class="anti-grid">
+          <div class="anti"><b>机会｜更完整的价值感</b><br>技术人员更快看到成果，产品人员更接近构建，业务专家获得新的杠杆。</div>
+          <div class="anti"><b>机会｜新的职业通道</b><br>应用AI、AI部署、Agent产品、评测、平台化和人机团队运营都会产生新角色。</div>
+          <div class="anti"><b>风险｜只换头衔不换机制</b><br>如果仍然串行提需求、排期和移交，新名称不会带来新能力。</div>
+          <div class="anti"><b>风险｜把复合变成全能</b><br>要求一个人同时精通所有领域，会制造过载和英雄依赖。</div>
+          <div class="anti"><b>风险｜短期价值挤压专业深度</b><br>如果没有专业共同体和长期能力投资，组织会失去解决难题的能力。</div>
+          <div class="anti"><b>风险｜过早以新标准评价旧人才</b><br>转型需要真实任务、结对、工具和适应期，不能只提出更高要求。</div>
+        </div>
+        <div class="verdict-line">未来真正有风险的，不是原岗位名称消失，而是个人和组织仍停留在只完成局部任务的工作方式。</div>
+      </section>
+
+      <section id="discussion">
+        <div class="section-no">09 · 回到我们的讨论</div>
+        <h2>从行业趋势回到公司：<br>未来需要什么能力组合？</h2>
+        <div class="decision-box">
+          <h3>建议工作组形成的六项共识</h3>
+          <label><input type="checkbox"><span>未来1—2年，公司哪些AI价值场景最值得优先建设？</span></label>
+          <label><input type="checkbox"><span>从问题到生产价值，当前最缺失的三项责任是什么？</span></label>
+          <label><input type="checkbox"><span>哪些责任应在业务结果团队中，哪些应由平台能力承接？</span></label>
+          <label><input type="checkbox"><span>算法、开发、产品、数据、业务人员分别有哪些转型可能？</span></label>
+          <label><input type="checkbox"><span>怎样保护专业深度，又避免重新形成职能排队？</span></label>
+          <label><input type="checkbox"><span>公司应该提供哪些真实任务、结对、导师和评价机制？</span></label>
+        </div>
+        <div class="verdict-line">先看趋势与价值链，再定义角色；先设计成长条件，再讨论人员落位。</div>
+      </section>
+
+      <section id="sources" class="sources">
+        <div class="section-no">10 · 参考来源与边界</div>
+        <h2>趋势用于打开视野，<br>角色仍需在真实场景中定义。</h2>
+        <p>材料使用公开岗位、企业实践与趋势报告作为启发。不同公司的名称和边界并不统一；报告中的预测与比例受研究口径限制，不应直接变成公司的岗位或人员结论。</p>
+        <ol>
+          <li><a href="https://www.toutiao.com/article/7646643844682990115/">《FDE的碎石路逻辑：为什么越不能规模化的事，越值钱》</a></li>
+          <li><a href="https://www.toutiao.com/article/7667034532880646708/">《AI时代落地攻坚者：FDE前沿部署工程师全景解析》</a></li>
+          <li id="src-openai"><a href="https://openai.com/careers/forward-deployed-engineer-singapore-singapore">OpenAI｜Forward Deployed Engineer</a></li>
+          <li><a href="https://openai.com/careers/ai-deployment-engineer-enterprise-san-francisco">OpenAI｜AI Deployment Engineer, Enterprise</a></li>
+          <li><a href="https://palantir.com/docs/foundry/architecture-center/overview">Palantir｜Forward Deployed Engineering methodology</a></li>
+          <li><a href="https://a16z.com/services-led-growth">a16z｜Why the Forward Deployed Engineer Is the Hottest Job in Startups</a></li>
+          <li id="src-ms"><a href="https://blogs.microsoft.com/blog/2025/04/23/the-2025-annual-work-trend-index-the-frontier-firm-is-born">Microsoft｜2025 Work Trend Index</a></li>
+          <li id="src-mit"><a href="https://mlq.ai/media/quarterly_decks/v0.1_State_of_AI_in_Business_2025_Report.pdf">MIT NANDA｜The GenAI Divide</a></li>
+          <li id="src-wef"><a href="https://www.weforum.org/publications/the-future-of-jobs-report-2025/digest">World Economic Forum｜Future of Jobs Report 2025</a></li>
+          <li><a href="https://www.anthropic.com/careers/jobs">Anthropic｜Applied AI roles</a></li>
+        </ol>
+        <p><b>内部知识来源：</b>《原算法研究院员工在GST与PST中的角色转型：FDE的启示》《GST、PST、SOP差异化运行机制》《价值流架构当前决策记录》。</p>
+      </section>
+    </main>
+  </div>
+
+  <footer>cizen.net 公开研讨材料 · 用于理解AI趋势并启发组织角色与能力讨论</footer>
+
+  <script>
+    (() => {
+      const body = document.body;
+      const readBtn = document.getElementById('readMode');
+      const meetingBtn = document.getElementById('meetingMode');
+      const progress = document.getElementById('progressBar');
+      const links = [...document.querySelectorAll('.toc a')];
+      const sections = [...document.querySelectorAll('main section')];
+      const slideCount = document.getElementById('slideCount');
+      let currentSlide = 0;
+
+      function setMode(mode) {
+        const isMeeting = mode === 'meeting';
+        body.classList.toggle('meeting-mode', isMeeting);
+        readBtn.classList.toggle('active', !isMeeting);
+        meetingBtn.classList.toggle('active', isMeeting);
+        localStorage.setItem('ai-role-material-mode', mode);
+      }
+
+      readBtn.addEventListener('click', () => setMode('read'));
+      meetingBtn.addEventListener('click', () => setMode('meeting'));
+      document.getElementById('printBtn').addEventListener('click', () => window.print());
+      setMode(localStorage.getItem('ai-role-material-mode') || 'read');
+
+      function goSlide(index) {
+        currentSlide = Math.max(0, Math.min(sections.length - 1, index));
+        slideCount.textContent = `${currentSlide + 1} / ${sections.length}`;
+        sections[currentSlide].scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+      document.getElementById('prevSlide').addEventListener('click', () => goSlide(currentSlide - 1));
+      document.getElementById('nextSlide').addEventListener('click', () => goSlide(currentSlide + 1));
+
+      function updateProgress() {
+        const max = document.documentElement.scrollHeight - innerHeight;
+        progress.style.width = max > 0 ? `${Math.min(100, scrollY / max * 100)}%` : '0%';
+      }
+      addEventListener('scroll', updateProgress, { passive: true });
+      updateProgress();
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+          currentSlide = sections.indexOf(entry.target);
+          slideCount.textContent = `${currentSlide + 1} / ${sections.length}`;
+          links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === `#${entry.target.id}`));
+        });
+      }, { rootMargin: '-25% 0px -65% 0px', threshold: 0 });
+      sections.forEach(section => observer.observe(section));
+
+      document.addEventListener('keydown', (event) => {
+        if (!body.classList.contains('meeting-mode')) return;
+        if (!['ArrowDown', 'ArrowRight', 'PageDown', 'ArrowUp', 'ArrowLeft', 'PageUp'].includes(event.key)) return;
+        event.preventDefault();
+        const direction = ['ArrowDown', 'ArrowRight', 'PageDown'].includes(event.key) ? 1 : -1;
+        goSlide(currentSlide + direction);
+      });
+    })();
+  </script>
+</body>
+</html>
