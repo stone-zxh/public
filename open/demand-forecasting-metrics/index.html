@@ -3,31 +3,28 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="用标准术语理解销量预测中的需求水平、趋势、离散程度、间歇性与预测误差，并把指标正确连接到备货决策。">
-  <meta name="theme-color" content="#f4f1eb">
-  <title>销量预测指标：先分清结构、波动与误差</title>
+  <meta name="description" content="销量预测指标专业查询手册：需求水平、趋势、离散程度、间歇性、预测误差与备货应用。">
+  <meta name="theme-color" content="#f7f6f2">
+  <title>销量预测指标查询手册</title>
   <style>
     :root {
-      --paper: #f4f1eb;
-      --paper-deep: #ebe6dc;
-      --surface: #fffdf9;
-      --ink: #23221f;
-      --muted: #69655f;
-      --line: rgba(35, 34, 31, 0.14);
-      --line-strong: rgba(35, 34, 31, 0.26);
-      --blue: #1466a3;
-      --blue-soft: #eaf3f9;
-      --orange: #b5522a;
-      --orange-soft: #f8ece5;
-      --green: #466b59;
-      --green-soft: #eaf0eb;
-      --yellow: #f0d87d;
-      --serif: "Noto Serif SC", "Source Han Serif SC", "Songti SC", SimSun, serif;
+      --bg: #f7f6f2;
+      --panel: #ffffff;
+      --panel-soft: #f1f3f2;
+      --ink: #20231f;
+      --muted: #535b54;
+      --faint: #858b85;
+      --line: #d9ddd8;
+      --line-strong: #b9c0ba;
+      --accent: #175f4c;
+      --accent-soft: #e7f0ec;
+      --warn: #9a4b29;
+      --warn-soft: #f6ece6;
+      --code: #eef0ed;
       --sans: "Noto Sans SC", "Microsoft YaHei", "PingFang SC", "Segoe UI", sans-serif;
       --mono: "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
-      --wide: 1180px;
-      --read: 760px;
-      --visual: 1000px;
+      --max: 1380px;
+      --sidebar: 176px;
     }
 
     * { box-sizing: border-box; }
@@ -35,24 +32,24 @@
     body {
       margin: 0;
       color: var(--ink);
-      background: var(--paper);
+      background: var(--bg);
       font-family: var(--sans);
-      line-height: 1.72;
+      font-size: 16px;
+      line-height: 1.65;
       text-rendering: optimizeLegibility;
       -webkit-font-smoothing: antialiased;
     }
-
-    a { color: var(--blue); }
-    a:hover { text-decoration-thickness: 2px; }
-    a:focus-visible, button:focus-visible {
-      outline: 3px solid rgba(20, 102, 163, 0.28);
-      outline-offset: 3px;
+    a { color: var(--accent); }
+    a:focus-visible, button:focus-visible, input:focus-visible, summary:focus-visible {
+      outline: 3px solid rgba(23, 95, 76, .22);
+      outline-offset: 2px;
     }
+    .keep { white-space: nowrap; }
 
-    .sitebar {
-      width: min(var(--wide), calc(100% - 48px));
+    .topbar {
+      width: min(var(--max), calc(100% - 40px));
       margin: 0 auto;
-      padding: 24px 0;
+      min-height: 58px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -60,420 +57,471 @@
       border-bottom: 1px solid var(--line);
       font-size: 14px;
     }
-    .brand {
-      color: var(--ink);
-      font-weight: 700;
-      text-decoration: none;
-      letter-spacing: .02em;
-    }
-    .sitebar nav { display: flex; gap: 20px; flex-wrap: wrap; }
-    .sitebar nav a { color: var(--muted); text-decoration: none; }
-    .sitebar nav a:hover { color: var(--ink); }
+    .brand { color: var(--ink); font-weight: 750; text-decoration: none; }
+    .topbar nav { display: flex; gap: 18px; }
+    .topbar nav a { color: var(--muted); text-decoration: none; }
+    .topbar nav a:hover { color: var(--accent); }
 
     .hero {
-      width: min(var(--wide), calc(100% - 48px));
+      width: min(var(--max), calc(100% - 40px));
       margin: 0 auto;
-      padding: 92px 0 78px;
+      padding: 34px 0 24px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 310px;
+      gap: 38px;
+      align-items: end;
     }
-    .kicker {
-      margin: 0 0 22px;
-      color: var(--blue);
+    .eyebrow {
+      margin: 0 0 9px;
+      color: var(--accent);
       font-family: var(--mono);
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 700;
-      letter-spacing: .12em;
-      text-transform: uppercase;
+      letter-spacing: .1em;
     }
     h1 {
       margin: 0;
-      max-width: 1150px;
-      font-family: var(--serif);
-      font-size: clamp(42px, 5.2vw, 72px);
-      line-height: 1.12;
+      font-size: clamp(34px, 3.4vw, 44px);
+      line-height: 1.18;
       letter-spacing: -.045em;
-      text-wrap: balance;
     }
-    h1 .title-part {
-      display: block;
-      white-space: nowrap;
-    }
-    .keep { white-space: nowrap; }
-    .hero-lead {
+    .hero p {
+      margin: 15px 0 0;
       max-width: 850px;
-      margin: 28px 0 0;
       color: var(--muted);
-      font-size: clamp(18px, 1.7vw, 22px);
-      line-height: 1.75;
+      font-size: 17px;
     }
-    .hero-thesis {
-      max-width: 1000px;
-      margin: 42px 0 0;
-      padding: 28px 32px;
-      border-top: 2px solid var(--ink);
-      border-bottom: 1px solid var(--line-strong);
-      font-family: var(--serif);
-      font-size: clamp(21px, 2.2vw, 30px);
-      line-height: 1.6;
+    .hero-note {
+      padding: 16px 18px;
+      border: 1px solid var(--line);
+      background: var(--panel);
+      color: var(--muted);
+      font-size: 14px;
     }
+    .hero-note strong { display: block; margin-bottom: 4px; color: var(--ink); }
 
-    .page-shell {
-      width: min(var(--wide), calc(100% - 48px));
+    .quick-find {
+      width: min(var(--max), calc(100% - 40px));
+      margin: 0 auto 30px;
+      padding: 18px 20px;
+      border: 1px solid var(--line-strong);
+      background: var(--panel);
+    }
+    .quick-find-head {
+      display: grid;
+      grid-template-columns: 120px minmax(0, 1fr);
+      align-items: center;
+      gap: 18px;
+      margin-bottom: 14px;
+    }
+    .quick-find-head strong { font-size: 15px; }
+    .search-wrap { display: flex; gap: 8px; width: 100%; }
+    .search-wrap input {
+      width: 100%;
+      min-height: 46px;
+      padding: 8px 12px;
+      border: 1px solid var(--line-strong);
+      border-radius: 3px;
+      background: #fff;
+      color: var(--ink);
+      font: inherit;
+      font-size: 14px;
+    }
+    .search-wrap button {
+      min-width: 58px;
+      min-height: 46px;
+      border: 1px solid var(--line-strong);
+      border-radius: 3px;
+      background: var(--panel-soft);
+      color: var(--ink);
+      cursor: pointer;
+    }
+    .question-links { display: flex; flex-wrap: wrap; gap: 8px; }
+    .question-links a {
+      color: var(--accent);
+      font-size: 14px;
+      text-decoration: none;
+      padding: 6px 10px;
+      border: 1px solid #c8d8d1;
+      border-radius: 3px;
+      background: var(--accent-soft);
+    }
+    .question-links a:hover { border-color: var(--accent); background: #dcebe5; }
+    .search-state { display: none; margin-top: 12px; color: var(--muted); font-size: 13px; }
+
+    .layout {
+      width: min(var(--max), calc(100% - 40px));
       margin: 0 auto;
       display: grid;
-      grid-template-columns: 190px minmax(0, 1fr);
-      gap: 72px;
+      grid-template-columns: var(--sidebar) minmax(0, 1fr);
+      gap: 26px;
       align-items: start;
     }
-    .toc {
+    .sidebar {
       position: sticky;
-      top: 24px;
-      padding: 22px 0;
+      top: 18px;
+      max-height: calc(100vh - 36px);
+      overflow: auto;
+      padding: 16px 0 18px;
       border-top: 1px solid var(--line-strong);
       border-bottom: 1px solid var(--line);
     }
-    .toc-title {
-      margin-bottom: 12px;
-      color: var(--muted);
+    .sidebar-title {
+      margin: 0 0 8px;
+      color: var(--faint);
       font-family: var(--mono);
       font-size: 11px;
       font-weight: 700;
-      letter-spacing: .12em;
+      letter-spacing: .1em;
     }
-    .toc a {
+    .sidebar a {
       display: block;
-      padding: 7px 0;
+      margin: 1px 0;
+      padding: 7px 10px;
+      border-left: 2px solid transparent;
       color: var(--muted);
-      font-size: 15px;
-      line-height: 1.45;
+      font-size: 14px;
+      line-height: 1.4;
       text-decoration: none;
     }
-    .toc a:hover { color: var(--blue); }
+    .sidebar a:hover { color: var(--accent); }
+    .sidebar a.active {
+      border-left-color: var(--accent);
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-weight: 700;
+    }
 
-    article { min-width: 0; padding-bottom: 100px; }
-    section {
-      scroll-margin-top: 24px;
-      padding: 78px 0;
+    main { min-width: 0; padding-bottom: 70px; }
+    .handbook-section {
+      scroll-margin-top: 18px;
+      padding: 26px 0 30px;
       border-top: 1px solid var(--line);
     }
-    section:first-child { border-top: 0; padding-top: 0; }
-    .section-label {
-      margin-bottom: 14px;
-      color: var(--orange);
+    .handbook-section:first-child { padding-top: 0; border-top: 0; }
+    .section-head {
+      display: grid;
+      grid-template-columns: 58px minmax(0, 1fr);
+      gap: 16px;
+      align-items: baseline;
+      margin-bottom: 16px;
+    }
+    .section-no {
+      color: var(--accent);
       font-family: var(--mono);
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 700;
-      letter-spacing: .12em;
     }
     h2 {
+      margin: 0;
+      font-size: clamp(25px, 2.4vw, 34px);
+      line-height: 1.28;
+      letter-spacing: -.025em;
+    }
+    .section-summary {
       max-width: 900px;
-      margin: 0 0 28px;
-      font-family: var(--serif);
-      font-size: clamp(31px, 3.5vw, 48px);
-      line-height: 1.24;
-      letter-spacing: -.035em;
-      text-wrap: balance;
-    }
-    h3 {
-      margin: 0 0 12px;
-      font-size: 20px;
-      line-height: 1.4;
-    }
-    .prose { max-width: var(--read); }
-    .prose p { margin: 0 0 18px; }
-    .section-intro {
-      max-width: var(--read);
-      margin: -8px 0 38px;
+      margin: -6px 0 16px 74px;
       color: var(--muted);
-      font-size: 18px;
     }
 
-    .system-map {
-      max-width: var(--visual);
-      padding: 30px;
-      border: 1px solid var(--line-strong);
-      background: var(--surface);
-    }
-    .map-row {
+    .overview-strip {
       display: grid;
-      grid-template-columns: 1.15fr 42px 1.6fr 42px 1.2fr;
-      gap: 10px;
+      grid-template-columns: 1fr 34px 1fr 34px 1fr 34px 1fr;
       align-items: stretch;
+      border: 1px solid var(--line-strong);
+      background: var(--panel);
     }
-    .map-node {
-      min-height: 132px;
-      padding: 20px;
-      border: 1px solid var(--line);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      background: #fff;
+    .overview-step { padding: 18px; }
+    .overview-step b { display: block; margin-bottom: 4px; font-size: 16px; }
+    .overview-step span { color: var(--muted); font-size: 13px; line-height: 1.5; }
+    .overview-arrow { display: grid; place-items: center; color: var(--accent); font-size: 20px; }
+    .principle {
+      margin-top: 12px;
+      padding: 14px 18px;
+      background: var(--accent-soft);
+      color: #25483e;
+      font-size: 15px;
+      font-weight: 650;
     }
-    .map-node strong { font-size: 22px; }
-    .map-node span { color: var(--muted); font-size: 15px; line-height: 1.6; }
-    .map-node.accent { background: var(--blue-soft); border-color: rgba(20,102,163,.28); }
-    .map-node.risk { background: var(--orange-soft); border-color: rgba(181,82,42,.28); }
-    .map-arrow {
+
+    .lookup-table, .compare-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--panel);
+      font-size: 14px;
+    }
+    .lookup-table th, .lookup-table td,
+    .compare-table th, .compare-table td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+    .lookup-table th, .compare-table th {
+      background: var(--panel-soft);
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .04em;
+    }
+    .lookup-table tbody tr:nth-child(even),
+    .compare-table tbody tr:nth-child(even) { background: #fafbf9; }
+    .lookup-table td:first-child, .compare-table td:first-child { font-weight: 700; }
+    .lookup-table a { text-decoration: none; }
+
+    .metric-list { border-top: 1px solid var(--line-strong); }
+    .column-heads {
       display: grid;
-      place-items: center;
-      color: var(--blue);
-      font-size: 34px;
+      grid-template-columns: minmax(0, .92fr) minmax(0, 1.2fr);
+      border: 1px solid var(--line-strong);
+      border-bottom: 0;
+      background: var(--panel-soft);
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .04em;
+    }
+    .column-heads span { padding: 8px 22px; }
+    .column-heads span + span { border-left: 1px solid var(--line); background: #edf4f1; }
+    .metric-entry {
+      scroll-margin-top: 18px;
+      display: grid;
+      grid-template-columns: minmax(0, .92fr) minmax(0, 1.2fr);
+      border-bottom: 1px solid var(--line-strong);
+      background: var(--panel);
+    }
+    .metric-entry[hidden] { display: none; }
+    .business, .technical { padding: 19px 22px; }
+    .business { border-right: 1px solid var(--line); }
+    .technical { background: #fbfdfc; }
+    .metric-kicker {
+      margin-bottom: 7px;
+      color: var(--accent);
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .08em;
+    }
+    .metric-entry h3 {
+      margin: 0 0 10px;
+      font-size: 21px;
+      line-height: 1.35;
+    }
+    .metric-entry p { margin: 0 0 10px; color: var(--muted); }
+    .metric-entry ul { margin: 9px 0 0; padding-left: 20px; color: var(--muted); }
+    .metric-entry li + li { margin-top: 4px; }
+    .business .question {
+      margin-top: 12px;
+      padding-top: 10px;
+      border-top: 1px solid var(--line);
+      color: var(--ink);
+      font-size: 14px;
       font-weight: 700;
     }
-    .map-caption {
-      margin: 18px 0 0;
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    .dimension-list {
-      max-width: var(--visual);
-      border-top: 1px solid var(--line-strong);
-    }
-    .dimension-row {
+    .technical dl {
       display: grid;
-      grid-template-columns: 150px 1fr 1.15fr;
-      gap: 28px;
-      padding: 22px 0;
-      border-bottom: 1px solid var(--line);
-      align-items: baseline;
+      grid-template-columns: 82px minmax(0, 1fr);
+      gap: 8px 14px;
+      margin: 0;
+      font-size: 14px;
     }
-    .dimension-row strong { font-family: var(--serif); font-size: 20px; }
-    .dimension-row span { color: var(--muted); }
-    .metric-tags { display: flex; flex-wrap: wrap; gap: 7px; }
-    .tag {
-      padding: 4px 8px;
-      border: 1px solid var(--line);
-      background: var(--surface);
-      color: var(--ink) !important;
-      font-family: var(--mono);
-      font-size: 12px;
-      line-height: 1.4;
-    }
-
-    .concept-grid {
-      max-width: var(--visual);
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      border-top: 1px solid var(--line-strong);
-      border-left: 1px solid var(--line);
-    }
-    .concept {
-      min-height: 260px;
-      padding: 28px;
-      border-right: 1px solid var(--line);
-      border-bottom: 1px solid var(--line);
-      background: rgba(255,253,249,.62);
-    }
-    .concept .index {
-      display: block;
-      margin-bottom: 42px;
-      color: var(--muted);
-      font-family: var(--mono);
-      font-size: 12px;
-    }
+    .technical dt { color: var(--faint); }
+    .technical dd { margin: 0; }
     .formula {
-      width: fit-content;
-      margin: 18px 0;
-      padding: 8px 11px;
-      background: var(--paper-deep);
+      display: inline-block;
+      max-width: 100%;
+      padding: 5px 8px;
+      background: var(--code);
       font-family: var(--mono);
-      font-size: 15px;
+      font-size: 14px;
       overflow-wrap: anywhere;
     }
-    .concept p { margin: 0; color: var(--muted); }
+    .warning { color: var(--warn); font-weight: 650; }
+    mark { padding: 0 2px; background: #f2dc91; color: inherit; }
 
-    .contrast {
-      max-width: var(--visual);
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      border: 1px solid var(--line-strong);
-      background: var(--surface);
+    details {
+      margin-top: 12px;
+      border-top: 1px dashed var(--line-strong);
+      padding-top: 9px;
     }
-    .contrast > div { padding: 32px; }
-    .contrast > div + div { border-left: 1px solid var(--line-strong); }
-    .contrast .word {
-      margin-bottom: 22px;
-      font-family: var(--serif);
-      font-size: 38px;
+    .overview-details {
+      margin: 0;
+      padding: 0;
+      border-top: 0;
+    }
+    .overview-details > summary {
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      background: var(--panel);
+      color: var(--ink);
+      font-size: 14px;
+    }
+    .overview-details > summary::marker { color: var(--accent); }
+    .overview-details .overview-strip { margin-top: 10px; }
+    summary {
+      color: var(--accent);
+      font-size: 13px;
       font-weight: 700;
+      cursor: pointer;
     }
-    .contrast ul { margin: 0; padding-left: 20px; color: var(--muted); }
-    .contrast li + li { margin-top: 8px; }
+    details p { margin: 8px 0 0; font-size: 13px; }
 
-    .matrix-wrap { max-width: var(--visual); overflow-x: auto; }
-    .matrix-hint { display: none; color: var(--muted); font-size: 13px; margin-bottom: 10px; }
+    .matrix-wrap { overflow-x: auto; }
+    .matrix-note { display: none; margin: 0 0 8px; color: var(--faint); font-size: 12px; }
     .matrix {
-      min-width: 760px;
+      min-width: 720px;
       display: grid;
-      grid-template-columns: 140px 1fr 1fr;
-      grid-template-rows: auto 1fr 1fr;
-      border-left: 1px solid var(--line-strong);
+      grid-template-columns: 125px 1fr 1fr;
       border-top: 1px solid var(--line-strong);
-      background: var(--surface);
+      border-left: 1px solid var(--line-strong);
+      background: var(--panel);
+      font-size: 14px;
     }
     .matrix > div {
-      min-height: 148px;
-      padding: 22px;
+      min-height: 112px;
+      padding: 15px;
       border-right: 1px solid var(--line-strong);
       border-bottom: 1px solid var(--line-strong);
     }
     .matrix .axis {
       display: grid;
       place-items: center;
+      min-height: auto;
+      background: var(--panel-soft);
       color: var(--muted);
-      font-family: var(--mono);
       font-size: 12px;
       text-align: center;
-      background: var(--paper-deep);
     }
-    .matrix .corner { min-height: auto; background: var(--ink); color: #fff; }
-    .matrix .col-head { min-height: auto; background: var(--paper-deep); color: var(--ink); }
-    .matrix strong { display: block; margin-bottom: 9px; font-size: 19px; }
-    .matrix p { margin: 0; color: var(--muted); font-size: 14px; }
-    .matrix .smooth { background: var(--green-soft); }
-    .matrix .lumpy { background: var(--orange-soft); }
-    .caveat {
-      max-width: var(--visual);
-      margin-top: 20px;
-      padding: 18px 22px;
-      border-top: 1px solid var(--line-strong);
-      border-bottom: 1px solid var(--line);
-      background: rgba(255,253,249,.7);
+    .matrix .corner { background: var(--ink); color: #fff; }
+    .matrix b { display: block; margin-bottom: 5px; }
+    .matrix p { margin: 0; color: var(--muted); font-size: 13px; }
+    .matrix .good { background: var(--accent-soft); }
+    .matrix .hard { background: var(--warn-soft); }
+
+    .rule-box {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border: 1px solid var(--line);
+      background: var(--panel);
       color: var(--muted);
+      font-size: 14px;
     }
-    .caveat strong { color: var(--orange); }
+    .rule-box strong { color: var(--warn); }
 
-    .diagnostic-table {
-      max-width: var(--visual);
-      width: 100%;
-      border-collapse: collapse;
-      background: var(--surface);
-    }
-    .diagnostic-table th,
-    .diagnostic-table td {
-      padding: 18px 16px;
-      border-bottom: 1px solid var(--line);
-      text-align: left;
-      vertical-align: top;
-    }
-    .diagnostic-table th {
-      color: var(--muted);
-      font-size: 13px;
-      font-weight: 600;
-    }
-    .diagnostic-table td:first-child { width: 31%; font-weight: 700; }
-    .diagnostic-table tr:first-child { border-top: 1px solid var(--line-strong); }
+    .term-table td:nth-child(1) { color: var(--warn); }
+    .term-table td:nth-child(2) { color: var(--accent); font-weight: 700; }
 
-    .sequence {
-      max-width: var(--visual);
-      counter-reset: seq;
-      border-top: 1px solid var(--line-strong);
-    }
-    .step {
-      counter-increment: seq;
-      display: grid;
-      grid-template-columns: 70px 1fr;
-      gap: 22px;
-      padding: 23px 0;
-      border-bottom: 1px solid var(--line);
-    }
-    .step::before {
-      content: "0" counter(seq);
-      color: var(--orange);
-      font-family: var(--mono);
-      font-size: 15px;
-      font-weight: 700;
-    }
-    .step strong { display: block; margin-bottom: 5px; font-size: 17px; }
-    .step span { color: var(--muted); }
-
-    .term-table td:nth-child(1) { color: var(--orange); }
-    .term-table td:nth-child(2) { color: var(--green); font-weight: 700; }
-
-    .minimum-set {
-      max-width: var(--visual);
+    .field-grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 1px;
-      background: var(--line-strong);
-      border: 1px solid var(--line-strong);
+      border-top: 1px solid var(--line-strong);
+      border-left: 1px solid var(--line-strong);
+      background: var(--panel);
     }
-    .minimum-set > div { min-height: 190px; padding: 25px; background: var(--surface); }
-    .minimum-set b { display: block; margin-bottom: 28px; color: var(--blue); font-family: var(--mono); font-size: 12px; }
-    .minimum-set strong { display: block; margin-bottom: 8px; font-size: 18px; }
-    .minimum-set span { color: var(--muted); font-size: 14px; }
+    .field {
+      min-height: 118px;
+      padding: 16px;
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+    .field b { display: block; margin-bottom: 5px; font-size: 14px; }
+    .field span { color: var(--muted); font-size: 13px; }
 
-    .closing {
-      max-width: var(--visual);
-      margin-top: 52px;
-      padding: 42px;
-      background: var(--ink);
-      color: #fff;
+    .checklist {
+      counter-reset: item;
+      border-top: 1px solid var(--line-strong);
+      background: var(--panel);
     }
-    .closing p {
-      margin: 0;
-      font-family: var(--serif);
-      font-size: clamp(24px, 2.7vw, 38px);
-      line-height: 1.55;
+    .check-item {
+      counter-increment: item;
+      display: grid;
+      grid-template-columns: 44px 190px minmax(0, 1fr);
+      gap: 14px;
+      padding: 13px 14px;
+      border-bottom: 1px solid var(--line);
+      align-items: baseline;
     }
+    .check-item::before {
+      content: counter(item, decimal-leading-zero);
+      color: var(--accent);
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .check-item b { font-size: 14px; }
+    .check-item span { color: var(--muted); font-size: 14px; }
 
-    .sources { max-width: var(--read); }
+    .sources { max-width: 900px; }
+    .sources p { color: var(--muted); }
     .sources ol { padding-left: 22px; }
-    .sources li { margin-bottom: 13px; color: var(--muted); overflow-wrap: anywhere; }
+    .sources li { margin-bottom: 8px; color: var(--muted); overflow-wrap: anywhere; }
+
     footer {
-      width: min(var(--wide), calc(100% - 48px));
+      width: min(var(--max), calc(100% - 40px));
       margin: 0 auto;
-      padding: 34px 0 50px;
+      padding: 24px 0 36px;
       border-top: 1px solid var(--line);
       display: flex;
       justify-content: space-between;
-      gap: 20px;
-      color: var(--muted);
-      font-size: 13px;
+      gap: 18px;
+      color: var(--faint);
+      font-size: 12px;
     }
 
-    @media (max-width: 900px) {
-      .page-shell { grid-template-columns: 1fr; gap: 0; }
-      .toc { position: static; display: flex; gap: 8px 18px; flex-wrap: wrap; margin-bottom: 52px; }
-      .toc-title { width: 100%; }
-      .toc a { padding: 3px 0; }
-      .map-row { grid-template-columns: 1fr; }
-      .map-arrow { min-height: 34px; transform: rotate(90deg); }
-      .dimension-row { grid-template-columns: 130px 1fr; }
-      .dimension-row .metric-tags { grid-column: 2; }
-      .minimum-set { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    @media (max-width: 980px) {
+      .hero { grid-template-columns: 1fr; gap: 18px; }
+      .hero-note { max-width: 720px; }
+      .layout { grid-template-columns: 1fr; }
+      .sidebar {
+        position: static;
+        max-height: none;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 3px 8px;
+        padding: 12px 0;
+      }
+      .sidebar-title { width: 100%; }
+      .sidebar a { border-left: 0; border-bottom: 2px solid transparent; }
+      .sidebar a.active { border-bottom-color: var(--accent); }
+      .field-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
 
-    @media (max-width: 640px) {
-      .sitebar, .hero, .page-shell, footer { width: min(100% - 28px, var(--wide)); }
-      .sitebar { align-items: flex-start; }
-      .sitebar nav { justify-content: flex-end; gap: 12px; }
-      .hero { padding: 62px 0 56px; }
-      h1 { font-size: clamp(38px, 12vw, 54px); line-height: 1.18; }
-      h1 .title-part { white-space: normal; }
-      .hero-thesis { padding: 22px 0; }
-      section { padding: 58px 0; }
-      .concept-grid, .contrast { grid-template-columns: 1fr; }
-      .contrast > div + div { border-left: 0; border-top: 1px solid var(--line-strong); }
-      .concept { min-height: auto; }
-      .concept .index { margin-bottom: 24px; }
-      .dimension-row { grid-template-columns: 1fr; gap: 8px; }
-      .dimension-row .metric-tags { grid-column: auto; }
-      .matrix-hint { display: block; }
-      .diagnostic-table { font-size: 14px; }
-      .diagnostic-table th, .diagnostic-table td { padding: 14px 10px; }
-      .minimum-set { grid-template-columns: 1fr; }
-      .closing { padding: 28px 24px; }
+    @media (max-width: 680px) {
+      .topbar, .hero, .quick-find, .layout, footer { width: min(100% - 24px, var(--max)); }
+      .topbar { align-items: flex-start; padding: 14px 0; }
+      .topbar nav { gap: 12px; }
+      .hero { padding: 30px 0 22px; }
+      h1 { font-size: 35px; line-height: 1.22; }
+      .hero p { font-size: 16px; }
+      .quick-find { padding: 14px; }
+      .quick-find-head { grid-template-columns: 1fr; align-items: stretch; gap: 8px; }
+      .search-wrap { width: 100%; }
+      .layout { gap: 22px; }
+      .handbook-section { padding: 28px 0 30px; }
+      .section-head { grid-template-columns: 42px minmax(0, 1fr); gap: 9px; }
+      .section-summary { margin-left: 51px; }
+      h2 { font-size: 27px; }
+      .overview-strip { grid-template-columns: 1fr; }
+      .overview-arrow { min-height: 28px; transform: rotate(90deg); }
+      .metric-entry { grid-template-columns: 1fr; }
+      .column-heads { display: none; }
+      .business { border-right: 0; border-bottom: 1px solid var(--line); }
+      .business, .technical { padding: 18px 16px; }
+      .technical dl { grid-template-columns: 72px minmax(0, 1fr); }
+      .lookup-table, .compare-table { font-size: 13px; }
+      .lookup-table th, .lookup-table td, .compare-table th, .compare-table td { padding: 10px 8px; }
+      .matrix-note { display: block; }
+      .field-grid { grid-template-columns: 1fr; }
+      .check-item { grid-template-columns: 34px minmax(0, 1fr); gap: 8px; }
+      .check-item span { grid-column: 2; }
       footer { flex-direction: column; }
     }
 
-    @media (prefers-reduced-motion: reduce) {
-      html { scroll-behavior: auto; }
-    }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
   </style>
 </head>
 <body>
-  <header class="sitebar">
+  <header class="topbar">
     <a class="brand" href="../../">cizen.net</a>
     <nav aria-label="页面导航">
       <a href="../">公开分享</a>
@@ -481,267 +529,517 @@
     </nav>
   </header>
 
-  <main>
-    <header class="hero">
-      <p class="kicker">Demand Forecasting · Field Guide</p>
-      <h1><span class="title-part">销量预测指标：</span><span class="title-part"><span class="keep">先分清</span><span class="keep">结构、</span><span class="keep">波动与误差</span></span></h1>
-      <p class="hero-lead">标准差、变异系数、趋势、间歇性和预测误差，回答的不是同一个问题。把它们混成一个“波动分数”，会让商品分类、模型选择和安全库存一起失真。</p>
-      <div class="hero-thesis">均值描述需求水平；趋势与季节性描述可解释结构；标准差与 CV 描述离散程度；ADI 与非零需求量的 CV² 描述间歇性；MAE、RMSE、MASE 描述模型对未来数据的误差。</div>
-    </header>
-
-    <div class="page-shell">
-      <aside class="toc" aria-label="目录">
-        <div class="toc-title">READING MAP</div>
-        <a href="#model">先看整体模型</a>
-        <a href="#dimensions">六类问题</a>
-        <a href="#dispersion">离散程度</a>
-        <a href="#trend">趋势与波动</a>
-        <a href="#intermittent">间歇性需求</a>
-        <a href="#errors">预测误差</a>
-        <a href="#inventory">连接到备货</a>
-        <a href="#terms">术语纠偏</a>
-        <a href="#minimum">最小指标组</a>
-      </aside>
-
-      <article>
-        <section id="model">
-          <div class="section-label">01 · THE WHOLE MODEL</div>
-          <h2>观测销量不是需求真相，历史波动也不是预测风险</h2>
-          <p class="section-intro">先把数据生成、结构识别、预测验证和库存决策分成四层，指标才有稳定含义。</p>
-          <div class="system-map" role="img" aria-label="从观测销量到库存决策的四层关系图">
-            <div class="map-row">
-              <div class="map-node risk">
-                <strong>观测销量</strong>
-                <span>可能被缺货、下架、限流截断，也可能被促销、大单和价格变化放大。</span>
-              </div>
-              <div class="map-arrow" aria-hidden="true">→</div>
-              <div class="map-node">
-                <strong>结构分解</strong>
-                <span>水平 + 趋势 + 季节性 + 事件影响 + 未解释扰动</span>
-              </div>
-              <div class="map-arrow" aria-hidden="true">→</div>
-              <div class="map-node accent">
-                <strong>样本外误差</strong>
-                <span>按真实预测提前期滚动回测，形成预测不确定性。</span>
-              </div>
-            </div>
-            <p class="map-caption">库存决策还需叠加在库、在途、补货时效、服务水平、资金和业务约束。预测模型只提供其中一项输入。</p>
-          </div>
-        </section>
-
-        <section id="dimensions">
-          <div class="section-label">02 · SIX QUESTIONS</div>
-          <h2>不要问“这个 SKU 波不波动”，要问它在哪个维度上不稳定</h2>
-          <div class="dimension-list">
-            <div class="dimension-row">
-              <strong>需求水平</strong>
-              <span>通常卖多少？</span>
-              <div class="metric-tags"><span class="tag">均值</span><span class="tag">中位数</span><span class="tag">分位数</span></div>
-            </div>
-            <div class="dimension-row">
-              <strong>时间结构</strong>
-              <span>是否在增长、衰退或周期性变化？</span>
-              <div class="metric-tags"><span class="tag">趋势斜率</span><span class="tag">增长率</span><span class="tag">季节指数</span></div>
-            </div>
-            <div class="dimension-row">
-              <strong>离散程度</strong>
-              <span>观测值围绕中心分散多大？</span>
-              <div class="metric-tags"><span class="tag">方差</span><span class="tag">标准差</span><span class="tag">IQR</span><span class="tag">CV</span></div>
-            </div>
-            <div class="dimension-row">
-              <strong>间歇程度</strong>
-              <span>多久才发生一次非零需求？</span>
-              <div class="metric-tags"><span class="tag">零需求占比</span><span class="tag">ADI</span></div>
-            </div>
-            <div class="dimension-row">
-              <strong>预测性能</strong>
-              <span>模型对未来数据会错多少？</span>
-              <div class="metric-tags"><span class="tag">Bias</span><span class="tag">MAE</span><span class="tag">RMSE</span><span class="tag">MASE</span></div>
-            </div>
-            <div class="dimension-row">
-              <strong>决策风险</strong>
-              <span>误差会造成什么业务后果？</span>
-              <div class="metric-tags"><span class="tag">缺货</span><span class="tag">过剩</span><span class="tag">加急</span><span class="tag">资金占用</span></div>
-            </div>
-          </div>
-        </section>
-
-        <section id="dispersion">
-          <div class="section-label">03 · DISPERSION</div>
-          <h2>“离散度”是一类问题，标准差和变异系数才是具体指标</h2>
-          <p class="section-intro">系统字段如果只写“离散度”，却没有公式、窗口、粒度和异常处理规则，就无法复现，也无法跨商品比较。</p>
-          <div class="concept-grid">
-            <div class="concept">
-              <span class="index">ABSOLUTE · 01</span>
-              <h3>标准差 Standard Deviation</h3>
-              <div class="formula">s = √[ Σ(x − x̄)² / (n − 1) ]</div>
-              <p>回答“通常上下差多少件”。单位与销量一致，直观，但会受销量规模和极端值影响。</p>
-            </div>
-            <div class="concept">
-              <span class="index">RELATIVE · 02</span>
-              <h3>变异系数 Coefficient of Variation</h3>
-              <div class="formula">CV = s / x̄</div>
-              <p>回答“标准差相当于平均水平的多大比例”。适合跨规模比较，但均值接近零时会失真。</p>
-            </div>
-            <div class="concept">
-              <span class="index">ROBUST · 03</span>
-              <h3>四分位距 IQR</h3>
-              <div class="formula">IQR = Q₀.₇₅ − Q₀.₂₅</div>
-              <p>观察中间 50% 数据的跨度，对极端值不如标准差敏感，适合补充“常态波动”。</p>
-            </div>
-            <div class="concept">
-              <span class="index">BOUNDARY · 04</span>
-              <h3>CV 不能独立处理长尾</h3>
-              <div class="formula">均值 ≈ 0 → CV 极大或无定义</div>
-              <p>大量零需求时，CV 把“是否发生”和“发生多少”混在一起，应改用 ADI 与非零需求量的 CV²。</p>
-            </div>
-          </div>
-        </section>
-
-        <section id="trend">
-          <div class="section-label">04 · STRUCTURE VS NOISE</div>
-          <h2>趋势是有方向的结构，波动是围绕结构的偏离</h2>
-          <div class="contrast">
-            <div>
-              <div class="word">趋势</div>
-              <ul>
-                <li>用趋势斜率表达每期绝对变化。</li>
-                <li>用环比、同比等增长率表达相对变化。</li>
-                <li>还要检查趋势强度、持续性和窗口敏感度。</li>
-                <li>“趋势指数”没有唯一行业公式，必须查系统定义。</li>
-              </ul>
-            </div>
-            <div>
-              <div class="word">随机波动</div>
-              <ul>
-                <li>应尽量在去除趋势、季节和事件影响后衡量。</li>
-                <li>原始销量标准差不是纯随机波动。</li>
-                <li>稳定增长的序列可能标准差较大，却很好预测。</li>
-                <li>上下乱跳的序列可能没有趋势，却很难预测。</li>
-              </ul>
-            </div>
-          </div>
-          <div class="caveat"><strong>另一个常见误解：</strong>季节指数表示某个季节位置相对常态水平的系统性高低，不表示长期上升或下降。</div>
-        </section>
-
-        <section id="intermittent">
-          <div class="section-label">05 · INTERMITTENT DEMAND</div>
-          <h2>长尾需求要拆成两个问题：多久来一次，来一次有多少</h2>
-          <p class="section-intro">ADI 描述需求发生间隔，非零需求量的 CV² 描述需求发生时的数量不规则性。</p>
-          <p class="matrix-hint">← 左右滑动查看完整矩阵 →</p>
-          <div class="matrix-wrap">
-            <div class="matrix" aria-label="ADI 与非零需求量 CV 平方构成的需求模式分类矩阵">
-              <div class="axis corner">ADI × CV²</div>
-              <div class="axis col-head">非零需求量 CV² 较低<br>发生时数量较稳定</div>
-              <div class="axis col-head">非零需求量 CV² 较高<br>发生时数量不稳定</div>
-              <div class="axis">ADI 较低<br>需求较频繁</div>
-              <div class="smooth"><strong>平稳型 Smooth</strong><p>需求发生频繁，非零数量相对稳定。常规时间序列方法通常更有发挥空间。</p></div>
-              <div><strong>不规则型 Erratic</strong><p>需求发生频繁，但数量起伏较大。需要关注异常、事件和误差分布。</p></div>
-              <div class="axis">ADI 较高<br>需求较间歇</div>
-              <div><strong>间歇型 Intermittent</strong><p>需求发生稀疏，但一旦发生，数量相对稳定。可考虑间歇需求方法。</p></div>
-              <div class="lumpy"><strong>块状型 Lumpy</strong><p>既稀疏又数量不稳定，点预测难度最高，库存策略常比复杂模型更重要。</p></div>
-            </div>
-          </div>
-          <div class="caveat"><strong>阈值不是自然常数。</strong> 常见 ADI=1.32、CV²=0.49 是在特定方法比较与统计假设下形成的历史规则。正式采用前，应按本企业时间粒度、提前期和库存成本回测。</div>
-        </section>
-
-        <section id="errors">
-          <div class="section-label">06 · FORECAST PERFORMANCE</div>
-          <h2>历史销量波动不能证明模型<span class="keep">好坏</span>，必须评价真正的未来预测</h2>
-          <p class="section-intro">训练残差来自已参与拟合的数据；预测误差来自模型没有见过的未来。两者不能混用。</p>
-          <table class="diagnostic-table" aria-label="常用预测误差指标比较">
-            <thead>
-              <tr><th>指标</th><th>回答的问题</th><th>主要边界</th></tr>
-            </thead>
-            <tbody>
-              <tr><td>Bias / ME</td><td>模型是否持续高估或低估？</td><td>正负误差会抵消，不能代替误差幅度。</td></tr>
-              <tr><td>MAE</td><td>平均错多少件？</td><td>带销量尺度，不宜直接跨规模比较。</td></tr>
-              <tr><td>RMSE</td><td>在更重惩罚大误差时，整体错多少？</td><td>容易被少数极端误差主导。</td></tr>
-              <tr><td>MAPE</td><td>平均百分比误差多大？</td><td>实际需求为零时无定义，接近零时极端放大。</td></tr>
-              <tr><td>MASE / RMSSE</td><td>是否优于朴素预测基线？</td><td>需明确非季节或季节朴素基线；恒定序列要特殊处理。</td></tr>
-            </tbody>
-          </table>
-          <div class="caveat"><strong>评价方法：</strong>按时间顺序做滚动预测起点验证，每次只使用预测时点之前的数据，并评价与真实采购或物流提前期一致的多步误差。</div>
-        </section>
-
-        <section id="inventory">
-          <div class="section-label">07 · FROM METRICS TO INVENTORY</div>
-          <h2>安全库存最需要的，不是“单日销量标准差”</h2>
-          <table class="diagnostic-table" aria-label="不同标准差的统计对象和用途">
-            <thead><tr><th>统计对象</th><th>主要用途</th><th>不能替代什么</th></tr></thead>
-            <tbody>
-              <tr><td>原始销量标准差</td><td>描述历史总变动</td><td>不能直接代表随机性或预测风险</td></tr>
-              <tr><td>去趋势、去季节后的残差标准差</td><td>描述模型未解释的波动</td><td>不能代替真实样本外预测误差</td></tr>
-              <tr><td>样本内残差标准差</td><td>模型拟合诊断</td><td>不能证明未来预测能力</td></tr>
-              <tr><td>样本外预测误差标准差</td><td>预测区间与模型比较</td><td>若提前期不同，不能直接用于库存</td></tr>
-              <tr><td>提前期累计误差分布</td><td>安全库存与服务水平决策</td><td>仍需叠加交期波动和业务约束</td></tr>
-            </tbody>
-          </table>
-          <div class="closing"><p>对备货最有业务意义的，通常是与真实决策提前期一致的累计需求预测误差分布，而不是全历史原始销量的标准差。</p></div>
-        </section>
-
-        <section id="terms">
-          <div class="section-label">08 · TERMINOLOGY</div>
-          <h2>把含混叫法改成可以复现、比较和审计的指标</h2>
-          <table class="diagnostic-table term-table" aria-label="销量预测术语纠偏表">
-            <thead><tr><th>含混叫法</th><th>推荐标准叫法</th><th>判断规则</th></tr></thead>
-            <tbody>
-              <tr><td>波动系数</td><td>变异系数 CV</td><td>仅当公式确为标准差除以均值时成立。</td></tr>
-              <tr><td>离散度</td><td>离散程度 + 具体指标</td><td>明确使用方差、标准差、IQR 还是 CV。</td></tr>
-              <tr><td>趋势指数</td><td>趋势斜率、增长率或趋势强度</td><td>不存在唯一行业公式；系统自定义指标必须披露定义。</td></tr>
-              <tr><td>销量波动</td><td>原始销量变动、残差波动或预测误差</td><td>必须说明统计对象。</td></tr>
-              <tr><td>预测准确率</td><td>Bias、MAE、RMSE、MASE 等</td><td>“准确率 85%”若没有公式和样本范围，就不可审计。</td></tr>
-              <tr><td>稳定 SKU</td><td>低趋势、低残差波动、低间歇性的组合</td><td>还必须说明时间粒度、窗口和生命周期。</td></tr>
-            </tbody>
-          </table>
-        </section>
-
-        <section id="minimum">
-          <div class="section-label">09 · MINIMUM VIABLE METRICS</div>
-          <h2>先建立最小指标组，再决定是否需要综合评分</h2>
-          <div class="minimum-set">
-            <div><b>01 · LEVEL</b><strong>需求水平</strong><span>均值、中位数、P90</span></div>
-            <div><b>02 · STRUCTURE</b><strong>时间结构</strong><span>趋势斜率或同比增长率、季节标记、生命周期状态</span></div>
-            <div><b>03 · DISPERSION</b><strong>离散程度</strong><span>标准差、CV，并标明是否已去趋势和季节</span></div>
-            <div><b>04 · INTERMITTENCY</b><strong>间歇性</strong><span>零需求占比、ADI、非零需求量 CV²</span></div>
-            <div><b>05 · ERROR</b><strong>预测评价</strong><span>Bias、MAE、RMSE、MASE 或 RMSSE</span></div>
-            <div><b>06 · OUTCOME</b><strong>决策结果</strong><span>缺货、过剩、加急、周转和资金占用</span></div>
-          </div>
-
-          <h3 style="margin-top:52px">推荐实施顺序</h3>
-          <div class="sequence">
-            <div class="step"><div><strong>明确决策对象</strong><span>定义预测对象、时间粒度和真实决策提前期。</span></div></div>
-            <div class="step"><div><strong>修复需求观测</strong><span>处理缺货截断、下架、促销、大单、退货和数据异常。</span></div></div>
-            <div class="step"><div><strong>识别可解释结构</strong><span>区分水平、趋势、季节性、生命周期和结构突变。</span></div></div>
-            <div class="step"><div><strong>识别间歇性</strong><span>判断是否为小计数、长尾或大量零需求序列。</span></div></div>
-            <div class="step"><div><strong>建立朴素基线</strong><span>复杂模型必须与均值、朴素或季节朴素预测比较。</span></div></div>
-            <div class="step"><div><strong>滚动回测未来误差</strong><span>评价与真实补货提前期一致的样本外预测。</span></div></div>
-            <div class="step"><div><strong>连接业务结果</strong><span>用缺货、过剩、加急、资金和服务结果校准阈值与动作。</span></div></div>
-          </div>
-          <div class="closing"><p>描述性指标用于认识序列，不直接证明模型好坏；预测误差用于评价模型，但也不能独立决定库存。</p></div>
-        </section>
-
-        <section id="sources">
-          <div class="section-label">10 · SOURCES</div>
-          <h2>资料来源与使用边界</h2>
-          <div class="sources">
-            <p>本文用于建立通用术语和判断边界。具体阈值、窗口、模型与库存策略仍需结合企业数据回测。</p>
-            <ol>
-              <li><a href="https://www.itl.nist.gov/div898/software/dataplot/refman2/auxillar/coefvari.htm" target="_blank" rel="noopener">NIST Dataplot：Coefficient of Variation</a></li>
-              <li><a href="https://otexts.com/fpp3/accuracy.html" target="_blank" rel="noopener">Forecasting: Principles and Practice：Evaluating point forecast accuracy</a></li>
-              <li><a href="https://otexts.com/fpp3/tscv.html" target="_blank" rel="noopener">Forecasting: Principles and Practice：Time series cross-validation</a></li>
-              <li><a href="https://otexts.com/fpp3/counts.html" target="_blank" rel="noopener">Forecasting: Principles and Practice：Time series of counts</a></li>
-              <li><a href="https://robjhyndman.com/papers/SBC-categorization.pdf" target="_blank" rel="noopener">Kostenko &amp; Hyndman：A note on the categorization of demand patterns</a></li>
-            </ol>
-          </div>
-        </section>
-      </article>
+  <header class="hero">
+    <div>
+      <p class="eyebrow">DEMAND FORECASTING · REFERENCE HANDBOOK</p>
+      <h1>销量预测指标查询手册</h1>
+      <p>面向业务、供应链、产品与数据人员，快速查询需求水平、趋势、离散程度、间歇性、预测误差及其备货使用边界。</p>
     </div>
-  </main>
+    <div class="hero-note">
+      <strong>使用原则</strong>
+      先确认统计对象、时间粒度、观察窗口和预测提前期，再解释任何指标。没有口径的数字，不具备可比性。
+    </div>
+  </header>
+
+  <section class="quick-find" aria-label="快速查找">
+    <div class="quick-find-head">
+      <strong>按问题查找</strong>
+      <div class="search-wrap">
+        <input id="metric-search" type="search" placeholder="搜索：CV、长尾、趋势、安全库存……" aria-label="搜索指标">
+        <button id="clear-search" type="button">清除</button>
+      </div>
+    </div>
+    <div class="question-links">
+      <a href="#cv">比较不同规模商品</a>
+      <a href="#trend-metrics">判断增长或下降</a>
+      <a href="#intermittency">处理长尾与零销量</a>
+      <a href="#forecast-errors">评价预测模型</a>
+      <a href="#inventory-risk">连接安全库存</a>
+      <a href="#terminology">纠正含混字段</a>
+    </div>
+    <div id="search-state" class="search-state" aria-live="polite"></div>
+  </section>
+
+  <div class="layout">
+    <aside class="sidebar" aria-label="手册目录">
+      <div class="sidebar-title">HANDBOOK INDEX</div>
+      <a href="#overview">整体框架</a>
+      <a href="#lookup">指标速查</a>
+      <a href="#level">需求水平</a>
+      <a href="#dispersion">离散程度</a>
+      <a href="#trend">趋势与季节</a>
+      <a href="#intermittency">间歇性需求</a>
+      <a href="#forecast-errors">预测误差</a>
+      <a href="#inventory-risk">备货与安全库存</a>
+      <a href="#terminology">术语纠偏</a>
+      <a href="#governance">指标口径治理</a>
+      <a href="#implementation">实施顺序</a>
+      <a href="#sources">资料来源</a>
+    </aside>
+
+    <main>
+      <section id="overview" class="handbook-section">
+        <div class="section-head"><span class="section-no">01</span><h2>首次使用：先分清四层对象</h2></div>
+        <details class="overview-details">
+          <summary>展开四层框架：观测销量、序列结构、预测误差与库存风险</summary>
+          <div class="overview-strip" role="img" aria-label="从观测销量到库存决策的四层框架">
+            <div class="overview-step"><b>观测销量</b><span>受缺货、下架、促销、价格和大单影响</span></div>
+            <div class="overview-arrow">→</div>
+            <div class="overview-step"><b>序列结构</b><span>水平、趋势、季节、事件和随机扰动</span></div>
+            <div class="overview-arrow">→</div>
+            <div class="overview-step"><b>预测误差</b><span>模型面对未来数据的样本外偏差</span></div>
+            <div class="overview-arrow">→</div>
+            <div class="overview-step"><b>库存风险</b><span>叠加提前期、服务水平、资金和执行约束</span></div>
+          </div>
+          <div class="principle">原始销量标准差 ≠ 随机波动 ≠ 预测误差 ≠ 安全库存需求。</div>
+        </details>
+      </section>
+
+      <section id="lookup" class="handbook-section">
+        <div class="section-head"><span class="section-no">02</span><h2>指标速查</h2></div>
+        <table class="lookup-table">
+          <thead><tr><th>要回答的问题</th><th>优先指标</th><th>首先检查的边界</th></tr></thead>
+          <tbody>
+            <tr><td>通常卖多少？</td><td><a href="#level">均值、中位数、分位数</a></td><td>异常大单、大量零值、偏态分布</td></tr>
+            <tr><td>绝对波动多少件？</td><td><a href="#standard-deviation">标准差、IQR</a></td><td>趋势、季节性和极端值是否已处理</td></tr>
+            <tr><td>相对自身规模稳定吗？</td><td><a href="#cv">变异系数 CV</a></td><td>均值是否接近零，时间粒度是否一致</td></tr>
+            <tr><td>销量在增长还是下降？</td><td><a href="#trend-metrics">趋势斜率、增长率</a></td><td>窗口、季节性、基期和结构突变</td></tr>
+            <tr><td>长尾需求多久发生一次？</td><td><a href="#adi">ADI、零需求占比</a></td><td>日/周/月粒度会改变间歇程度</td></tr>
+            <tr><td>发生时数量稳定吗？</td><td><a href="#cv2">非零需求量 CV²</a></td><td>必须只对非零需求量计算</td></tr>
+            <tr><td>模型未来会错多少？</td><td><a href="#forecast-errors">Bias、MAE、RMSE、MASE</a></td><td>必须样本外、按真实提前期滚动回测</td></tr>
+            <tr><td>安全库存该用什么波动？</td><td><a href="#inventory-risk">提前期累计预测误差分布</a></td><td>交期波动、相关性和服务水平</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="level" class="handbook-section searchable-section">
+        <div class="section-head"><span class="section-no">03</span><h2>需求水平</h2></div>
+        <div class="column-heads" aria-hidden="true"><span>业务理解：它回答什么问题</span><span>专业口径：公式、对象与边界</span></div>
+        <div class="metric-list">
+          <article class="metric-entry" data-search="均值 平均数 mean 需求水平 大单 异常">
+            <div class="business">
+              <div class="metric-kicker">LEVEL · MEAN</div>
+              <h3>算术平均数</h3>
+              <p>表示观察窗口内的平均每期需求，是总量规划和许多期望成本计算的基础。</p>
+              <div class="question">回答：平均每期卖多少？</div>
+            </div>
+            <div class="technical">
+              <dl>
+                <dt>公式</dt><dd><span class="formula">x̄ = Σxₜ / n</span></dd>
+                <dt>优点</dt><dd>保留总量信息，易于聚合和计算。</dd>
+                <dt>边界</dt><dd>容易被促销峰值、大单和异常值拉动；大量零值时不代表典型一期。</dd>
+                <dt>口径</dt><dd>注明时间粒度、窗口，以及缺货、退货、大单是否修正。</dd>
+              </dl>
+            </div>
+          </article>
+          <article class="metric-entry" data-search="中位数 median 分位数 quantile P50 P90 P95 偏态">
+            <div class="business">
+              <div class="metric-kicker">LEVEL · ROBUST POSITION</div>
+              <h3>中位数与分位数</h3>
+              <p>中位数描述典型位置；P90、P95 等分位数描述需求分布在不同服务目标下的位置。</p>
+              <div class="question">回答：典型一期是多少？上行情景是多少？</div>
+            </div>
+            <div class="technical">
+              <dl>
+                <dt>中位数</dt><dd>排序后处于中间位置，对极端值更稳健。</dd>
+                <dt>分位数</dt><dd>P90 表示约 90% 的观测不高于该值。</dd>
+                <dt>用途</dt><dd>需求偏态、缺货与过剩成本不对称时，比单一均值更有信息。</dd>
+                <dt>边界</dt><dd>长尾 SKU 的中位数可能长期为零，不能独立决定库存。</dd>
+              </dl>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="dispersion" class="handbook-section searchable-section">
+        <div class="section-head"><span class="section-no">04</span><h2>离散程度</h2></div>
+        <p class="section-summary">“离散度”是指标类别，不是一个固定公式。正式系统字段必须写明具体使用标准差、IQR 还是 CV。</p>
+        <div class="column-heads" aria-hidden="true"><span>业务理解：它回答什么问题</span><span>专业口径：公式、对象与边界</span></div>
+        <div class="metric-list">
+          <article id="standard-deviation" class="metric-entry" data-search="标准差 standard deviation 方差 variance 绝对波动 极端值 IQR 四分位距">
+            <div class="business">
+              <div class="metric-kicker">DISPERSION · ABSOLUTE</div>
+              <h3>方差、标准差与 IQR</h3>
+              <p>标准差表示销量围绕均值的典型绝对偏离尺度；IQR 表示中间 50% 数据的跨度。</p>
+              <ul>
+                <li>标准差适合回答“通常上下差多少件”。</li>
+                <li>IQR 更能反映不受极端值影响的常态范围。</li>
+              </ul>
+              <div class="question">回答：绝对波动有多大？</div>
+            </div>
+            <div class="technical">
+              <dl>
+                <dt>样本方差</dt><dd><span class="formula">s² = Σ(xₜ − x̄)² / (n − 1)</span></dd>
+                <dt>标准差</dt><dd><span class="formula">s = √s²</span>，单位与销量相同。</dd>
+                <dt>IQR</dt><dd><span class="formula">Q₀.₇₅ − Q₀.₂₅</span>，对极端值更稳健。</dd>
+                <dt>边界</dt><dd class="warning">原始销量标准差会混入趋势、季节、促销和缺货影响。</dd>
+              </dl>
+            </div>
+          </article>
+
+          <article id="cv" class="metric-entry" data-search="变异系数 CV coefficient variation 相对标准差 波动系数 跨SKU 比较规模 均值接近零">
+            <div class="business">
+              <div class="metric-kicker">DISPERSION · RELATIVE</div>
+              <h3>变异系数 CV</h3>
+              <p>衡量标准差相对于平均需求的比例，适合比较销量规模不同的商品。</p>
+              <ul>
+                <li>CV 较高：相对自身平均水平波动更大。</li>
+                <li>不能据此直接断言“不可预测”。</li>
+              </ul>
+              <div class="question">回答：相对于自身规模，它稳定吗？</div>
+            </div>
+            <div class="technical">
+              <dl>
+                <dt>标准名称</dt><dd>变异系数（Coefficient of Variation, CV），也称相对标准差。</dd>
+                <dt>公式</dt><dd><span class="formula">CV = s / x̄</span></dd>
+                <dt>适用</dt><dd>同口径、同粒度、同生命周期下跨 SKU 比较。</dd>
+                <dt>失真条件</dt><dd class="warning">均值为零时无定义；均值接近零或大量零需求时异常放大。</dd>
+                <dt>必须注明</dt><dd>对原始销量、清洗后需求、非零需求量还是模型残差计算。</dd>
+              </dl>
+              <details>
+                <summary>为什么不建议统一套用一个 CV 阈值？</summary>
+                <p>日、周、月粒度会改变 CV；促销、新品、退市和缺货恢复品的生成机制不同。阈值应在同类商品内，通过滚动回测和库存结果校准。</p>
+              </details>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="trend" class="handbook-section searchable-section">
+        <div class="section-head"><span class="section-no">05</span><h2>趋势与季节性</h2></div>
+        <div class="column-heads" aria-hidden="true"><span>业务理解：它回答什么问题</span><span>专业口径：公式、对象与边界</span></div>
+        <div class="metric-list">
+          <article id="trend-metrics" class="metric-entry" data-search="趋势 trend 趋势指数 斜率 slope 增长率 growth 环比 同比 方向">
+            <div class="business">
+              <div class="metric-kicker">STRUCTURE · TREND</div>
+              <h3>趋势斜率与增长率</h3>
+              <p>趋势是有方向的系统性变化，不是随机波动。“趋势指数”没有唯一行业标准公式。</p>
+              <ul>
+                <li>斜率表达每期绝对增加或减少多少件。</li>
+                <li>增长率表达相对基期变化多少。</li>
+              </ul>
+              <div class="question">回答：销量往哪里走，速度多快？</div>
+            </div>
+            <div class="technical">
+              <dl>
+                <dt>线性趋势</dt><dd><span class="formula">xₜ = a + bt + εₜ</span>，其中 b 为每期变化量。</dd>
+                <dt>增长率</dt><dd><span class="formula">gₜ = xₜ / xₜ₋ₖ − 1</span></dd>
+                <dt>趋势强度</dt><dd>同时检查拟合度、斜率不确定性、持续时间和窗口敏感度。</dd>
+                <dt>边界</dt><dd>基期接近零时增长率失真；季节性和结构突变会制造伪趋势。</dd>
+                <dt>系统字段</dt><dd class="warning">若使用“趋势指数”，必须披露公式、窗口、平滑方式和基准。</dd>
+              </dl>
+            </div>
+          </article>
+
+          <article class="metric-entry" data-search="季节性 seasonal 季节指数 月份 周期 同比">
+            <div class="business">
+              <div class="metric-kicker">STRUCTURE · SEASONALITY</div>
+              <h3>季节指数</h3>
+              <p>表示某个季节位置相对于常态水平的系统性高低，例如某月通常是常态的 1.2 倍。</p>
+              <div class="question">回答：这个时间位置通常高于还是低于常态？</div>
+            </div>
+            <div class="technical">
+              <dl>
+                <dt>性质</dt><dd>周期结构，不表示长期增长或下降。</dd>
+                <dt>前提</dt><dd>需要足够多个完整周期，并处理促销、节日漂移和生命周期变化。</dd>
+                <dt>模型</dt><dd>加法季节适合波动幅度稳定；乘法季节适合波动随水平成比例扩大。</dd>
+                <dt>误用</dt><dd>只观察一个节日或一个年度就固化季节系数。</dd>
+              </dl>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="intermittency" class="handbook-section searchable-section">
+        <div class="section-head"><span class="section-no">06</span><h2>间歇性需求</h2></div>
+        <p class="section-summary">大量零销量时，必须拆开“多久发生一次”和“发生时有多少”，不能只看整条序列的 CV。</p>
+        <div class="column-heads" aria-hidden="true"><span>业务理解：它回答什么问题</span><span>专业口径：公式、对象与边界</span></div>
+        <div class="metric-list">
+          <article id="adi" class="metric-entry" data-search="ADI 平均需求间隔 intermittent 零需求 零销量 长尾 多久发生一次">
+            <div class="business">
+              <div class="metric-kicker">INTERMITTENCY · FREQUENCY</div>
+              <h3>平均需求间隔 ADI</h3>
+              <p>衡量两次非零需求之间平均隔多少期。ADI 越高，需求越稀疏。</p>
+              <div class="question">回答：多久才发生一次销售？</div>
+            </div>
+            <div class="technical">
+              <dl>
+                <dt>全称</dt><dd>Average Demand Interval</dd>
+                <dt>公式</dt><dd><span class="formula">ADI = 总观察期数 / 非零需求期数</span></dd>
+                <dt>补充指标</dt><dd>零需求占比 <span class="formula">P₀ = 零需求期数 / 总期数</span></dd>
+                <dt>关键边界</dt><dd class="warning">ADI 强烈依赖时间粒度；按日间歇的商品，按周聚合后可能不再间歇。</dd>
+              </dl>
+            </div>
+          </article>
+
+          <article id="cv2" class="metric-entry" data-search="CV2 CV² 非零需求量 demand size 间歇 块状 lumpy erratic Croston SBA">
+            <div class="business">
+              <div class="metric-kicker">INTERMITTENCY · SIZE</div>
+              <h3>非零需求量的 CV²</h3>
+              <p>只观察发生需求时的数量是否稳定，与 ADI 一起判断间歇需求模式。</p>
+              <div class="question">回答：一旦发生销售，数量稳定吗？</div>
+            </div>
+            <div class="technical">
+              <dl>
+                <dt>公式</dt><dd><span class="formula">CV²q = (s_q / q̄)²</span>，仅对非零需求量 qᵢ 计算。</dd>
+                <dt>组合解释</dt><dd>ADI 描述发生频率；CV²q 描述发生时的数量不规则性。</dd>
+                <dt>方法联系</dt><dd>Croston 类方法分别平滑非零需求量与需求间隔。</dd>
+                <dt>阈值边界</dt><dd class="warning">常见 1.32 与 0.49 是历史方法选择规则，不是自然常数。</dd>
+              </dl>
+            </div>
+          </article>
+        </div>
+
+        <p class="matrix-note">← 左右滑动查看完整矩阵 →</p>
+        <div class="matrix-wrap">
+          <div class="matrix" aria-label="ADI 与非零需求量 CV 平方分类矩阵">
+            <div class="axis corner">ADI × CV²q</div>
+            <div class="axis">CV²q 较低<br>发生时数量较稳定</div>
+            <div class="axis">CV²q 较高<br>发生时数量不稳定</div>
+            <div class="axis">ADI 较低<br>发生较频繁</div>
+            <div class="good"><b>平稳型 Smooth</b><p>频繁发生，数量相对稳定。</p></div>
+            <div><b>不规则型 Erratic</b><p>频繁发生，但数量起伏较大。</p></div>
+            <div class="axis">ADI 较高<br>发生较间歇</div>
+            <div><b>间歇型 Intermittent</b><p>发生稀疏，非零数量相对稳定。</p></div>
+            <div class="hard"><b>块状型 Lumpy</b><p>既稀疏又数量不稳定，库存策略往往比复杂点预测更重要。</p></div>
+          </div>
+        </div>
+        <div class="rule-box"><strong>使用纪律：</strong>任何分类阈值都应按真实时间粒度、预测提前期和库存成本回测，而不是机械照搬。</div>
+      </section>
+
+      <section id="forecast-errors" class="handbook-section searchable-section">
+        <div class="section-head"><span class="section-no">07</span><h2>预测误差与模型评价</h2></div>
+        <p class="section-summary">训练残差来自参与拟合的数据；预测误差来自模型没有见过的未来。模型好坏必须用样本外滚动回测判断。</p>
+        <div class="column-heads" aria-hidden="true"><span>业务理解：它回答什么问题</span><span>专业口径：公式、对象与边界</span></div>
+        <div class="metric-list">
+          <article class="metric-entry" data-search="Bias ME 平均误差 偏差 高估 低估 forecast error">
+            <div class="business">
+              <div class="metric-kicker">ERROR · DIRECTION</div>
+              <h3>Bias / 平均误差 ME</h3>
+              <p>判断模型是否长期系统性高估或低估。对备货很重要，因为两种偏差造成的业务损失不同。</p>
+              <div class="question">回答：模型错得有没有方向性？</div>
+            </div>
+            <div class="technical">
+              <dl>
+                <dt>误差定义</dt><dd><span class="formula">eₜ = 实际值 − 预测值</span></dd>
+                <dt>平均误差</dt><dd><span class="formula">ME = Σeₜ / m</span></dd>
+                <dt>解释</dt><dd>按上述符号，ME&gt;0 表示总体低估；ME&lt;0 表示总体高估。</dd>
+                <dt>边界</dt><dd class="warning">正负误差会抵消，Bias 不能代替误差幅度指标。</dd>
+              </dl>
+            </div>
+          </article>
+
+          <article class="metric-entry" data-search="MAE RMSE 绝对误差 均方根 大误差 模型评价">
+            <div class="business">
+              <div class="metric-kicker">ERROR · MAGNITUDE</div>
+              <h3>MAE 与 RMSE</h3>
+              <p>MAE 表示平均错多少件；RMSE 对大误差惩罚更重。</p>
+              <div class="question">回答：模型通常错多大？是否要特别惩罚大错？</div>
+            </div>
+            <div class="technical">
+              <dl>
+                <dt>MAE</dt><dd><span class="formula">mean(|eₜ|)</span></dd>
+                <dt>RMSE</dt><dd><span class="formula">√mean(eₜ²)</span></dd>
+                <dt>选择</dt><dd>关注典型绝对偏差用 MAE；大误差代价显著时同时看 RMSE。</dd>
+                <dt>边界</dt><dd>两者都带销量尺度，不能直接比较销量规模差异很大的 SKU。</dd>
+              </dl>
+            </div>
+          </article>
+
+          <article class="metric-entry" data-search="MAPE 百分比误差 零值 接近零 长尾">
+            <div class="business">
+              <div class="metric-kicker">ERROR · PERCENTAGE</div>
+              <h3>MAPE</h3>
+              <p>把误差表示为实际值的百分比，直观，但不适合长尾、低销量和间歇需求。</p>
+              <div class="question">回答：相对实际值，平均百分比误差多大？</div>
+            </div>
+            <div class="technical">
+              <dl>
+                <dt>公式</dt><dd><span class="formula">mean(|eₜ / yₜ|) × 100%</span></dd>
+                <dt>问题</dt><dd class="warning">实际值为零时无定义；接近零时极端放大。</dd>
+                <dt>偏差</dt><dd>百分比误差还可能对高估和低估产生不对称惩罚。</dd>
+                <dt>结论</dt><dd>不作为海量长尾 SKU 的单一主评价指标。</dd>
+              </dl>
+            </div>
+          </article>
+
+          <article class="metric-entry" data-search="MASE RMSSE scaled error 缩放误差 朴素预测 基线 跨SKU">
+            <div class="business">
+              <div class="metric-kicker">ERROR · SCALED</div>
+              <h3>MASE 与 RMSSE</h3>
+              <p>用朴素预测误差缩放，使结果无量纲，适合跨序列比较。</p>
+              <div class="question">回答：模型是否真正优于简单基线？</div>
+            </div>
+            <div class="technical">
+              <dl>
+                <dt>解释</dt><dd>MASE&lt;1 或 RMSSE&lt;1，表示优于对应朴素基线。</dd>
+                <dt>基线</dt><dd>非季节序列用朴素预测；季节序列用季节朴素预测。</dd>
+                <dt>优点</dt><dd>无量纲，适合不同规模 SKU 的模型比较。</dd>
+                <dt>边界</dt><dd>恒定序列可能导致缩放分母为零，需要单独处理。</dd>
+              </dl>
+            </div>
+          </article>
+        </div>
+        <div class="rule-box"><strong>验证方式：</strong>按时间顺序做滚动预测起点验证，每次只使用预测时点之前的数据，并评价与真实采购或物流提前期一致的多步误差。</div>
+      </section>
+
+      <section id="inventory-risk" class="handbook-section searchable-section">
+        <div class="section-head"><span class="section-no">08</span><h2>备货与安全库存</h2></div>
+        <p class="section-summary">对安全库存最有业务意义的，通常不是单日原始销量标准差，而是与真实决策提前期一致的累计需求预测误差分布。</p>
+        <table class="compare-table">
+          <thead><tr><th>统计对象</th><th>主要用途</th><th>不能替代什么</th></tr></thead>
+          <tbody>
+            <tr><td>原始销量标准差</td><td>描述历史总变动</td><td>不能直接代表随机性或预测风险</td></tr>
+            <tr><td>去趋势、去季节残差标准差</td><td>描述模型未解释波动</td><td>不能代替真实样本外误差</td></tr>
+            <tr><td>样本内残差标准差</td><td>模型拟合诊断</td><td>不能证明未来预测能力</td></tr>
+            <tr><td>样本外预测误差标准差</td><td>预测区间与模型比较</td><td>提前期不同则不能直接用于库存</td></tr>
+            <tr><td>提前期累计误差分布</td><td>安全库存与服务水平决策</td><td>仍需叠加交期波动、相关性和执行约束</td></tr>
+          </tbody>
+        </table>
+        <div class="principle">库存缓冲的核心输入：真实提前期内的需求预测误差 + 补货时效不确定性 + 服务水平与成本取舍。</div>
+      </section>
+
+      <section id="terminology" class="handbook-section searchable-section">
+        <div class="section-head"><span class="section-no">09</span><h2>术语纠偏</h2></div>
+        <table class="compare-table term-table">
+          <thead><tr><th>含混叫法</th><th>推荐标准叫法</th><th>判断规则</th></tr></thead>
+          <tbody>
+            <tr><td>波动系数</td><td>变异系数 CV</td><td>仅当公式确为标准差除以均值时成立</td></tr>
+            <tr><td>离散度</td><td>离散程度 + 具体指标</td><td>明确使用方差、标准差、IQR 还是 CV</td></tr>
+            <tr><td>趋势指数</td><td>趋势斜率、增长率或趋势强度</td><td>不存在唯一行业公式，自定义字段必须披露定义</td></tr>
+            <tr><td>销量波动</td><td>原始销量变动、残差波动或预测误差</td><td>必须说明统计对象</td></tr>
+            <tr><td>预测准确率</td><td>Bias、MAE、RMSE、MASE 等</td><td>“准确率 85%”若无公式、样本和提前期，就不可审计</td></tr>
+            <tr><td>稳定 SKU</td><td>低趋势、低残差波动、低间歇性的组合</td><td>必须同时说明粒度、窗口和生命周期</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="governance" class="handbook-section searchable-section">
+        <div class="section-head"><span class="section-no">10</span><h2>指标口径治理</h2></div>
+        <p class="section-summary">公式正确不等于指标可用。任何用于分类、模型选择或补货的指标，都应登记以下字段。</p>
+        <div class="field-grid">
+          <div class="field"><b>标准名称</b><span>例如：变异系数 CV</span></div>
+          <div class="field"><b>明确公式</b><span>样本标准差 ÷ 样本均值</span></div>
+          <div class="field"><b>统计对象</b><span>原始销量、清洗后需求、非零需求量或预测误差</span></div>
+          <div class="field"><b>时间粒度</b><span>日、周或月，不同粒度不可直接比较</span></div>
+          <div class="field"><b>观察窗口</b><span>最近 13 周、26 周或滚动一年</span></div>
+          <div class="field"><b>预测提前期</b><span>1周、4周或完整补货提前期</span></div>
+          <div class="field"><b>异常处理</b><span>缺货、促销、大单、退货和断流</span></div>
+          <div class="field"><b>聚合层级</b><span>SKU、款式、站点、国家或全渠道</span></div>
+          <div class="field"><b>最小样本</b><span>至少多少期、多少个非零观测</span></div>
+          <div class="field"><b>更新频率</b><span>每日、每周或每月</span></div>
+          <div class="field"><b>阈值来源</b><span>历史分层、统计分布、回测或管理规则</span></div>
+          <div class="field"><b>业务动作</b><span>选择模型、人工复核或调整库存策略</span></div>
+        </div>
+      </section>
+
+      <section id="implementation" class="handbook-section searchable-section">
+        <div class="section-head"><span class="section-no">11</span><h2>推荐实施顺序</h2></div>
+        <div class="checklist">
+          <div class="check-item"><b>明确决策对象</b><span>定义预测对象、时间粒度和真实决策提前期。</span></div>
+          <div class="check-item"><b>修复需求观测</b><span>处理缺货截断、下架、促销、大单、退货和数据异常。</span></div>
+          <div class="check-item"><b>识别可解释结构</b><span>区分水平、趋势、季节性、生命周期和结构突变。</span></div>
+          <div class="check-item"><b>识别间歇性</b><span>判断是否为小计数、长尾或大量零需求序列。</span></div>
+          <div class="check-item"><b>建立朴素基线</b><span>复杂模型必须与均值、朴素或季节朴素预测比较。</span></div>
+          <div class="check-item"><b>滚动回测未来误差</b><span>评价与真实补货提前期一致的样本外预测。</span></div>
+          <div class="check-item"><b>连接业务结果</b><span>用缺货、过剩、加急、资金和服务结果校准阈值与动作。</span></div>
+        </div>
+        <div class="principle">描述性指标用于认识序列，不直接证明模型好坏；预测误差用于评价模型，但不能独立决定库存。</div>
+      </section>
+
+      <section id="sources" class="handbook-section">
+        <div class="section-head"><span class="section-no">12</span><h2>资料来源与使用边界</h2></div>
+        <div class="sources">
+          <p>本文用于建立通用术语、公式与判断边界。具体阈值、窗口、模型与库存策略仍需结合企业数据回测。</p>
+          <ol>
+            <li><a href="https://www.itl.nist.gov/div898/software/dataplot/refman2/auxillar/coefvari.htm" target="_blank" rel="noopener">NIST Dataplot：Coefficient of Variation</a></li>
+            <li><a href="https://otexts.com/fpp3/accuracy.html" target="_blank" rel="noopener">Forecasting: Principles and Practice：Evaluating point forecast accuracy</a></li>
+            <li><a href="https://otexts.com/fpp3/tscv.html" target="_blank" rel="noopener">Forecasting: Principles and Practice：Time series cross-validation</a></li>
+            <li><a href="https://otexts.com/fpp3/counts.html" target="_blank" rel="noopener">Forecasting: Principles and Practice：Time series of counts</a></li>
+            <li><a href="https://robjhyndman.com/papers/SBC-categorization.pdf" target="_blank" rel="noopener">Kostenko &amp; Hyndman：A note on the categorization of demand patterns</a></li>
+          </ol>
+        </div>
+      </section>
+    </main>
+  </div>
 
   <footer>
-    <span>cizen.net · 公开学习材料</span>
-    <span>发布于 2026-08-06</span>
+    <span>cizen.net · 专业查询手册</span>
+    <span>更新于 2026-08-06</span>
   </footer>
+
+  <script>
+    (() => {
+      const links = [...document.querySelectorAll('.sidebar a')];
+      const sections = links.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+      const observer = new IntersectionObserver(entries => {
+        const visible = entries.filter(e => e.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (!visible) return;
+        links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + visible.target.id));
+      }, { rootMargin: '-15% 0px -72% 0px', threshold: [0, .1, .3] });
+      sections.forEach(section => observer.observe(section));
+
+      const input = document.getElementById('metric-search');
+      const clear = document.getElementById('clear-search');
+      const state = document.getElementById('search-state');
+      const entries = [...document.querySelectorAll('.metric-entry')];
+      const searchableSections = [...document.querySelectorAll('.searchable-section')];
+
+      function clearMarks(root) {
+        root.querySelectorAll('mark[data-search-mark]').forEach(mark => mark.replaceWith(document.createTextNode(mark.textContent)));
+        root.normalize();
+      }
+
+      function highlight(root, query) {
+        const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+          acceptNode(node) {
+            if (!node.nodeValue.trim() || node.parentElement.closest('script, style, mark')) return NodeFilter.FILTER_REJECT;
+            return node.nodeValue.toLowerCase().includes(query) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
+          }
+        });
+        const nodes = [];
+        while (walker.nextNode()) nodes.push(walker.currentNode);
+        nodes.forEach(node => {
+          const text = node.nodeValue;
+          const lower = text.toLowerCase();
+          const index = lower.indexOf(query);
+          if (index < 0) return;
+          const mark = document.createElement('mark');
+          mark.dataset.searchMark = '1';
+          mark.textContent = text.slice(index, index + query.length);
+          node.parentNode.insertBefore(document.createTextNode(text.slice(0, index)), node);
+          node.parentNode.insertBefore(mark, node);
+          node.nodeValue = text.slice(index + query.length);
+        });
+      }
+
+      function runSearch() {
+        const query = input.value.trim().toLowerCase();
+        entries.forEach(entry => clearMarks(entry));
+        if (!query) {
+          entries.forEach(entry => entry.hidden = false);
+          searchableSections.forEach(section => section.hidden = false);
+          state.style.display = 'none';
+          return;
+        }
+        let count = 0;
+        entries.forEach(entry => {
+          const haystack = (entry.dataset.search + ' ' + entry.textContent).toLowerCase();
+          const match = haystack.includes(query);
+          entry.hidden = !match;
+          if (match) { count++; highlight(entry, query); }
+        });
+        searchableSections.forEach(section => {
+          const sectionEntries = [...section.querySelectorAll('.metric-entry')];
+          if (sectionEntries.length) section.hidden = sectionEntries.every(entry => entry.hidden);
+        });
+        state.textContent = count ? `找到 ${count} 个相关指标条目。` : '没有找到相关指标，请尝试“CV”“趋势”“长尾”“误差”等关键词。';
+        state.style.display = 'block';
+      }
+
+      input.addEventListener('input', runSearch);
+      clear.addEventListener('click', () => { input.value = ''; runSearch(); input.focus(); });
+    })();
+  </script>
 </body>
 </html>
