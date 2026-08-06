@@ -108,34 +108,9 @@
       background: var(--panel);
     }
     .quick-find-head {
-      display: grid;
-      grid-template-columns: 120px minmax(0, 1fr);
-      align-items: center;
-      gap: 18px;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
     }
     .quick-find-head strong { font-size: 15px; }
-    .search-wrap { display: flex; gap: 8px; width: 100%; }
-    .search-wrap input {
-      width: 100%;
-      min-height: 46px;
-      padding: 8px 12px;
-      border: 1px solid var(--line-strong);
-      border-radius: 3px;
-      background: #fff;
-      color: var(--ink);
-      font: inherit;
-      font-size: 14px;
-    }
-    .search-wrap button {
-      min-width: 58px;
-      min-height: 46px;
-      border: 1px solid var(--line-strong);
-      border-radius: 3px;
-      background: var(--panel-soft);
-      color: var(--ink);
-      cursor: pointer;
-    }
     .question-links { display: flex; flex-wrap: wrap; gap: 8px; }
     .question-links a {
       color: var(--accent);
@@ -147,7 +122,6 @@
       background: var(--accent-soft);
     }
     .question-links a:hover { border-color: var(--accent); background: #dcebe5; }
-    .search-state { display: none; margin-top: 12px; color: var(--muted); font-size: 13px; }
 
     .layout {
       width: min(var(--max), calc(100% - 40px));
@@ -494,8 +468,6 @@
       h1 { font-size: 35px; line-height: 1.22; }
       .hero p { font-size: 16px; }
       .quick-find { padding: 14px; }
-      .quick-find-head { grid-template-columns: 1fr; align-items: stretch; gap: 8px; }
-      .search-wrap { width: 100%; }
       .layout { gap: 22px; }
       .handbook-section { padding: 28px 0 30px; }
       .section-head { grid-template-columns: 42px minmax(0, 1fr); gap: 9px; }
@@ -541,13 +513,9 @@
     </div>
   </header>
 
-  <section class="quick-find" aria-label="快速查找">
+  <section class="quick-find" aria-label="按问题查找">
     <div class="quick-find-head">
       <strong>按问题查找</strong>
-      <div class="search-wrap">
-        <input id="metric-search" type="search" placeholder="搜索：CV、长尾、趋势、安全库存……" aria-label="搜索指标">
-        <button id="clear-search" type="button">清除</button>
-      </div>
     </div>
     <div class="question-links">
       <a href="#cv">比较不同规模商品</a>
@@ -557,7 +525,6 @@
       <a href="#inventory-risk">连接安全库存</a>
       <a href="#terminology">纠正含混字段</a>
     </div>
-    <div id="search-state" class="search-state" aria-live="polite"></div>
   </section>
 
   <div class="layout">
@@ -626,6 +593,8 @@
             <div class="technical">
               <dl>
                 <dt>公式</dt><dd><span class="formula">x̄ = Σxₜ / n</span></dd>
+                <dt>参数</dt><dd><strong>x̄</strong>：观察窗口内的平均需求；<strong>xₜ</strong>：第 t 期的实际需求量；<strong>t</strong>：时间期序号；<strong>n</strong>：观察窗口包含的总期数；<strong>Σ</strong>：对全部 n 期求和。</dd>
+                <dt>单位</dt><dd>与原始需求一致，例如件/日、件/周或件/月。</dd>
                 <dt>优点</dt><dd>保留总量信息，易于聚合和计算。</dd>
                 <dt>边界</dt><dd>容易被促销峰值、大单和异常值拉动；大量零值时不代表典型一期。</dd>
                 <dt>口径</dt><dd>注明时间粒度、窗口，以及缺货、退货、大单是否修正。</dd>
@@ -671,7 +640,8 @@
               <dl>
                 <dt>样本方差</dt><dd><span class="formula">s² = Σ(xₜ − x̄)² / (n − 1)</span></dd>
                 <dt>标准差</dt><dd><span class="formula">s = √s²</span>，单位与销量相同。</dd>
-                <dt>IQR</dt><dd><span class="formula">Q₀.₇₅ − Q₀.₂₅</span>，对极端值更稳健。</dd>
+                <dt>参数</dt><dd><strong>s²</strong>：样本方差；<strong>s</strong>：样本标准差；<strong>xₜ</strong>：第 t 期需求量；<strong>x̄</strong>：样本平均需求；<strong>n</strong>：样本期数；<strong>n−1</strong>：样本方差使用的自由度。</dd>
+                <dt>IQR</dt><dd><span class="formula">Q₀.₇₅ − Q₀.₂₅</span>，其中 <strong>Q₀.₂₅</strong> 和 <strong>Q₀.₇₅</strong> 分别是第25与第75百分位数。</dd>
                 <dt>边界</dt><dd class="warning">原始销量标准差会混入趋势、季节、促销和缺货影响。</dd>
               </dl>
             </div>
@@ -692,6 +662,8 @@
               <dl>
                 <dt>标准名称</dt><dd>变异系数（Coefficient of Variation, CV），也称相对标准差。</dd>
                 <dt>公式</dt><dd><span class="formula">CV = s / x̄</span></dd>
+                <dt>参数</dt><dd><strong>CV</strong>：变异系数，无量纲，常写成小数或百分比；<strong>s</strong>：同一窗口内的样本标准差；<strong>x̄</strong>：同一窗口内的平均需求量。</dd>
+                <dt>示例解释</dt><dd>CV=0.30 表示标准差约为平均需求的30%，不是“预测准确率70%”。</dd>
                 <dt>适用</dt><dd>同口径、同粒度、同生命周期下跨 SKU 比较。</dd>
                 <dt>失真条件</dt><dd class="warning">均值为零时无定义；均值接近零或大量零需求时异常放大。</dd>
                 <dt>必须注明</dt><dd>对原始销量、清洗后需求、非零需求量还是模型残差计算。</dd>
@@ -722,8 +694,10 @@
             </div>
             <div class="technical">
               <dl>
-                <dt>线性趋势</dt><dd><span class="formula">xₜ = a + bt + εₜ</span>，其中 b 为每期变化量。</dd>
+                <dt>线性趋势</dt><dd><span class="formula">xₜ = a + bt + εₜ</span></dd>
+                <dt>趋势参数</dt><dd><strong>xₜ</strong>：第 t 期需求；<strong>a</strong>：时间起点附近的基准水平；<strong>b</strong>：趋势斜率，即每期平均增加或减少的需求量；<strong>t</strong>：时间期序号；<strong>εₜ</strong>：趋势未解释的剩余波动。</dd>
                 <dt>增长率</dt><dd><span class="formula">gₜ = xₜ / xₜ₋ₖ − 1</span></dd>
+                <dt>增长参数</dt><dd><strong>gₜ</strong>：第 t 期相对增长率；<strong>xₜ</strong>：本期需求；<strong>xₜ₋ₖ</strong>：向前 k 期的对比需求；<strong>k</strong>：比较间隔，取1可表示环比，取一个完整季节周期可表示同比。</dd>
                 <dt>趋势强度</dt><dd>同时检查拟合度、斜率不确定性、持续时间和窗口敏感度。</dd>
                 <dt>边界</dt><dd>基期接近零时增长率失真；季节性和结构突变会制造伪趋势。</dd>
                 <dt>系统字段</dt><dd class="warning">若使用“趋势指数”，必须披露公式、窗口、平滑方式和基准。</dd>
@@ -765,8 +739,9 @@
             <div class="technical">
               <dl>
                 <dt>全称</dt><dd>Average Demand Interval</dd>
-                <dt>公式</dt><dd><span class="formula">ADI = 总观察期数 / 非零需求期数</span></dd>
-                <dt>补充指标</dt><dd>零需求占比 <span class="formula">P₀ = 零需求期数 / 总期数</span></dd>
+                <dt>公式</dt><dd><span class="formula">ADI = T / N₊</span></dd>
+                <dt>参数</dt><dd><strong>ADI</strong>：平均需求间隔，单位为“期”；<strong>T</strong>：观察窗口的总期数；<strong>N₊</strong>：其中需求量大于0的期数。</dd>
+                <dt>补充指标</dt><dd>零需求占比 <span class="formula">P₀ = N₀ / T</span>；<strong>N₀</strong> 为零需求期数，<strong>T</strong> 为总期数。</dd>
                 <dt>关键边界</dt><dd class="warning">ADI 强烈依赖时间粒度；按日间歇的商品，按周聚合后可能不再间歇。</dd>
               </dl>
             </div>
@@ -781,7 +756,9 @@
             </div>
             <div class="technical">
               <dl>
-                <dt>公式</dt><dd><span class="formula">CV²q = (s_q / q̄)²</span>，仅对非零需求量 qᵢ 计算。</dd>
+                <dt>公式</dt><dd><span class="formula">CV²q = (s_q / q̄)²</span></dd>
+                <dt>参数</dt><dd><strong>qᵢ</strong>：第 i 次发生需求时的非零需求量；<strong>q̄</strong>：所有非零需求量的平均值；<strong>s_q</strong>：非零需求量的样本标准差；<strong>CV²q</strong>：非零需求量变异系数的平方，无量纲。</dd>
+                <dt>统计对象</dt><dd>只使用 qᵢ&gt;0 的需求量计算；零需求期通过 ADI 或 P₀ 单独描述。</dd>
                 <dt>组合解释</dt><dd>ADI 描述发生频率；CV²q 描述发生时的数量不规则性。</dd>
                 <dt>方法联系</dt><dd>Croston 类方法分别平滑非零需求量与需求间隔。</dd>
                 <dt>阈值边界</dt><dd class="warning">常见 1.32 与 0.49 是历史方法选择规则，不是自然常数。</dd>
@@ -821,8 +798,10 @@
             </div>
             <div class="technical">
               <dl>
-                <dt>误差定义</dt><dd><span class="formula">eₜ = 实际值 − 预测值</span></dd>
+                <dt>误差定义</dt><dd><span class="formula">eₜ = yₜ − ŷₜ</span></dd>
+                <dt>误差参数</dt><dd><strong>eₜ</strong>：第 t 期预测误差；<strong>yₜ</strong>：第 t 期实际需求；<strong>ŷₜ</strong>：在预测时点生成的第 t 期预测值。</dd>
                 <dt>平均误差</dt><dd><span class="formula">ME = Σeₜ / m</span></dd>
+                <dt>ME 参数</dt><dd><strong>ME</strong>：平均误差；<strong>m</strong>：参与评价的样本外预测期数；<strong>Σeₜ</strong>：这些预测期误差的总和。</dd>
                 <dt>解释</dt><dd>按上述符号，ME&gt;0 表示总体低估；ME&lt;0 表示总体高估。</dd>
                 <dt>边界</dt><dd class="warning">正负误差会抵消，Bias 不能代替误差幅度指标。</dd>
               </dl>
@@ -838,8 +817,9 @@
             </div>
             <div class="technical">
               <dl>
-                <dt>MAE</dt><dd><span class="formula">mean(|eₜ|)</span></dd>
-                <dt>RMSE</dt><dd><span class="formula">√mean(eₜ²)</span></dd>
+                <dt>MAE</dt><dd><span class="formula">MAE = Σ|eₜ| / m</span></dd>
+                <dt>RMSE</dt><dd><span class="formula">RMSE = √(Σeₜ² / m)</span></dd>
+                <dt>参数</dt><dd><strong>eₜ</strong>：第 t 个样本外预测误差；<strong>|eₜ|</strong>：误差绝对值；<strong>eₜ²</strong>：误差平方；<strong>m</strong>：评价期数。MAE、RMSE 的单位都与需求量一致。</dd>
                 <dt>选择</dt><dd>关注典型绝对偏差用 MAE；大误差代价显著时同时看 RMSE。</dd>
                 <dt>边界</dt><dd>两者都带销量尺度，不能直接比较销量规模差异很大的 SKU。</dd>
               </dl>
@@ -855,7 +835,8 @@
             </div>
             <div class="technical">
               <dl>
-                <dt>公式</dt><dd><span class="formula">mean(|eₜ / yₜ|) × 100%</span></dd>
+                <dt>公式</dt><dd><span class="formula">MAPE = (100% / m) × Σ|eₜ / yₜ|</span></dd>
+                <dt>参数</dt><dd><strong>MAPE</strong>：平均绝对百分比误差；<strong>eₜ</strong>：第 t 期预测误差；<strong>yₜ</strong>：第 t 期实际需求；<strong>m</strong>：评价期数。</dd>
                 <dt>问题</dt><dd class="warning">实际值为零时无定义；接近零时极端放大。</dd>
                 <dt>偏差</dt><dd>百分比误差还可能对高估和低估产生不对称惩罚。</dd>
                 <dt>结论</dt><dd>不作为海量长尾 SKU 的单一主评价指标。</dd>
@@ -872,6 +853,8 @@
             </div>
             <div class="technical">
               <dl>
+                <dt>简化表达</dt><dd><span class="formula">MASE = 模型 MAE / 朴素基线 MAE</span><br><span class="formula">RMSSE = 模型 RMSE / 朴素基线 RMSE</span></dd>
+                <dt>参数</dt><dd><strong>模型 MAE/RMSE</strong>：候选模型在样本外预测期的误差；<strong>朴素基线 MAE/RMSE</strong>：用训练数据计算的简单基线误差。正式计算应保持相同季节周期和缩放口径。</dd>
                 <dt>解释</dt><dd>MASE&lt;1 或 RMSSE&lt;1，表示优于对应朴素基线。</dd>
                 <dt>基线</dt><dd>非季节序列用朴素预测；季节序列用季节朴素预测。</dd>
                 <dt>优点</dt><dd>无量纲，适合不同规模 SKU 的模型比较。</dd>
@@ -978,67 +961,6 @@
         links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + visible.target.id));
       }, { rootMargin: '-15% 0px -72% 0px', threshold: [0, .1, .3] });
       sections.forEach(section => observer.observe(section));
-
-      const input = document.getElementById('metric-search');
-      const clear = document.getElementById('clear-search');
-      const state = document.getElementById('search-state');
-      const entries = [...document.querySelectorAll('.metric-entry')];
-      const searchableSections = [...document.querySelectorAll('.searchable-section')];
-
-      function clearMarks(root) {
-        root.querySelectorAll('mark[data-search-mark]').forEach(mark => mark.replaceWith(document.createTextNode(mark.textContent)));
-        root.normalize();
-      }
-
-      function highlight(root, query) {
-        const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
-          acceptNode(node) {
-            if (!node.nodeValue.trim() || node.parentElement.closest('script, style, mark')) return NodeFilter.FILTER_REJECT;
-            return node.nodeValue.toLowerCase().includes(query) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
-          }
-        });
-        const nodes = [];
-        while (walker.nextNode()) nodes.push(walker.currentNode);
-        nodes.forEach(node => {
-          const text = node.nodeValue;
-          const lower = text.toLowerCase();
-          const index = lower.indexOf(query);
-          if (index < 0) return;
-          const mark = document.createElement('mark');
-          mark.dataset.searchMark = '1';
-          mark.textContent = text.slice(index, index + query.length);
-          node.parentNode.insertBefore(document.createTextNode(text.slice(0, index)), node);
-          node.parentNode.insertBefore(mark, node);
-          node.nodeValue = text.slice(index + query.length);
-        });
-      }
-
-      function runSearch() {
-        const query = input.value.trim().toLowerCase();
-        entries.forEach(entry => clearMarks(entry));
-        if (!query) {
-          entries.forEach(entry => entry.hidden = false);
-          searchableSections.forEach(section => section.hidden = false);
-          state.style.display = 'none';
-          return;
-        }
-        let count = 0;
-        entries.forEach(entry => {
-          const haystack = (entry.dataset.search + ' ' + entry.textContent).toLowerCase();
-          const match = haystack.includes(query);
-          entry.hidden = !match;
-          if (match) { count++; highlight(entry, query); }
-        });
-        searchableSections.forEach(section => {
-          const sectionEntries = [...section.querySelectorAll('.metric-entry')];
-          if (sectionEntries.length) section.hidden = sectionEntries.every(entry => entry.hidden);
-        });
-        state.textContent = count ? `找到 ${count} 个相关指标条目。` : '没有找到相关指标，请尝试“CV”“趋势”“长尾”“误差”等关键词。';
-        state.style.display = 'block';
-      }
-
-      input.addEventListener('input', runSearch);
-      clear.addEventListener('click', () => { input.value = ''; runSearch(); input.focus(); });
     })();
   </script>
 </body>
