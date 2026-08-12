@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="一份面向员工、管理者与产品团队的 Epic 公开指南：区分团队层与组合层用法，连接战略、价值流、最小验证与增量交付。">
+  <title>Epic：把大想法变成可验证的价值改变 · cizen.net</title>
+  <style>
+    :root{--paper:#f5f1e8;--sheet:#fffdf8;--ink:#1c2927;--muted:#62706b;--line:#d9d5c9;--green:#175c4c;--green2:#2f7968;--mint:#e2eee8;--amber:#9c5b1c;--amber-bg:#f6ead7;--red:#8f3d32;--red-bg:#f4e4df;--blue:#315e79;--blue-bg:#e5edf1;--shadow:0 18px 55px rgba(38,48,43,.08);--serif:"Noto Serif SC","Songti SC","SimSun",serif;--sans:"Microsoft YaHei","PingFang SC","Segoe UI",sans-serif}
+    *{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:92px}body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);line-height:1.75}a{color:var(--green);text-underline-offset:4px}button,a{touch-action:manipulation}.top{position:sticky;top:0;z-index:20;border-bottom:1px solid rgba(217,213,201,.9);background:rgba(245,241,232,.94);backdrop-filter:blur(12px)}.topin{width:min(1180px,calc(100% - 36px));height:68px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:18px}.brand{font-weight:900;text-decoration:none;color:var(--ink);letter-spacing:.02em}.nav{display:flex;gap:6px;overflow:auto;scrollbar-width:none}.nav a{padding:8px 10px;border-radius:6px;color:var(--muted);font-size:13px;font-weight:700;text-decoration:none;white-space:nowrap}.nav a:hover,.nav a:focus-visible{background:var(--sheet);color:var(--green);outline:2px solid rgba(23,92,76,.18)}
+    main{overflow:hidden}.hero{width:min(1180px,calc(100% - 36px));margin:0 auto;padding:78px 0 58px;display:grid;grid-template-columns:minmax(0,1.45fr) minmax(280px,.55fr);gap:64px;align-items:end}.kicker{color:var(--green);font-size:13px;font-weight:900;letter-spacing:.16em;text-transform:uppercase}.hero h1{margin:16px 0 22px;font-family:var(--serif);font-size:clamp(42px,5.4vw,72px);line-height:1.14;letter-spacing:-.045em;text-wrap:balance}.lead{max-width:820px;margin:0;color:#3f4e49;font-size:clamp(18px,1.7vw,22px);line-height:1.75}.hero-note{border-top:3px solid var(--green);padding-top:18px;color:var(--muted);font-size:15px}.hero-note strong{display:block;margin-bottom:7px;color:var(--ink);font-size:17px}.thesis{background:var(--ink);color:#fff}.thesis-in{width:min(1180px,calc(100% - 36px));margin:auto;padding:34px 0;display:grid;grid-template-columns:170px 1fr;gap:40px;align-items:start}.thesis-label{color:#a8c8bc;font-size:13px;font-weight:900;letter-spacing:.14em}.thesis blockquote{margin:0;font-family:var(--serif);font-size:clamp(24px,2.65vw,35px);line-height:1.55}.thesis em{color:#c7e2d8;font-style:normal}.keep{white-space:nowrap}
+    .layout{width:min(1180px,calc(100% - 36px));margin:0 auto;display:grid;grid-template-columns:190px minmax(0,1fr);gap:56px;padding:78px 0}.toc{position:sticky;top:98px;align-self:start}.toc-title{margin-bottom:14px;color:var(--muted);font-size:12px;font-weight:900;letter-spacing:.14em}.toc a{display:block;padding:7px 0;border-bottom:1px solid var(--line);color:var(--muted);font-size:13px;text-decoration:none}.toc a:hover,.toc a:focus-visible{color:var(--green);outline:none}.content{min-width:0}.chapter{padding:0 0 86px}.chapter:last-child{padding-bottom:0}.section-label{color:var(--green);font-size:12px;font-weight:900;letter-spacing:.15em}.chapter h2{margin:8px 0 20px;font-family:var(--serif);font-size:clamp(30px,4vw,48px);line-height:1.3;letter-spacing:-.035em;text-wrap:balance}.chapter h3{margin:38px 0 12px;font-size:21px;line-height:1.4}.chapter>p,.prose{max-width:780px;color:#43504c;font-size:17px}.note{margin:28px 0;padding:18px 22px;border:1px solid var(--line);background:var(--sheet);box-shadow:var(--shadow)}.note strong{color:var(--green)}
+    .dual{display:grid;grid-template-columns:1fr 1fr;margin:34px 0;border:1px solid var(--line);background:var(--sheet);box-shadow:var(--shadow)}.lens{padding:30px}.lens+.lens{border-left:1px solid var(--line)}.lens-tag{display:inline-block;margin-bottom:16px;padding:5px 9px;background:var(--mint);color:var(--green);font-size:12px;font-weight:900}.lens:nth-child(2) .lens-tag{background:var(--amber-bg);color:var(--amber)}.lens h3{margin:0 0 12px;font-family:var(--serif);font-size:28px}.lens p{margin:0 0 16px;color:var(--muted)}.lens ul{margin:0;padding-left:20px}.bridge{position:relative;margin:0 7%;height:54px;border-left:1px solid var(--line);border-right:1px solid var(--line)}.bridge:after{content:"共同底线：都必须可拆分、可学习、可调整";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:max-content;max-width:90%;padding:7px 12px;background:var(--paper);color:var(--green);font-size:13px;font-weight:900;text-align:center}
+    .hierarchy{margin:32px 0;padding:30px;border:1px solid var(--line);background:var(--sheet)}.flow{display:grid;grid-template-columns:repeat(7,auto);gap:10px;align-items:center;justify-content:space-between}.node{min-width:105px;padding:16px 12px;border:1px solid var(--line);background:#fff;text-align:center}.node strong{display:block;color:var(--green)}.arrow{color:#92a09b;font-weight:900}.caption{margin:16px 0 0;color:var(--muted);font-size:13px}.compare{width:100%;border-collapse:collapse;margin:28px 0;background:var(--sheet);font-size:15px}.compare th,.compare td{padding:15px 16px;border:1px solid var(--line);vertical-align:top;text-align:left}.compare th{background:#edf1ed;color:var(--ink)}.compare td:first-child{font-weight:800;white-space:nowrap}.small{color:var(--muted);font-size:13px}
+    .gates{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin:34px 0;border:1px solid var(--line);background:var(--sheet)}.gate{position:relative;padding:26px 20px;min-height:250px}.gate+.gate{border-left:1px solid var(--line)}.gate-no{font-family:var(--serif);color:#aab4af;font-size:34px}.gate h3{margin:10px 0 12px;color:var(--green);font-size:20px}.gate p{margin:0;color:var(--muted);font-size:14px}.gate .decision{display:block;margin-top:16px;padding-top:12px;border-top:1px solid var(--line);color:var(--ink);font-weight:800;font-size:13px}.evidence{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:26px 0}.ev{padding:18px;border-top:4px solid var(--blue);background:var(--blue-bg)}.ev:nth-child(2){border-color:var(--green);background:var(--mint)}.ev:nth-child(3){border-color:var(--amber);background:var(--amber-bg)}.ev:nth-child(4){border-color:var(--red);background:var(--red-bg)}.ev strong{display:block;margin-bottom:6px}.ev span{font-size:13px;color:#52605b}
+    .split-list{counter-reset:split;display:grid;gap:12px;margin:28px 0}.split-item{display:grid;grid-template-columns:46px 180px 1fr;gap:18px;align-items:start;padding:18px 0;border-top:1px solid var(--line)}.split-item:before{counter-increment:split;content:counter(split);width:34px;height:34px;border:1px solid var(--green);border-radius:50%;display:grid;place-items:center;color:var(--green);font-weight:900}.split-item strong{color:var(--ink)}.split-item span{color:var(--muted)}.anti{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:28px 0}.anti>div{padding:22px;border:1px solid var(--line);background:var(--sheet)}.bad{border-top:4px solid var(--red)!important}.good{border-top:4px solid var(--green)!important}.anti h3{margin:0 0 14px}.anti ul{margin:0;padding-left:20px;color:var(--muted)}
+    .template{margin:30px 0;border:1px solid #263a35;background:#152822;color:#eef5f1;box-shadow:var(--shadow)}.template-head{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 20px;border-bottom:1px solid #365048}.template-head strong{color:#c8e3d9}.copy{min-height:44px;padding:9px 14px;border:1px solid #71958a;border-radius:4px;background:transparent;color:#fff;font:inherit;font-weight:800;cursor:pointer}.copy:hover,.copy:focus-visible{background:#28453d;outline:2px solid #9bc1b5}.template pre{margin:0;padding:22px;white-space:pre-wrap;word-break:break-word;font:14px/1.75 Consolas,"Microsoft YaHei",monospace;color:#dbe9e4}.review{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:28px 0}.q{padding:18px 20px;border-bottom:1px solid var(--line);background:rgba(255,253,248,.62)}.q b{color:var(--green)}
+    .myths{display:grid;gap:0;border-top:1px solid var(--line);margin-top:30px}.myth{display:grid;grid-template-columns:200px 1fr;gap:28px;padding:22px 0;border-bottom:1px solid var(--line)}.myth strong{color:var(--red)}.myth span{color:var(--muted)}.glossary{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:28px}.term{padding:20px;background:var(--sheet)}.term b{display:block;margin-bottom:6px;color:var(--green)}.term span{color:var(--muted);font-size:14px}.sources{margin:28px 0 0;padding-left:22px}.sources li{margin:12px 0;color:var(--muted)}.boundary{padding:24px;border:1px solid #d3bd91;background:#fbf1dc;color:#60471c}.footer{border-top:1px solid var(--line);padding:38px 18px 56px;color:var(--muted);text-align:center;font-size:13px}
+    @media(max-width:900px){.hero{grid-template-columns:1fr;gap:28px;padding-top:54px}.hero-note{max-width:600px}.thesis-in{grid-template-columns:1fr;gap:12px}.layout{grid-template-columns:1fr;padding-top:54px}.toc{display:none}.dual,.anti{grid-template-columns:1fr}.lens+.lens{border-left:0;border-top:1px solid var(--line)}.flow{display:flex;overflow:auto;justify-content:flex-start}.node{flex:0 0 145px}.gates{grid-template-columns:1fr 1fr}.gate:nth-child(3){border-left:0;border-top:1px solid var(--line)}.gate:nth-child(4){border-top:1px solid var(--line)}.evidence{grid-template-columns:1fr 1fr}.split-item{grid-template-columns:42px 1fr}.split-item span{grid-column:2}.review{grid-template-columns:1fr}}
+    @media(max-width:600px){.topin{width:calc(100% - 24px)}.brand{font-size:14px;white-space:nowrap}.nav{flex:1;justify-content:flex-end;min-width:0}.nav a{display:none}.nav a:first-child{display:block;font-size:13px}.hero,.layout,.thesis-in{width:calc(100% - 28px);min-width:0}.hero>*{min-width:0}.hero h1{font-size:40px;letter-spacing:-.03em}.lead,.hero-note,.thesis blockquote{overflow-wrap:anywhere}.thesis-in{grid-template-columns:minmax(0,1fr)}.thesis blockquote{font-size:24px}.chapter{padding-bottom:64px}.chapter h2{font-size:32px}.lens{padding:22px}.gates,.evidence,.glossary{grid-template-columns:1fr}.gate+.gate,.gate:nth-child(3){border-left:0;border-top:1px solid var(--line)}.myth{grid-template-columns:1fr;gap:6px}.compare-wrap{overflow:auto}.compare{min-width:700px}.template-head{align-items:flex-start;flex-direction:column}.copy{width:100%}.bridge{margin:0}.bridge:after{width:90%}}
+    @media print{.top,.copy{display:none}.hero,.layout,.thesis-in{width:100%}.layout{display:block;padding:36px}.chapter{break-inside:avoid}.toc{display:none}body{background:#fff}.template{break-inside:avoid}}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  </style>
+</head>
+<body>
+<header class="top"><div class="topin"><a class="brand" href="../">cizen.net / Open</a><nav class="nav" aria-label="页面章节"><a href="#definition">先定义</a><a href="#system">看位置</a><a href="#gates">过四门</a><a href="#split">会拆分</a><a href="#template">拿模板</a><a href="#sources">查来源</a></nav></div></header>
+<main>
+  <section class="hero">
+    <div><div class="kicker">Agile · Value Stream · Portfolio</div><h1>Epic：把大想法变成<br>可验证的价值改变</h1><p class="lead">它可以是团队待办中的“大用户故事”，也可以是组合层的“重大投资举措”。真正重要的不是名称，而是：我们能否围绕一个结果假设，用更小的投入更早获得证据，并据此继续、调整或停止。</p></div>
+    <aside class="hero-note"><strong>适合三类读者</strong>员工先建立共同语言；管理者理解战略与投资治理；PO 和团队获得拆分、验收与评审模板。<br><br><span class="small">公开学习材料 · 更新于 2026-08-12</span></aside>
+  </section>
+  <section class="thesis"><div class="thesis-in"><div class="thesis-label">ONE IDEA</div><blockquote>Epic 不是“大项目”的敏捷新名字。<br>它应当是一项<em>可以分解、可以验证、可以停止</em>的价值<span class="keep">改变。</span></blockquote></div></section>
+  <div class="layout">
+    <aside class="toc" aria-label="目录"><div class="toc-title">阅读路径</div><a href="#definition">01 两种常见定义</a><a href="#system">02 在工作系统中的位置</a><a href="#gates">03 四道治理门</a><a href="#evidence">04 怎样证明价值</a><a href="#split">05 如何拆分</a><a href="#template">06 最小模板</a><a href="#review">07 评审问题</a><a href="#myths">08 常见误区</a><a href="#terms">09 术语速查</a><a href="#sources">10 来源与边界</a></aside>
+    <article class="content">
+      <section class="chapter" id="definition"><div class="section-label">01 · DEFINE</div><h2>先别急着统一口径：Epic 有两种常见用法</h2><p>“Epic”不是 Scrum 官方规定的工件，也没有跨所有敏捷框架的唯一尺寸。公开资料中至少存在两种成熟但层级不同的用法。组织必须先说明自己在哪一层使用它。</p>
+        <div class="dual">
+          <div class="lens"><span class="lens-tag">团队 / 产品层</span><h3>大用户故事</h3><p>Agile Alliance 的经典定义：一个迭代内无法按当前定义交付、因而需要拆成更小用户故事的较大事项。</p><ul><li>作用：暂存较大但尚未细化的想法</li><li>载体：产品待办列表</li><li>动作：逐步细化并拆成可交付增量</li><li>重点：避免过早写满大量细节</li></ul></div>
+          <div class="lens"><span class="lens-tag">组合 / 战略层</span><h3>重大投资举措</h3><p>SAFe 的定义：因范围和影响较大，需要组合层关注、轻量商业论证、MVP 与阶段性投资判断的重要举措。</p><ul><li>作用：连接战略与价值流投资</li><li>载体：投资组合看板</li><li>动作：验证假设，继续、转向或停止</li><li>重点：用证据控制重大不确定性</li></ul></div>
+        </div><div class="bridge" aria-hidden="true"></div>
+        <div class="note"><strong>本指南的使用约定：</strong>讲拆分时采用团队层视角；讲战略、价值流、投资和治理时采用组合层视角。二者不能仅凭 Jira 等工具中的同名字段自动等同。</div>
+      </section>
+
+      <section class="chapter" id="system"><div class="section-label">02 · POSITION</div><h2>Epic 在系统中的位置：连接方向，但不替代任何一层</h2><p>一个常见层级是“战略主题 → Epic → Feature/实验 → Story → Task”，但它只是可选的组织方式，不是敏捷法则。每一层回答的问题不同。</p>
+        <div class="hierarchy"><div class="flow"><div class="node"><strong>战略主题</strong><span>去哪里</span></div><div class="arrow">→</div><div class="node"><strong>Epic</strong><span>押注什么改变</span></div><div class="arrow">→</div><div class="node"><strong>Feature / 实验</strong><span>先提供什么能力或证据</span></div><div class="arrow">→</div><div class="node"><strong>Story / Task</strong><span>下一步交付什么</span></div></div><p class="caption">真正的连接不是父子字段，而是“下层证据能否支持上层结果假设”。</p></div>
+        <div class="compare-wrap"><table class="compare"><thead><tr><th>概念</th><th>回答什么</th><th>生命周期</th><th>不能混同</th></tr></thead><tbody><tr><td>战略 / OKR</td><td>希望形成什么方向或阶段成果</td><td>持续或按目标周期</td><td>不是一项具体投资载体</td></tr><tr><td>价值流</td><td>客户价值如何被长期、端到端创造</td><td>长期存在</td><td>不是临时工作包</td></tr><tr><td>Epic</td><td>为了某项重大结果，准备验证哪项改变</td><td>临时；应退出</td><td>不是价值流，也不是固定范围项目</td></tr><tr><td>Feature / 实验</td><td>下一阶段交付什么能力或获得什么证据</td><td>短于 Epic</td><td>不一定都属于某个 Epic</td></tr><tr><td>Story / Task</td><td>团队近期完成并验收什么</td><td>通常在短周期内</td><td>不能只按部门或技术层切碎</td></tr></tbody></table></div>
+        <div class="boundary"><strong>不是所有重要工作都应升级为 Epic。</strong>单一团队能在既有授权和容量内闭环、风险可控的事项，通常留在普通 Backlog 即可。Epic 过多会制造新的审批层、在制品和管理噪音。</div>
+      </section>
+
+      <section class="chapter" id="gates"><div class="section-label">03 · GOVERN</div><h2>组合层 Epic 要过四道门</h2><p>合格不是“卡片填满了”，而是从是否配称，到能否退出，形成完整的投资与学习逻辑。</p>
+        <div class="gates"><div class="gate"><div class="gate-no">01</div><h3>配称门</h3><p>影响、投资、跨团队复杂性或不确定性，是否真的需要组合层做取舍？</p><span class="decision">否则：降为 Feature、实验、改进项或服务项</span></div><div class="gate"><div class="gate-no">02</div><h3>准入门</h3><p>问题、对象、基线、结果假设、最小验证、阶段预算和责任是否足以支持第一笔投入？</p><span class="decision">决策：投入下一阶段，而非批准完整实施</span></div><div class="gate"><div class="gate-no">03</div><h3>运行门</h3><p>是否持续产生证据、限制 WIP、暴露依赖，并按结果而非任务完成率评审？</p><span class="decision">决策：继续、加码、调整、暂停或停止</span></div><div class="gate"><div class="gate-no">04</div><h3>退出门</h3><p>结果是否验证？后续责任是否承接？失败学习、资产与重启条件是否保留？</p><span class="decision">结局：转经营、关闭、转向或停止</span></div></div>
+        <div class="note"><strong>治理的关键：</strong>Epic 看板不是“状态汇报墙”。它应让有限容量下的排队、决策等待和机会成本可见，并允许低价值事项在消耗更多资源前退出。</div>
+      </section>
+
+      <section class="chapter" id="evidence"><div class="section-label">04 · PROVE</div><h2>“做完”不等于“产生价值”：至少看四层证据</h2><p>系统上线、流程发布、培训完成，只能证明产生了输出。价值通常要经过“可用 → 被采用 → 关键机制改善 → 经营或客户结果改变”。</p>
+        <div class="evidence"><div class="ev"><strong>交付证据</strong><span>必要能力是否真实可用，并达到共同完成标准？</span></div><div class="ev"><strong>采用证据</strong><span>目标对象是否使用、接受，或真正改变了行为？</span></div><div class="ev"><strong>领先证据</strong><span>价值链上的关键机制是否开始改善？</span></div><div class="ev"><strong>结果证据</strong><span>客户、经营或风险结果是否发生可信改变？</span></div></div>
+        <h3>同时设置护栏</h3><p class="prose">目标指标说明想改善什么；护栏指标说明不能以什么为代价。例如增长不能以利润和库存健康恶化为代价，自动化不能以错误率和人工兜底失控为代价，短期交付不能持续透支平台稳定性和数据质量。</p>
+        <h3>MVP 的正确问题</h3><p class="prose"><strong>MVP（最小可行产品 / 最小验证）不是“完整项目的一期”或“把全部功能做 60%”。</strong>它是用尽可能少的投入，获得足以支持下一次投资决定的可信证据。它可以是人工服务、原型、影子运行、回测、小市场试验或受控产品增量。</p>
+      </section>
+
+      <section class="chapter" id="split"><div class="section-label">05 · DECOMPOSE</div><h2>怎样拆 Epic：沿价值和学习切，不沿部门切</h2><p>好的拆分让每一片都能更早产生可观察的结果或关键证据；坏的拆分只是把同一批工作分发给不同职能，最后仍要全部完成才能验收。</p>
+        <div class="split-list"><div class="split-item"><strong>按用户或场景</strong><span>先覆盖一个明确用户群、市场、品类或业务场景，再扩展相邻对象。</span></div><div class="split-item"><strong>按端到端流程</strong><span>先打通一条窄但完整的价值路径，而不是分别建立前端、后端、数据任务包。</span></div><div class="split-item"><strong>按业务规则</strong><span>先支持最常见、最清晰或风险可控的规则，再处理长尾与例外。</span></div><div class="split-item"><strong>按风险与假设</strong><span>先验证一旦错误就会推翻整项投资的假设，而不是先做最容易展示的功能。</span></div><div class="split-item"><strong>按服务等级</strong><span>先实现可用的基本能力，再逐步改善速度、覆盖、自动化与体验。</span></div></div>
+        <div class="anti"><div class="bad"><h3>不推荐：职能切片</h3><ul><li>业务写需求</li><li>产品画原型</li><li>技术开发接口</li><li>测试最后验收</li></ul></div><div class="good"><h3>更推荐：价值切片</h3><ul><li>一个目标对象</li><li>一条完整场景</li><li>一项待验证假设</li><li>一组可观察证据</li></ul></div></div>
+      </section>
+
+      <section class="chapter" id="template"><div class="section-label">06 · USE</div><h2>Epic 最小卡片：够决策，不追求一次写完</h2><p>模板的作用是暴露判断缺口，不是替代讨论。早期未知项可以明确标为假设或待验证，不要用虚假精确填满表格。</p>
+        <div class="template"><div class="template-head"><strong>可复制的最小模板</strong><button class="copy" id="copyTemplate" type="button">复制模板</button></div><pre id="templateText"># Epic：用“结果假设”命名
+
+## 1. 问题与目标对象
+- 谁在什么场景遇到什么关键问题？
+- 当前基线与证据是什么？
+
+## 2. 战略与价值流关联
+- 对应方向 / 目标：
+- 主要改善哪条价值流的什么端到端结果：
+- 为什么需要 Epic 级治理，而不是普通 Backlog：
+
+## 3. 结果假设
+- 如果我们【做出待验证的改变】，那么【对象】的【结果】将从【基线】改善到【目标 / 方向】，因为我们相信【关键机制】。
+- 最危险、最需要证伪的假设：
+
+## 4. 最小验证（MVP）
+- 验证对象与范围：
+- 计划获得的证据：
+- 时间盒 / 阶段投入：
+- 本阶段明确不做：
+
+## 5. 度量与护栏
+- 交付证据：
+- 采用证据：
+- 领先证据：
+- 结果证据：
+- 不能伤害的护栏：
+
+## 6. 责任、依赖与决策
+- 结果责任：
+- 推进责任：
+- 关键依赖：
+- 价值 / 组织 / 技术 / 投资分别由谁决定：
+
+## 7. 决策与退出
+- 什么条件下继续或加码：
+- 什么条件下调整或转向：
+- 什么条件下暂停或停止：
+- 验证结束后由谁承接：</pre></div>
+      </section>
+
+      <section class="chapter" id="review"><div class="section-label">07 · REVIEW</div><h2>评审不问“写全了吗”，先问这十二个问题</h2>
+        <div class="review"><div class="q"><b>01</b> 为什么配称 Epic，而不是较小工作项？</div><div class="q"><b>02</b> 改善哪条价值流的哪个结果？</div><div class="q"><b>03</b> 不做或延迟的真实代价是什么？</div><div class="q"><b>04</b> 目标对象、当前基线和证据可靠吗？</div><div class="q"><b>05</b> 核心结果假设及其反证是什么？</div><div class="q"><b>06</b> 多久能获得第一轮可信证据？</div><div class="q"><b>07</b> MVP 是为学习设计，还是缩小版项目？</div><div class="q"><b>08</b> 交付、采用、领先、结果与护栏看什么？</div><div class="q"><b>09</b> 启动它需要暂停或停止什么？</div><div class="q"><b>10</b> 价值、推进、组织、技术、投资谁决定？</div><div class="q"><b>11</b> 何时继续、转向、暂停或停止？</div><div class="q"><b>12</b> 退出后责任、数据与资产由谁承接？</div></div>
+        <div class="note"><strong>30 秒快速判定：</strong>如果一个 Epic 只能回答“做什么、谁来做、何时上线”，却回答不了“解决什么、如何证伪、先投多少、不能伤害什么、何时停止”，它更像大型任务单，还不是一个可治理的 Epic。</div>
+      </section>
+
+      <section class="chapter" id="myths"><div class="section-label">08 · CORRECT</div><h2>八个高频误区</h2><div class="myths"><div class="myth"><strong>工作量大就是 Epic</strong><span>“大”可能只是拆分不当。组合层 Epic 的关键是重大价值假设和真实投资取舍。</span></div><div class="myth"><strong>传统项目改名 Epic</strong><span>若范围、预算和日期一次锁死，仍以按时按范围为成功，治理逻辑并未改变。</span></div><div class="myth"><strong>战略目标就是 Epic</strong><span>“提升增长”是方向，不是一个可投资、可验证、可停止的事项。</span></div><div class="myth"><strong>部门工作包就是 Epic</strong><span>“技术做接口、业务做培训”是局部交付，不是端到端价值改变。</span></div><div class="myth"><strong>MVP 等于一期工程</strong><span>MVP 的“最小”相对于决策所需证据，而不是相对于功能清单。</span></div><div class="myth"><strong>上线就是成功</strong><span>上线证明产出存在；采用、领先机制与结果证据才能逐步证明价值。</span></div><div class="myth"><strong>所有 Story 都要挂 Epic</strong><span>小缺陷、独立改进和日常服务项可以直接存在，层级不是越完整越敏捷。</span></div><div class="myth"><strong>失败不能停止</strong><span>停止无效假设是在释放能力；若沉没成本让 Epic 只进不出，才是治理失效。</span></div></div>
+      </section>
+
+      <section class="chapter" id="terms"><div class="section-label">09 · GLOSSARY</div><h2>术语速查</h2><div class="glossary"><div class="term"><b>Backlog / 待办列表</b><span>按价值与需要排序、持续涌现和调整的工作清单，不是静态需求池。</span></div><div class="term"><b>Portfolio / 投资组合</b><span>围绕战略和有限容量，对多条价值流及重大投资进行整体取舍的范围。</span></div><div class="term"><b>Feature / 特性</b><span>可形成明确业务、产品或平台能力的较小单元；具体尺寸由组织约定。</span></div><div class="term"><b>User Story / 用户故事</b><span>从用户价值视角表达的小型需求；不是唯一的 Backlog Item 写法。</span></div><div class="term"><b>MVP / 最小可行产品</b><span>用于验证关键假设的最小可运行试验；在本指南中也宽泛表达“最小验证”。</span></div><div class="term"><b>WIP / 在制品</b><span>系统中已开始但尚未完成的工作。限制 WIP 有助于减少过载、暴露阻塞。</span></div><div class="term"><b>Leading Indicator / 领先指标</b><span>结果尚未完全出现前，用于观察关键机制是否按预期变化的早期信号。</span></div><div class="term"><b>Guardrail / 护栏</b><span>为了改善目标结果而不能突破的风险、质量、合规或整体经营边界。</span></div></div>
+      </section>
+
+      <section class="chapter" id="sources"><div class="section-label">10 · EVIDENCE</div><h2>来源、适用边界与独立判断</h2><p>本页优先使用框架官方或专业组织的一手定义，并明确区分“来源这样定义”与“所有组织都必须照搬”。</p>
+        <ol class="sources"><li><a href="https://agilealliance.org/glossary/epic" target="_blank" rel="noopener">Agile Alliance — Epic</a>：团队层经典定义、收益、适用场景与过度复杂化风险。</li><li><a href="https://scrumguides.org/scrum-guide.html" target="_blank" rel="noopener">The 2020 Scrum Guide</a>：Scrum 官方工件、Product Backlog、Product Goal 与持续细化；Epic 并非 Scrum 规定术语。</li><li><a href="https://framework.scaledagile.com/epic" target="_blank" rel="noopener">Scaled Agile Framework — Epic</a>：组合层重大举措、MVP、轻量商业论证及两类 Epic。</li><li><a href="https://framework.scaledagile.com/lean-portfolio-management-discipline" target="_blank" rel="noopener">SAFe — Lean Portfolio Management</a>：价值流投资、组合看板、Build–Measure–Learn、WIP 与阶段决策。</li><li><a href="https://www.atlassian.com/agile/project-management/epics-stories-themes" target="_blank" rel="noopener">Atlassian — Epics, Stories, and Initiatives</a>：常见工作层级及“结构需按组织情境调整”的工具实践。</li></ol>
+        <div class="boundary"><strong>独立判断：</strong>对于中小型组织，不建议为了“敏捷正规化”照搬多层级 SAFe 体系。先保留最低必要结构：明确何种事项需要组合层治理；用结果假设、最小验证、证据和停止条件管理这些事项；其余工作留给价值流与团队在授权内处理。工具应服从治理需要，而不是反过来塑造组织。</div>
+      </section>
+    </article>
+  </div>
+</main>
+<footer class="footer">cizen.net · 公开学习材料 · 可用于内部学习、讨论与方法校准</footer>
+<script>
+  const copyBtn=document.getElementById('copyTemplate');
+  copyBtn.addEventListener('click',async()=>{const text=document.getElementById('templateText').innerText;try{await navigator.clipboard.writeText(text);copyBtn.textContent='已复制';setTimeout(()=>copyBtn.textContent='复制模板',1800)}catch(e){const r=document.createRange();r.selectNode(document.getElementById('templateText'));const s=window.getSelection();s.removeAllRanges();s.addRange(r);copyBtn.textContent='请按 Ctrl+C';}});
+</script>
+</body>
+</html>
