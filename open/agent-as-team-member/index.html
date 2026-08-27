@@ -1,0 +1,654 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="description" content="当 Agent 成为团队成员，岗位、产能、专业分工、管理控制与共享服务的五个传统假设如何改变。">
+  <title>当 Agent 成为团队成员｜组织设计的五项迁移</title>
+  <style>
+    :root {
+      --paper: #f4f0e7;
+      --surface: #fffdf8;
+      --ink: #18231f;
+      --muted: #58645e;
+      --line: #d8d3c7;
+      --navy: #143d3a;
+      --teal: #1c6a5d;
+      --teal-soft: #e9f2ee;
+      --rust: #a44f32;
+      --rust-soft: #f6e9e1;
+      --gold: #b9852e;
+      --old: #6c716e;
+      --old-soft: #eeece7;
+      --wide: 1180px;
+      --measure: 760px;
+      --shadow: 0 18px 56px rgba(31, 45, 39, .08);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        linear-gradient(rgba(20, 61, 58, .028) 1px, transparent 1px),
+        var(--paper);
+      background-size: 100% 32px;
+      font-family: "Noto Sans CJK SC", "Source Han Sans SC", "Microsoft YaHei", sans-serif;
+      font-size: 17px;
+      line-height: 1.75;
+      text-rendering: optimizeLegibility;
+    }
+    a { color: var(--teal); text-underline-offset: 3px; }
+    .keep { white-space: nowrap; }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      min-height: 58px;
+      padding: 8px max(20px, calc((100vw - var(--wide)) / 2));
+      border-bottom: 1px solid rgba(20, 61, 58, .16);
+      background: rgba(244, 240, 231, .94);
+      backdrop-filter: blur(12px);
+    }
+    .brand {
+      color: var(--navy);
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: .06em;
+      text-decoration: none;
+    }
+    .top-links { display: flex; gap: 8px; }
+    .top-links a {
+      min-height: 40px;
+      display: inline-flex;
+      align-items: center;
+      padding: 7px 12px;
+      border: 1px solid transparent;
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 700;
+      text-decoration: none;
+    }
+    .top-links a:hover, .top-links a:focus-visible {
+      border-color: var(--line);
+      background: var(--surface);
+      outline: none;
+    }
+
+    .hero {
+      min-height: calc(100vh - 58px);
+      display: grid;
+      align-items: center;
+      padding: 92px 24px 76px;
+      border-bottom: 1px solid var(--line);
+      background:
+        radial-gradient(circle at 85% 22%, rgba(185, 133, 46, .16), transparent 27%),
+        radial-gradient(circle at 9% 82%, rgba(28, 106, 93, .13), transparent 29%);
+    }
+    .hero-inner { width: min(var(--wide), 100%); margin: auto; }
+    .eyebrow {
+      margin: 0 0 18px;
+      color: var(--rust);
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: .12em;
+    }
+    h1, h2, .verdict, .closing-line {
+      font-family: "Noto Serif CJK SC", "Source Han Serif SC", "Songti SC", SimSun, serif;
+    }
+    h1 {
+      max-width: 1160px;
+      margin: 0;
+      color: var(--navy);
+      font-size: clamp(43px, 6vw, 78px);
+      line-height: 1.12;
+      letter-spacing: -.035em;
+      text-wrap: balance;
+    }
+    .hero-title-line { display: block; white-space: nowrap; }
+    .hero-lead {
+      max-width: 1100px;
+      margin: 28px 0 0;
+      color: #364842;
+      font-size: clamp(19px, 2vw, 27px);
+      line-height: 1.62;
+    }
+    .hero-lead > span { display: block; white-space: nowrap; }
+    .hero-thesis {
+      display: grid;
+      grid-template-columns: 72px minmax(0, 1fr);
+      gap: 20px;
+      align-items: start;
+      max-width: 980px;
+      margin-top: 42px;
+      padding-top: 24px;
+      border-top: 2px solid var(--navy);
+    }
+    .seal {
+      display: grid;
+      place-items: center;
+      width: 72px;
+      aspect-ratio: 1;
+      border: 2px solid var(--rust);
+      border-radius: 50%;
+      color: var(--rust);
+      font-weight: 850;
+      line-height: 1.1;
+      text-align: center;
+      transform: rotate(-5deg);
+    }
+    .hero-thesis p { margin: 0; font-size: 20px; }
+    .hero-thesis b { color: var(--navy); }
+
+    .page {
+      display: grid;
+      grid-template-columns: 210px minmax(0, 1fr);
+      gap: 44px;
+      width: min(var(--wide), calc(100% - 40px));
+      margin: 0 auto;
+      padding: 54px 0 110px;
+    }
+    .toc {
+      position: sticky;
+      top: 86px;
+      align-self: start;
+      max-height: calc(100vh - 105px);
+      overflow: auto;
+      padding-right: 10px;
+    }
+    .toc-label {
+      margin: 0 0 12px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .12em;
+    }
+    .toc a {
+      display: block;
+      padding: 8px 10px;
+      border-left: 2px solid var(--line);
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.35;
+      text-decoration: none;
+    }
+    .toc a:hover, .toc a:focus-visible {
+      color: var(--navy);
+      border-left-color: var(--teal);
+      background: rgba(28, 106, 93, .05);
+      outline: none;
+    }
+    main { min-width: 0; }
+    section {
+      scroll-margin-top: 80px;
+      padding: 76px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    section:first-child { padding-top: 20px; }
+    .section-no {
+      color: var(--rust);
+      font-size: 13px;
+      font-weight: 850;
+      letter-spacing: .12em;
+    }
+    h2 {
+      max-width: 940px;
+      margin: 10px 0 22px;
+      color: var(--navy);
+      font-size: clamp(31px, 4vw, 50px);
+      line-height: 1.24;
+      letter-spacing: -.025em;
+      text-wrap: balance;
+    }
+    h3 { margin: 0 0 10px; color: var(--navy); font-size: 21px; line-height: 1.4; }
+    p { max-width: var(--measure); margin: 12px 0; }
+    .lead { max-width: 880px; color: #35463f; font-size: 21px; line-height: 1.65; }
+    .verdict {
+      max-width: 920px;
+      margin: 30px 0;
+      padding: 22px 0;
+      border-block: 1px solid var(--teal);
+      color: var(--teal);
+      font-size: clamp(24px, 3vw, 35px);
+      font-weight: 700;
+      line-height: 1.45;
+    }
+
+    .matrix {
+      margin: 40px 0 12px;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+    .matrix-head, .shift-row {
+      display: grid;
+      grid-template-columns: 66px minmax(230px, 1fr) 64px minmax(280px, 1.2fr);
+      align-items: stretch;
+    }
+    .matrix-head {
+      background: var(--navy);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: .08em;
+    }
+    .matrix-head > div { padding: 12px 18px; }
+    .matrix-head > div:nth-child(3) { text-align: center; }
+    .shift-row { border-top: 1px solid var(--line); background: var(--surface); }
+    .shift-row:first-of-type { border-top: none; }
+    .shift-row > div { display: flex; align-items: center; padding: 20px 18px; }
+    .shift-index {
+      justify-content: center;
+      color: var(--rust);
+      background: #faf7f0;
+      font-weight: 900;
+      font-variant-numeric: tabular-nums;
+    }
+    .old-assumption { color: var(--old); background: var(--old-soft); font-weight: 760; }
+    .shift-arrow { justify-content: center; color: #fff; background: var(--rust); font-size: 25px; }
+    .new-assumption { color: var(--navy); background: var(--teal-soft); font-weight: 850; }
+    .matrix-note { color: var(--muted); font-size: 14px; }
+
+    .chapter {
+      display: grid;
+      grid-template-columns: 110px minmax(0, 1fr);
+      gap: 28px;
+      margin: 42px 0 0;
+      padding-top: 36px;
+      border-top: 1px solid var(--line);
+    }
+    .chapter:first-of-type { margin-top: 30px; }
+    .chapter-no {
+      color: var(--rust);
+      font-family: Georgia, serif;
+      font-size: 58px;
+      line-height: 1;
+    }
+    .chapter-body { min-width: 0; }
+    .chapter-body h3 { font-size: 27px; }
+    .chapter-body > p { font-size: 18px; }
+    .explain-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 24px;
+    }
+    .explain {
+      padding: 22px;
+      border-top: 3px solid var(--teal);
+      background: var(--surface);
+    }
+    .explain:nth-child(2) { border-top-color: var(--gold); }
+    .explain small {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 850;
+      letter-spacing: .1em;
+    }
+    .explain p { margin: 0; font-size: 15px; line-height: 1.68; }
+
+    .system-chain {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(145px, 1fr));
+      gap: 0;
+      margin: 38px 0;
+      overflow-x: auto;
+      padding-bottom: 10px;
+    }
+    .chain-step {
+      position: relative;
+      min-width: 158px;
+      padding: 22px 18px 25px;
+      border-block: 1px solid var(--line);
+      border-left: 1px solid var(--line);
+      background: var(--surface);
+    }
+    .chain-step:first-child { border-radius: 18px 0 0 18px; }
+    .chain-step:last-child { border-right: 1px solid var(--line); border-radius: 0 18px 18px 0; }
+    .chain-step::after {
+      content: "→";
+      position: absolute;
+      z-index: 2;
+      top: 50%;
+      right: -13px;
+      display: grid;
+      place-items: center;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      color: #fff;
+      background: var(--rust);
+      transform: translateY(-50%);
+    }
+    .chain-step:last-child::after { display: none; }
+    .chain-step small { color: var(--rust); font-weight: 850; }
+    .chain-step b { display: block; margin-top: 8px; line-height: 1.4; }
+
+    .not-equal {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin: 32px 0;
+    }
+    .not-equal article { padding: 24px; border: 1px solid var(--line); background: var(--surface); }
+    .not-equal article:first-child { border-top: 4px solid var(--rust); }
+    .not-equal article:last-child { border-top: 4px solid var(--teal); }
+    .not-equal ul, .action-list { margin: 14px 0 0; padding-left: 1.2em; }
+    .not-equal li, .action-list li { margin: 8px 0; }
+
+    .action-path { margin-top: 34px; counter-reset: action; }
+    .action-item {
+      display: grid;
+      grid-template-columns: 74px minmax(0, 1fr);
+      gap: 22px;
+      padding: 26px 0;
+      border-top: 1px solid var(--line);
+      counter-increment: action;
+    }
+    .action-item::before {
+      content: "0" counter(action);
+      color: var(--rust);
+      font-family: Georgia, serif;
+      font-size: 34px;
+      font-weight: 700;
+    }
+    .action-item h3 { margin-top: 3px; }
+    .action-item p { margin: 6px 0; }
+
+    .closing {
+      padding-bottom: 30px;
+      border-bottom: none;
+    }
+    .closing-line {
+      max-width: 960px;
+      margin: 30px 0 0;
+      color: var(--navy);
+      font-size: clamp(30px, 4vw, 50px);
+      font-weight: 700;
+      line-height: 1.45;
+    }
+    .footnote {
+      max-width: 860px;
+      margin-top: 44px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    @media (max-width: 900px) {
+      .page { grid-template-columns: 1fr; }
+      .toc {
+        position: static;
+        display: flex;
+        gap: 6px;
+        max-height: none;
+        overflow-x: auto;
+        padding: 0 0 14px;
+      }
+      .toc-label { display: none; }
+      .toc a { min-width: max-content; border: 1px solid var(--line); border-radius: 999px; }
+      .matrix { overflow-x: auto; }
+      .matrix-head, .shift-row { min-width: 780px; }
+    }
+
+    @media (max-width: 640px) {
+      body { font-size: 16px; }
+      .topbar { align-items: flex-start; padding-inline: 14px; }
+      .top-links { display: none; }
+      .hero { min-height: auto; padding: 68px 18px 58px; }
+      .hero-title-line { white-space: normal; }
+      .hero-lead > span { white-space: normal; }
+      h1 { font-size: clamp(40px, 12vw, 58px); }
+      .hero-thesis { grid-template-columns: 1fr; }
+      .seal { width: 62px; }
+      .page { width: min(100% - 28px, var(--wide)); padding-top: 30px; }
+      section { padding: 58px 0; }
+      .lead { font-size: 19px; }
+      .chapter { grid-template-columns: 1fr; gap: 12px; }
+      .chapter-no { font-size: 42px; }
+      .explain-grid, .not-equal { grid-template-columns: 1fr; }
+      .action-item { grid-template-columns: 54px minmax(0, 1fr); gap: 12px; }
+      .action-item::before { font-size: 27px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+    @media print {
+      .topbar, .toc { display: none; }
+      .hero { min-height: auto; }
+      .page { display: block; width: 100%; }
+      section { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="../../">cizen.net · OPEN SHARING</a>
+    <nav class="top-links" aria-label="页面导航">
+      <a href="#model">五项迁移</a>
+      <a href="#boundary">边界判断</a>
+      <a href="../">返回公开分享</a>
+    </nav>
+  </header>
+
+  <section class="hero" id="top">
+    <div class="hero-inner">
+      <p class="eyebrow">AI × ORGANIZATION · 公开分享材料 · 2026</p>
+      <h1>
+        <span class="hero-title-line">当 Agent <span class="keep">成为团队成员</span>，</span>
+        <span class="hero-title-line">组织的五个<span class="keep">默认前提</span><span class="keep">正在改变</span>。</span>
+      </h1>
+      <p class="hero-lead"><span>这不是“AI替代多少人”的讨论，而是一个更基础的问题：</span><span>当<span class="keep">持续工作的认知型 Agent</span>进入团队，</span><span>组织还应该继续围绕<span class="keep">岗位</span>、人数、<span class="keep">部门交接</span>和<span class="keep">逐级审批</span>来设计吗？</span></p>
+      <div class="hero-thesis">
+        <span class="seal">核心<br>判断</span>
+        <p><b>组织设计的基本单位，正在从“<span class="keep">岗位与部门</span>”转向“价值流中的<span class="keep">人机协同能力</span>”。</b><br>人的责任不是消失，而是从局部执行<span class="keep">进一步</span>走向目标判断、边界治理、<span class="keep">例外处理与结果负责</span>。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="page">
+    <aside class="toc" aria-label="内容目录">
+      <div class="toc-label">CONTENTS</div>
+      <a href="#model">01 五项迁移</a>
+      <a href="#explain">02 逐项理解</a>
+      <a href="#chain">03 一条完整链路</a>
+      <a href="#boundary">04 什么不会消失</a>
+      <a href="#start">05 如何开始</a>
+      <a href="#conclusion">06 最终判断</a>
+    </aside>
+
+    <main>
+      <section id="model">
+        <div class="section-no">01 · FIVE SHIFTS</div>
+        <h2>五个旧假设没有立刻消失，<br>但已不再适合作为组织设计的默认起点。</h2>
+        <p class="lead">Agent真正改变的不是某一个工具环节，而是能力边界、产能来源、专业协作、管理控制和中后台供给方式。</p>
+
+        <div class="matrix" role="table" aria-label="组织设计五项迁移">
+          <div class="matrix-head" role="row">
+            <div role="columnheader">序号</div>
+            <div role="columnheader">传统默认假设</div>
+            <div role="columnheader">迁移</div>
+            <div role="columnheader">新的组织逻辑</div>
+          </div>
+          <div class="shift-row" role="row">
+            <div class="shift-index" role="cell">01</div>
+            <div class="old-assumption" role="cell">岗位边界 ≈ 能力边界</div>
+            <div class="shift-arrow" role="cell">→</div>
+            <div class="new-assumption" role="cell">个人借助 AI 覆盖更长的问题链路</div>
+          </div>
+          <div class="shift-row" role="row">
+            <div class="shift-index" role="cell">02</div>
+            <div class="old-assumption" role="cell">增加产能主要靠加人</div>
+            <div class="shift-arrow" role="cell">→</div>
+            <div class="new-assumption" role="cell">产能由人、Agent 和平台共同构成</div>
+          </div>
+          <div class="shift-row" role="row">
+            <div class="shift-index" role="cell">03</div>
+            <div class="old-assumption" role="cell">专业问题交给专业部门</div>
+            <div class="shift-arrow" role="cell">→</div>
+            <div class="new-assumption" role="cell">专业能力逐步嵌入一线工作流</div>
+          </div>
+          <div class="shift-row" role="row">
+            <div class="shift-index" role="cell">04</div>
+            <div class="old-assumption" role="cell">管理主要靠分工与审批</div>
+            <div class="shift-arrow" role="cell">→</div>
+            <div class="new-assumption" role="cell">管理转向目标、护栏、冲突和验证</div>
+          </div>
+          <div class="shift-row" role="row">
+            <div class="shift-index" role="cell">05</div>
+            <div class="old-assumption" role="cell">共享部门依靠人工接单服务</div>
+            <div class="shift-arrow" role="cell">→</div>
+            <div class="new-assumption" role="cell">共性能力产品化、平台化、自助调用</div>
+          </div>
+        </div>
+        <p class="matrix-note">在窄屏设备上可横向滑动查看完整对照。这里的“迁移”表示默认逻辑改变，不表示旧机制被彻底取消。</p>
+      </section>
+
+      <section id="explain">
+        <div class="section-no">02 · WHAT EACH SHIFT MEANS</div>
+        <h2>理解这五项变化，关键不是“AI能做什么”，而是重新划分谁负责什么。</h2>
+
+        <article class="chapter">
+          <div class="chapter-no">01</div>
+          <div class="chapter-body">
+            <h3>从“岗位决定能力”到“个人覆盖更长的问题链路”</h3>
+            <p>过去，一个人能做什么主要由岗位说明书和专业背景决定。现在，同一个人可以调用检索、分析、写作、编程、审查等 Agent，减少任务在多个岗位之间反复交接。</p>
+            <div class="explain-grid">
+              <div class="explain"><small>不等于</small><p>人人都变成全能专家，也不等于专业门槛消失。</p></div>
+              <div class="explain"><small>真正改变</small><p>员工价值更多取决于能否组织、调用并验证多种能力，对更长的端到端结果负责。</p></div>
+            </div>
+          </div>
+        </article>
+
+        <article class="chapter">
+          <div class="chapter-no">02</div>
+          <div class="chapter-body">
+            <h3>从“扩编增产”到“人、Agent、平台共同供给产能”</h3>
+            <p>业务增长时，资源规划不能只计算人头。人的判断与责任、Agent的规模化执行、平台的数据与规则，共同决定真实产能。</p>
+            <div class="explain-grid">
+              <div class="explain"><small>人的独特贡献</small><p>定义目标、理解情境、处理关系、权衡价值、承担正式责任。</p></div>
+              <div class="explain"><small>新的管理问题</small><p>不是“还缺几个人”，而是“什么必须由人做、什么交给 Agent、什么应该沉淀为平台”。</p></div>
+            </div>
+          </div>
+        </article>
+
+        <article class="chapter">
+          <div class="chapter-no">03</div>
+          <div class="chapter-body">
+            <h3>从“专业部门接管”到“专业能力嵌入一线”</h3>
+            <p>法务、财务、人力、数据等专业知识，可以被封装为规则、模板、检查器和 Agent，进入业务流程现场。专业部门因此从逐单处理者，逐步转向规则制定者、能力建设者和复杂例外处理者。</p>
+            <div class="explain-grid">
+              <div class="explain"><small>过去的瓶颈</small><p>排队、转述、上下文损耗，以及专业人员被大量重复问题占用。</p></div>
+              <div class="explain"><small>未来的价值</small><p>让一线在护栏内自助完成高频事项，让专业人员集中处理高风险和高复杂度问题。</p></div>
+            </div>
+          </div>
+        </article>
+
+        <article class="chapter">
+          <div class="chapter-no">04</div>
+          <div class="chapter-body">
+            <h3>从“分工与审批”到“目标、护栏、冲突和验证”</h3>
+            <p>当 Agent 可以自主拆解和执行任务，管理者若仍逐步骤控制，就会重新锁死速度。管理重点应转向：目标是否清楚、权限和风险边界是否明确、冲突由谁裁决、结果如何验证。</p>
+            <div class="explain-grid">
+              <div class="explain"><small>不是取消控制</small><p>高风险、强监管、不可逆事项仍需正式审批和明确到人的责任。</p></div>
+              <div class="explain"><small>控制方式升级</small><p>从监督每个动作，转向治理一个由人和 Agent 共同构成、可审计和可纠偏的执行系统。</p></div>
+            </div>
+          </div>
+        </article>
+
+        <article class="chapter">
+          <div class="chapter-no">05</div>
+          <div class="chapter-body">
+            <h3>从“共享部门接单”到“共性能力产品化”</h3>
+            <p>共享部门不再只靠增加服务人员处理更多工单，而是把高频、共性、规则明确的服务，沉淀为可复用、可调用、可持续改进的组织能力产品。</p>
+            <div class="explain-grid">
+              <div class="explain"><small>评价方式变化</small><p>从“完成多少工单”，转向“自助解决率、复用范围、风险控制和复杂事项质量”。</p></div>
+              <div class="explain"><small>组织角色变化</small><p>共享部门从内部人力服务商，升级为规则治理者、能力产品经理和平台运营者。</p></div>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section id="chain">
+        <div class="section-no">03 · ONE SYSTEMIC CHAIN</div>
+        <h2>五项变化不是五个孤立趋势，<br>而是一条连续的组织重构链路。</h2>
+        <div class="system-chain" aria-label="五项迁移的系统链路">
+          <div class="chain-step"><small>STEP 01</small><b>Agent 扩大个人能力边界</b></div>
+          <div class="chain-step"><small>STEP 02</small><b>个人覆盖更长价值链路</b></div>
+          <div class="chain-step"><small>STEP 03</small><b>专业能力嵌入工作现场</b></div>
+          <div class="chain-step"><small>STEP 04</small><b>管理转向边界与验证</b></div>
+          <div class="chain-step"><small>STEP 05</small><b>共性能力沉淀为平台</b></div>
+        </div>
+        <div class="verdict">最终形成的，不是“无人组织”，而是小团队端到端负责、Agent规模化执行、平台提供共性能力、专业人员治理规则与例外的新型协作系统。</div>
+      </section>
+
+      <section id="boundary">
+        <div class="section-no">04 · BOUNDARY</div>
+        <h2>标题可以锋利，落地必须克制：<br>“正在失效”不等于“全部消失”。</h2>
+        <p class="lead">岗位、专业部门、审批和共享服务仍会长期存在。真正失效的是把它们当作所有场景唯一答案的习惯。</p>
+        <div class="not-equal">
+          <article>
+            <h3>不能简单推出</h3>
+            <ul>
+              <li>有了 Agent 就应该立即裁员</li>
+              <li>人人都必须成为全栈专家</li>
+              <li>专业部门和管理层将不再需要</li>
+              <li>所有审批都应该取消</li>
+              <li>采购一个 AI 工具就完成了组织转型</li>
+            </ul>
+          </article>
+          <article>
+            <h3>更准确的判断</h3>
+            <ul>
+              <li>岗位从任务集合转向结果责任</li>
+              <li>产能规划从人头转向能力组合</li>
+              <li>专业部门从逐单接管转向嵌入与治理</li>
+              <li>审批聚焦高风险、异常与不可逆事项</li>
+              <li>AI必须进入真实价值流并接受结果验证</li>
+            </ul>
+          </article>
+        </div>
+        <p>以下场景仍应保持更强的人类判断与正式控制：高风险和强监管事项、责任必须明确到人的决策、尚不能可靠标准化的专业判断、数据质量不足的场景，以及低频但后果严重的复杂事件。</p>
+      </section>
+
+      <section id="start">
+        <div class="section-no">05 · WHERE TO START</div>
+        <h2>组织变革不应从“重画组织架构图”开始，<br>而应从一条可验证的价值流开始。</h2>
+        <div class="action-path">
+          <article class="action-item">
+            <div><h3>选一条真实问题链路</h3><p>选择高频、痛点明确、结果可衡量，同时风险可控的业务流程，而不是先建立宏大的“AI组织”。</p></div>
+          </article>
+          <article class="action-item">
+            <div><h3>重新划分人、Agent与平台</h3><p>明确哪些任务需要人的判断与责任，哪些适合 Agent 执行，哪些共性能力值得平台化。</p></div>
+          </article>
+          <article class="action-item">
+            <div><h3>先建立护栏与验证</h3><p>定义数据权限、成本限制、升级条件、人工复核点和结果指标，再逐步扩大自主执行范围。</p></div>
+          </article>
+          <article class="action-item">
+            <div><h3>根据真实结果调整组织</h3><p>先验证周期、质量、风险和业务结果是否改善，再改变岗位、绩效、授权与共享部门模式。</p></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="closing" id="conclusion">
+        <div class="section-no">06 · CONCLUSION</div>
+        <h2>AI不是组织运行的新主线，<br>价值流才是。</h2>
+        <p class="lead">Agent是能力放大器。它的价值不在于让每个人生成更多内容，而在于减少无效交接、缩短反馈周期、扩大人的责任半径，并把组织知识转化为可复用的执行能力。</p>
+        <div class="closing-line">真正值得追求的，不是“拥有多少 Agent”，而是组织能否用更少的摩擦，把目标转化为经过验证的价值结果。</div>
+        <p class="footnote">说明：本页是一套组织设计分析框架，用于帮助讨论与试验，不代表所有组织、岗位和流程都应采用同一种改造方式。具体落地应依据业务风险、数据条件、专业责任和组织承载能力进行验证。</p>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
