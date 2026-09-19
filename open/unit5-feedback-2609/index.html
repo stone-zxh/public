@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>五单元架空层改造 · 业主意见汇总（2026年9月）</title>
+<meta name="description" content="华子小区5单元架空层改造业主意见收集汇总：21户提交，意见票数排序、垃圾点问题细分、儿童设施科目细分与参会意愿。">
+<style>
+  :root{
+    --ink:#1c211f;
+    --ink-2:#5a635e;
+    --ink-3:#8b948f;
+    --bg:#fdfdfb;
+    --card:#ffffff;
+    --line:#e7e9e4;
+    --accent:#0e7c66;
+    --accent-soft:#e3f1ed;
+    --warn:#9a5b10;
+    --warn-soft:#faf3e6;
+    --track:#eef0ea;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    font-family:-apple-system,"PingFang SC","HarmonyOS Sans SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg);color:var(--ink);
+    line-height:1.65;font-size:16px;
+  }
+  .wrap{max-width:680px;margin:0 auto;padding:0 20px 64px}
+
+  /* ── 头部 ── */
+  header{padding:44px 0 8px}
+  .kicker{
+    display:inline-block;font-size:13px;letter-spacing:.14em;
+    color:var(--accent);font-weight:600;margin-bottom:14px;
+  }
+  h1{font-size:30px;line-height:1.3;font-weight:700;letter-spacing:.01em}
+  .sub{margin-top:10px;color:var(--ink-2);font-size:15px}
+  .sub b{color:var(--ink)}
+
+  /* ── 概览数字 ── */
+  .stats{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:1px;
+    background:var(--line);border:1px solid var(--line);border-radius:12px;
+    overflow:hidden;margin:26px 0 8px;
+  }
+  .stat{background:var(--card);padding:14px 8px;text-align:center}
+  .stat .n{font-size:26px;font-weight:700;color:var(--accent);line-height:1.1}
+  .stat .n.grey{color:var(--ink-2)}
+  .stat .t{font-size:12px;color:var(--ink-2);margin-top:4px}
+
+  /* ── 章节 ── */
+  section{margin-top:44px}
+  .sec-head{display:flex;align-items:baseline;gap:10px;margin-bottom:6px}
+  .sec-no{font-size:13px;font-weight:700;color:var(--accent);letter-spacing:.06em}
+  h2{font-size:20px;font-weight:700;line-height:1.4}
+  .sec-note{font-size:13.5px;color:var(--ink-3);margin-bottom:16px}
+
+  /* ── 排行榜条形 ── */
+  .rank{border-top:1px solid var(--line)}
+  .rank-row{border-bottom:1px solid var(--line);padding:13px 0 12px}
+  .rank-line{display:flex;align-items:center;gap:10px}
+  .rank-no{
+    width:30px;flex:none;text-align:right;font-size:14px;font-weight:700;
+    color:var(--ink-3);font-variant-numeric:tabular-nums;
+  }
+  .rank-no.top{color:var(--accent)}
+  .rank-name{font-size:15px;font-weight:600;flex:1;min-width:0}
+  .rank-count{font-size:14px;font-weight:700;color:var(--ink);flex:none;font-variant-numeric:tabular-nums}
+  .rank-count small{font-weight:400;color:var(--ink-3);font-size:12px;margin-left:2px}
+  .bar{
+    height:8px;background:var(--track);border-radius:99px;
+    margin:8px 0 0 40px;overflow:hidden;
+  }
+  .bar i{display:block;height:100%;background:var(--accent);border-radius:99px}
+  .rank-row.muted .bar i{background:#b9c4bd}
+  details{margin:9px 0 0 40px}
+  summary{
+    font-size:13px;color:var(--accent);cursor:pointer;user-select:none;
+    list-style:none;display:inline-flex;align-items:center;gap:5px;
+  }
+  summary::-webkit-details-marker{display:none}
+  summary::before{content:"›";transition:transform .15s;display:inline-block;font-weight:700}
+  details[open] summary::before{transform:rotate(90deg)}
+  .rooms{
+    margin-top:7px;font-size:13px;color:var(--ink-2);line-height:1.9;
+    background:var(--accent-soft);border-radius:8px;padding:8px 12px;
+  }
+
+  /* ── 垃圾点细分 ── */
+  .split-cards{display:grid;gap:10px}
+  .split-card{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 16px;
+  }
+  .split-card .head{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+  .split-card .head b{font-size:15px}
+  .split-card .head .c{font-size:15px;font-weight:700;color:var(--accent);flex:none}
+  .split-card p{font-size:13.5px;color:var(--ink-2);margin-top:4px}
+  .split-card .rooms-inline{font-size:13px;color:var(--ink-3);margin-top:6px;line-height:1.8}
+  .split-card.main{border-color:var(--accent);background:linear-gradient(0deg,var(--accent-soft),var(--accent-soft)),var(--card)}
+  .tag{
+    display:inline-block;font-size:11px;font-weight:600;color:var(--accent);
+    background:var(--accent-soft);border-radius:4px;padding:1px 7px;margin-left:6px;vertical-align:2px;
+  }
+  .tag.grey{color:var(--ink-2);background:var(--track)}
+
+  /* ── 分歧说明 ── */
+  .duo{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0 12px}
+  .duo .cell{
+    border:1px solid var(--line);border-radius:12px;background:var(--card);
+    padding:14px;text-align:center;
+  }
+  .duo .n{font-size:30px;font-weight:700;line-height:1.15}
+  .duo .a .n{color:var(--accent)}
+  .duo .b .n{color:#b9803a}
+  .duo .t{font-size:13px;color:var(--ink-2);margin-top:2px}
+  .callout{
+    background:var(--warn-soft);border-radius:10px;padding:13px 15px;
+    font-size:14px;color:var(--warn);line-height:1.7;
+  }
+  .callout b{font-weight:700}
+
+  /* ── 参会意愿 ── */
+  .attend{display:grid;gap:10px}
+  .att-row{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:13px 16px}
+  .att-row .lab{font-size:14.5px;font-weight:600;flex:none;width:88px}
+  .att-row .lab.yes{color:var(--accent)}
+  .att-row .n{font-size:22px;font-weight:700;flex:none;width:34px;text-align:right;font-variant-numeric:tabular-nums}
+  .att-row .who{font-size:12.5px;color:var(--ink-3);line-height:1.7;min-width:0}
+
+  /* ── 下一步 ── */
+  .steps{display:grid;gap:0;border-top:1px solid var(--line)}
+  .step{display:flex;gap:14px;padding:15px 0;border-bottom:1px solid var(--line)}
+  .step .no{
+    flex:none;width:26px;height:26px;border-radius:50%;
+    background:var(--accent);color:#fff;font-size:13px;font-weight:700;
+    display:flex;align-items:center;justify-content:center;margin-top:2px;
+  }
+  .step b{font-size:15px;display:block;margin-bottom:2px}
+  .step p{font-size:13.5px;color:var(--ink-2)}
+
+  /* ── 页脚 ── */
+  footer{
+    margin-top:52px;padding-top:18px;border-top:1px solid var(--line);
+    font-size:12.5px;color:var(--ink-3);line-height:1.9;
+  }
+  footer b{color:var(--ink-2)}
+
+  @media (max-width:420px){
+    h1{font-size:26px}
+    .stats{grid-template-columns:repeat(2,1fr)}
+    .stat .n{font-size:22px}
+    .duo{grid-template-columns:1fr;gap:8px}
+    .rank-name{font-size:14.5px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <span class="kicker">意见公示 · 华子小区 5 单元</span>
+    <h1>架空层改造，大家都提了哪些意见？</h1>
+    <p class="sub">截至 <b>2026年9月19日</b>，共 <b>21 户</b> 提交意见。本页按票数汇总排序，房号来自业主提交的原始收集表，便于溯源核对。</p>
+    <div class="stats">
+      <div class="stat"><div class="n">21</div><div class="t">户提交</div></div>
+      <div class="stat"><div class="n">13</div><div class="t">关注垃圾点</div></div>
+      <div class="stat"><div class="n">11</div><div class="t">要儿童设施</div></div>
+      <div class="stat"><div class="n">2<span style="font-size:15px;color:var(--ink-3)">/8/11</span></div><div class="t">参加/不参加/未填</div></div>
+    </div>
+  </header>
+
+  <!-- ═══ 1 票数总排序 ═══ -->
+  <section>
+    <div class="sec-head"><span class="sec-no">01</span><h2>意见票数总排序</h2></div>
+    <p class="sec-note">一户可提多条意见，各条票数之和大于21。点开每条可看具体房号。</p>
+    <div class="rank">
+
+      <div class="rank-row">
+        <div class="rank-line"><span class="rank-no top">1</span><span class="rank-name">垃圾转运点 / 汇集点问题</span><span class="rank-count">13<small>户</small></span></div>
+        <div class="bar"><i style="width:100%"></i></div>
+        <details><summary>哪13户</summary><div class="rooms">5-2705、2001、1405、1304、5-1804、4101、1903、1904、5-1004、2904、5-3605、4201、5-2401</div></details>
+      </div>
+
+      <div class="rank-row">
+        <div class="rank-line"><span class="rank-no top">2</span><span class="rank-name">儿童游乐 / 娱乐设施 <span class="tag grey">科目细分见 03</span></span><span class="rank-count">11<small>户</small></span></div>
+        <div class="bar"><i style="width:84.6%"></i></div>
+        <details><summary>哪11户</summary><div class="rooms">1205、1304、5-804、5-1804、4101、1903、1904、5-2505、5-1004、4201、5-2401</div></details>
+      </div>
+
+      <div class="rank-row">
+        <div class="rank-line"><span class="rank-no top">3</span><span class="rank-name">改造为 24H 社区图书馆 / 阅读角</span><span class="rank-count">8<small>户</small></span></div>
+        <div class="bar"><i style="width:61.5%"></i></div>
+        <details><summary>哪8户</summary><div class="rooms">5-2705、2001、1405、1205、5-3801、5-1401、2904、5-3605（其中1205提"图书馆或者小孩游乐场"）</div></details>
+      </div>
+
+      <div class="rank-row">
+        <div class="rank-line"><span class="rank-no">4</span><span class="rank-name">健身器材</span><span class="rank-count">3<small>户</small></span></div>
+        <div class="bar"><i style="width:23.1%"></i></div>
+        <details><summary>哪3户</summary><div class="rooms">5-1401、2504、5-2401</div></details>
+      </div>
+
+      <div class="rank-row">
+        <div class="rank-line"><span class="rank-no">5</span><span class="rank-name">休闲桌椅 / 凳子</span><span class="rank-count">3<small>户</small></span></div>
+        <div class="bar"><i style="width:23.1%"></i></div>
+        <details><summary>哪3户</summary><div class="rooms">5-1804、1704、5-2401</div></details>
+      </div>
+
+      <div class="rank-row">
+        <div class="rank-line"><span class="rank-no">6</span><span class="rank-name">墙面地面彩绘</span><span class="rank-count">3<small>户</small></span></div>
+        <div class="bar"><i style="width:23.1%"></i></div>
+        <details><summary>哪3户</summary><div class="rooms">1304、4101、5-1004</div></details>
+      </div>
+
+      <div class="rank-row">
+        <div class="rank-line"><span class="rank-no">7</span><span class="rank-name">电梯口车位取消（阻挡安全出口）</span><span class="rank-count">3<small>+1户</small></span></div>
+        <div class="bar"><i style="width:23.1%"></i></div>
+        <details><summary>哪几户</summary><div class="rooms">1205、5-3605、5-2401；另有 5-1804 提"地下一楼门口车位取消"，口径近似</div></details>
+      </div>
+
+      <div class="rank-row">
+        <div class="rank-line"><span class="rank-no">8</span><span class="rank-name">楼梯间 / 地下室加装风扇或新风</span><span class="rank-count">3<small>户</small></span></div>
+        <div class="bar"><i style="width:23.1%"></i></div>
+        <details><summary>哪3户</summary><div class="rooms">5-1804、5-1401、5-3605</div></details>
+      </div>
+
+      <div class="rank-row">
+        <div class="rank-line"><span class="rank-no">9</span><span class="rank-name">增加通往架空层通道 / 连廊</span><span class="rank-count">3<small>户</small></span></div>
+        <div class="bar"><i style="width:23.1%"></i></div>
+        <details><summary>哪3户</summary><div class="rooms">5-1401、5-1004、5-3605（含"下雨天可自由进出"的雨天连廊需求）</div></details>
+      </div>
+
+      <div class="rank-row muted">
+        <div class="rank-line"><span class="rank-no">10</span><span class="rank-name">篮球设施（半场 / 投篮框）</span><span class="rank-count">2<small>户</small></span></div>
+        <div class="bar"><i style="width:15.4%"></i></div>
+        <details><summary>哪2户</summary><div class="rooms">5-804、5-1804</div></details>
+      </div>
+
+      <div class="rank-row muted">
+        <div class="rank-line"><span class="rank-no">11</span><span class="rank-name">电动车充电位增加 + 雨棚</span><span class="rank-count">2<small>户</small></span></div>
+        <div class="bar"><i style="width:15.4%"></i></div>
+        <details><summary>哪2户</summary><div class="rooms">2404、5-3605</div></details>
+      </div>
+
+      <div class="rank-row muted">
+        <div class="rank-line"><span class="rank-no">12</span><span class="rank-name">照明改善（花园路灯 / 地下室灯长亮）</span><span class="rank-count">2<small>户</small></span></div>
+        <div class="bar"><i style="width:15.4%"></i></div>
+        <details><summary>哪2户</summary><div class="rooms">5-2505、5-3605</div></details>
+      </div>
+
+      <div class="rank-row muted">
+        <div class="rank-line"><span class="rank-no">13</span><span class="rank-name">瓷砖 / 地砖破损开裂修复</span><span class="rank-count">2<small>户</small></span></div>
+        <div class="bar"><i style="width:15.4%"></i></div>
+        <details><summary>哪2户</summary><div class="rooms">5-1401、5-1004</div></details>
+      </div>
+
+      <div class="rank-row muted">
+        <div class="rank-line"><span class="rank-no">14</span><span class="rank-name">其他单项（乒乓球台 / 消防通道被堵 / 护栏 / 掉漆 / 地毯 / 木板垫 / 业主群）</span><span class="rank-count">各1<small>户</small></span></div>
+        <div class="bar"><i style="width:7.7%"></i></div>
+        <details><summary>明细</summary><div class="rooms">乒乓球台：5-2505；消防通道被堵、护栏增加、门口掉漆、业主群由物业组建：5-1401；地毯去除、车位木板垫取消：5-1804</div></details>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══ 2 垃圾点细分 ═══ -->
+  <section>
+    <div class="sec-head"><span class="sec-no">02</span><h2>垃圾点问题：13 户在关心什么</h2></div>
+    <p class="sec-note">全单元最大共识，具体诉求分三层：</p>
+    <div class="split-cards">
+      <div class="split-card main">
+        <div class="head"><b>绿植围挡 / 围栏遮挡</b><span class="c">12 户</span></div>
+        <p>主流诉求：用高绿植把转运电梯和垃圾汇集点围起来，做到看不到垃圾。有业主明确"最差也要绿植遮挡"。</p>
+        <div class="rooms-inline">5-2705、2001、1405、1304、5-1804、4101、1903、1904、5-1004、2904、4201、5-2401</div>
+      </div>
+      <div class="split-card">
+        <div class="head"><b>取消二楼中转站 / 垃圾统一走一楼 / 转运电梯常开</b><span class="c">3 户</span></div>
+        <p>更彻底的方案：取消二楼垃圾中转站，垃圾统一走一楼；同时反映转运电梯需要常开，否则生活垃圾不方便扔。</p>
+        <div class="rooms-inline">5-1804、5-3605、5-2401</div>
+      </div>
+      <div class="split-card">
+        <div class="head"><b>汇集点不能停放垃圾</b><span class="c">3 户</span></div>
+        <p>除围挡外，还要求汇集点区域不得堆放垃圾。</p>
+        <div class="rooms-inline">2001、1405、2904</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 3 儿童设施细分 ═══ -->
+  <section>
+    <div class="sec-head"><span class="sec-no">03</span><h2>儿童设施：具体科目票数</h2></div>
+    <p class="sec-note">11户要儿童设施，指名科目的票数如下。注意"同源建议"：跷跷板等4项来自同样的两户打包建议，不宣单独按票数解读。</p>
+    <div class="rank">
+
+      <div class="rank-row">
+        <div class="rank-line"><span class="rank-no top">1</span><span class="rank-name">篮球（半场架 / 墙上投篮框）</span><span class="rank-count">2<small>户</small></span></div>
+        <div class="bar"><i style="width:100%"></i></div>
+        <details><summary>哪2户</summary><div class="rooms">5-804、5-1804 —— 唯一跨户共识；5-804 提及消防部门曾反馈 3 单元 1 楼拐角处可设篮球架</div></details>
+      </div>
+
+      <div class="rank-row">
+        <div class="rank-line"><span class="rank-no">2</span><span class="rank-name">跷跷板 <span class="tag">同源建议</span></span><span class="rank-count">2<small>户</small></span></div>
+        <div class="bar"><i style="width:100%"></i></div>
+        <details><summary>哪2户</summary><div class="rooms">1304、4101（同一组打包建议，含棋牌桌、传声筒、单双杆）</div></details>
+      </div>
+
+      <div class="rank-row muted">
+        <div class="rank-line"><span class="rank-no">2</span><span class="rank-name">棋牌桌 <span class="tag">同源建议</span></span><span class="rank-count">2<small>户</small></span></div>
+        <div class="bar"><i style="width:100%"></i></div>
+        <details><summary>哪2户</summary><div class="rooms">1304、4101（同上）</div></details>
+      </div>
+
+      <div class="rank-row muted">
+        <div class="rank-line"><span class="rank-no">2</span><span class="rank-name">传声筒 <span class="tag">同源建议</span></span><span class="rank-count">2<small>户</small></span></div>
+        <div class="bar"><i style="width:100%"></i></div>
+        <details><summary>哪2户</summary><div class="rooms">1304、4101（同上）</div></details>
+      </div>
+
+      <div class="rank-row muted">
+        <div class="rank-line"><span class="rank-no">2</span><span class="rank-name">单双杆 <span class="tag">同源建议</span></span><span class="rank-count">2<small>户</small></span></div>
+        <div class="bar"><i style="width:100%"></i></div>
+        <details><summary>哪2户</summary><div class="rooms">1304、4101（同上）</div></details>
+      </div>
+
+      <div class="rank-row muted">
+        <div class="rank-line"><span class="rank-no">6</span><span class="rank-name">秋千（户外）</span><span class="rank-count">1<small>户</small></span></div>
+        <div class="bar"><i style="width:50%"></i></div>
+        <details><summary>哪1户</summary><div class="rooms">5-804</div></details>
+      </div>
+
+      <div class="rank-row muted">
+        <div class="rank-line"><span class="rank-no">6</span><span class="rank-name">乒乓球台</span><span class="rank-count">1<small>户</small></span></div>
+        <div class="bar"><i style="width:50%"></i></div>
+        <details><summary>哪1户</summary><div class="rooms">5-2505</div></details>
+      </div>
+
+      <div class="rank-row muted">
+        <div class="rank-line"><span class="rank-no">6</span><span class="rank-name">锻炼拉伸设施</span><span class="rank-count">1<small>户</small></span></div>
+        <div class="bar"><i style="width:50%"></i></div>
+        <details><summary>哪1户</summary><div class="rooms">1904</div></details>
+      </div>
+
+      <div class="rank-row muted">
+        <div class="rank-line"><span class="rank-no">9</span><span class="rank-name">未指明科目的泛需求</span><span class="rank-count">5<small>户</small></span></div>
+        <div class="bar"><i style="width:100%"></i></div>
+        <details><summary>哪5户</summary><div class="rooms">1205、1903、5-1004、4201、5-2401 —— 只提"要游乐/娱乐设施"，未指名科目，适合用候选清单投票收敛</div></details>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══ 4 功能方向 ═══ -->
+  <section>
+    <div class="sec-head"><span class="sec-no">04</span><h2>架空层功能方向：不是二选一</h2></div>
+    <p class="sec-note">两大方向票数接近且有重叠（1205 同时提了两个方向）：</p>
+    <div class="duo">
+      <div class="cell a"><div class="n">11</div><div class="t">儿童游乐 / 娱乐</div></div>
+      <div class="cell b"><div class="n">8</div><div class="t">图书馆 / 阅读角</div></div>
+    </div>
+    <div class="callout"><b>可分区并存：</b>图书馆（安静区）+ 儿童游乐（活动区）+ 休闲桌椅、健身器材可划分区域同时落地，沟通会上建议按"分区组合"讨论，避免两派对立投票。</div>
+  </section>
+
+  <!-- ═══ 5 参会意愿 ═══ -->
+  <section>
+    <div class="sec-head"><span class="sec-no">05</span><h2>物业沟通会：参会意愿</h2></div>
+    <div class="attend">
+      <div class="att-row"><span class="lab yes">明确参加</span><span class="n" style="color:var(--accent)">2</span><span class="who">5-2705、1205</span></div>
+      <div class="att-row"><span class="lab">明确不参加</span><span class="n">8</span><span class="who">2001、5-804、2404、1704（周六没时间）、1903、1904、5-2505、5-3605</span></div>
+      <div class="att-row"><span class="lab">未填 / 不确定</span><span class="n" style="color:var(--ink-2)">11</span><span class="who">其中 3 户备注"不确定是否有空"：5-1004、2904、5-2401</span></div>
+    </div>
+  </section>
+
+  <!-- ═══ 6 下一步 ═══ -->
+  <section>
+    <div class="sec-head"><span class="sec-no">06</span><h2>下一步建议</h2></div>
+    <div class="steps">
+      <div class="step"><span class="no">1</span><div><b>垃圾点绿植围挡可先行</b><p>12户共识、争议最小，可作为与物业沟通的第一项落地事项。</p></div></div>
+      <div class="step"><span class="no">2</span><div><b>功能定位走"分区组合"</b><p>图书馆+儿童区+健身桌椅分区并存，避免二选一对立。</p></div></div>
+      <div class="step"><span class="no">3</span><div><b>儿童设施用菜单式投票</b><p>5户泛需求未指名科目，建议列候选清单（篮球架、秋千、跷跷板、乒乓球台等）让大家勾选收敛。</p></div></div>
+      <div class="step"><span class="no">4</span><div><b>汇总表作为书面意见提交</b><p>明确参会的只有2户，沟通会不宜只依赖到场人数，建议提前把本汇总提交物业并留存记录。</p></div></div>
+    </div>
+  </section>
+
+  <footer>
+    <b>口径说明：</b>数据截至2026-09-19，共21户提交意见；一户可提多条，故各条票数之和大于21。"同源建议"指多户重复提交同一组打包意见，票数不宜单独解读。房号信息来自业主自行提交的收集表，仅用于意见溯源核对。<br>
+    本页由 5 单元业主意见收集表整理生成 · 2026年9月
+  </footer>
+
+</div>
+</body>
+</html>
