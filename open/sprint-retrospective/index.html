@@ -1,0 +1,862 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="description" content="Sprint 回顾会的必要性、六条心法与三个真实案例：不追责但必须负责，把一次经历变成下一轮可验证的改变。">
+  <title>Sprint 回顾会：让团队真正进化的一小时</title>
+  <style>
+    :root {
+      --paper: #f4f1ea;
+      --surface: #fffdf8;
+      --ink: #1b1e21;
+      --body: #3b403c;
+      --muted: #666b64;
+      --line: #dcd7cc;
+      --navy: #19324b;
+      --accent: #b8502c;
+      --accent-soft: #f8ece5;
+      --green: #2c6350;
+      --green-soft: #e9f1ec;
+      --wide: 1200px;
+      --measure: 720px;
+      --shadow: 0 16px 48px rgba(28, 36, 30, .07);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        linear-gradient(rgba(25, 50, 75, .026) 1px, transparent 1px),
+        var(--paper);
+      background-size: 100% 34px;
+      font-family: "Noto Sans CJK SC", "Source Han Sans SC", "Microsoft YaHei", sans-serif;
+      font-size: 17px;
+      line-height: 1.78;
+      text-rendering: optimizeLegibility;
+    }
+    h1, h2, h3, .verdict, .pull {
+      font-family: "Noto Serif CJK SC", "Source Han Serif SC", "Songti SC", SimSun, serif;
+    }
+    a { color: var(--green); text-underline-offset: 3px; }
+    .keep { white-space: nowrap; }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      min-height: 58px;
+      padding: 8px max(20px, calc((100vw - var(--wide)) / 2));
+      border-bottom: 1px solid rgba(25, 50, 75, .14);
+      background: rgba(244, 241, 234, .95);
+      backdrop-filter: blur(12px);
+    }
+    .brand {
+      color: var(--navy);
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: .06em;
+      text-decoration: none;
+    }
+    .top-links { display: flex; gap: 8px; }
+    .top-links a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 40px;
+      padding: 7px 12px;
+      border: 1px solid transparent;
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 700;
+      text-decoration: none;
+    }
+    .top-links a:hover, .top-links a:focus-visible {
+      border-color: var(--line);
+      background: var(--surface);
+      outline: none;
+    }
+
+    /* ---------- hero ---------- */
+    .hero {
+      padding: 78px 24px 58px;
+      border-bottom: 1px solid var(--line);
+    }
+    .hero-inner { width: min(var(--wide), 100%); margin: 0 auto; }
+    .eyebrow {
+      margin: 0 0 20px;
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+    h1 {
+      max-width: 980px;
+      margin: 0;
+      color: var(--navy);
+      font-size: clamp(38px, 5.6vw, 68px);
+      line-height: 1.14;
+      letter-spacing: -.03em;
+      text-wrap: balance;
+    }
+    .hero-lead {
+      max-width: 860px;
+      margin: 26px 0 0;
+      color: var(--body);
+      font-size: clamp(17px, 1.25vw, 20px);
+      line-height: 1.75;
+    }
+    .verdict {
+      max-width: var(--measure);
+      margin: 38px 0 0;
+      padding: 22px 26px;
+      border: 1px solid var(--line);
+      border-left: 4px solid var(--accent);
+      border-radius: 4px 14px 14px 4px;
+      background: var(--accent-soft);
+      color: #6d3218;
+      font-size: clamp(18px, 1.4vw, 21px);
+      line-height: 1.7;
+    }
+
+    /* ---------- page grid ---------- */
+    .page {
+      width: min(var(--wide), calc(100% - 48px));
+      margin: 0 auto;
+      padding: 64px 0 72px;
+      display: grid;
+      grid-template-columns: 200px minmax(0, 1fr);
+      gap: 60px;
+      align-items: start;
+    }
+    .rail { position: sticky; top: 84px; }
+    .rail-title {
+      margin: 0 0 12px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .14em;
+    }
+    .rail ol {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      border-left: 2px solid var(--line);
+    }
+    .rail a {
+      display: block;
+      padding: 6px 0 6px 14px;
+      margin-left: -2px;
+      border-left: 2px solid transparent;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.5;
+      text-decoration: none;
+    }
+    .rail a:hover, .rail a:focus-visible {
+      border-left-color: var(--accent);
+      color: var(--navy);
+      outline: none;
+    }
+
+    main { min-width: 0; }
+    section { margin-bottom: 62px; scroll-margin-top: 84px; }
+    h2 {
+      margin: 0 0 8px;
+      color: var(--navy);
+      font-size: clamp(24px, 2.4vw, 31px);
+      line-height: 1.32;
+      letter-spacing: -.015em;
+    }
+    .sec-note {
+      margin: 0 0 24px;
+      color: var(--muted);
+      font-size: 15px;
+    }
+    p { margin: 0 0 16px; max-width: var(--measure); }
+    .body-text { color: var(--body); }
+
+    /* ---------- compare (评审 vs 回顾) ---------- */
+    .compare {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      margin: 26px 0 22px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      overflow: hidden;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+    .compare > div { padding: 24px 26px; }
+    .compare > div + div { border-left: 1px solid var(--line); }
+    .compare h3 {
+      margin: 0 0 6px;
+      font-size: 19px;
+      color: var(--navy);
+    }
+    .compare .tag {
+      display: inline-block;
+      margin-bottom: 12px;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .06em;
+    }
+    .compare .tag.review { color: #7a4a12; background: #f6ecdb; }
+    .compare .tag.retro { color: #1d5040; background: var(--green-soft); }
+    .compare dl { margin: 0; }
+    .compare dt {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: .04em;
+    }
+    .compare dd {
+      margin: 2px 0 0;
+      color: var(--body);
+      font-size: 15.5px;
+      line-height: 1.65;
+    }
+
+    /* ---------- loop diagram ---------- */
+    .loop-wrap {
+      margin: 30px 0 18px;
+      padding: 26px 20px 18px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+    .loop-wrap svg { display: block; width: 100%; height: auto; }
+    .figure-cap {
+      margin: 14px auto 0;
+      max-width: 620px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.65;
+      text-align: center;
+    }
+
+    /* ---------- ranked principles ---------- */
+    .principles {
+      margin: 26px 0 0;
+      padding: 0;
+      list-style: none;
+      counter-reset: p;
+    }
+    .principles > li {
+      position: relative;
+      padding: 22px 0 22px 62px;
+      border-top: 1px solid var(--line);
+    }
+    .principles > li:last-child { border-bottom: 1px solid var(--line); }
+    .principles > li::before {
+      counter-increment: p;
+      content: counter(p, decimal-leading-zero);
+      position: absolute;
+      left: 0;
+      top: 22px;
+      color: var(--accent);
+      font-family: "Noto Serif CJK SC", Georgia, serif;
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: .02em;
+    }
+    .principles b {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--navy);
+      font-size: 19px;
+      font-weight: 800;
+      line-height: 1.45;
+    }
+    .principles p { margin: 0; color: var(--body); font-size: 16px; max-width: 660px; }
+
+    /* ---------- case grid ---------- */
+    .case-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 18px;
+      margin: 26px 0 0;
+    }
+    .case {
+      display: flex;
+      flex-direction: column;
+      padding: 24px 24px 20px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+    .case h3 {
+      margin: 0 0 12px;
+      color: var(--navy);
+      font-size: 18px;
+      line-height: 1.45;
+    }
+    .case p { margin: 0 0 14px; color: var(--body); font-size: 15.5px; line-height: 1.72; }
+    .case .lesson {
+      margin-top: auto;
+      padding-top: 14px;
+      border-top: 1px dashed var(--line);
+      color: var(--green);
+      font-size: 15px;
+      font-weight: 700;
+      line-height: 1.6;
+    }
+
+    /* ---------- diagnostic table ---------- */
+    .table-wrap { margin: 26px 0 0; overflow-x: auto; }
+    table {
+      width: 100%;
+      min-width: 620px;
+      border-collapse: collapse;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      overflow: hidden;
+      font-size: 15.5px;
+    }
+    caption {
+      padding: 0 0 12px;
+      color: var(--muted);
+      font-size: 14px;
+      text-align: left;
+    }
+    th, td {
+      padding: 14px 16px;
+      text-align: left;
+      vertical-align: top;
+      border-bottom: 1px solid var(--line);
+      line-height: 1.62;
+    }
+    thead th {
+      background: #eee9df;
+      color: var(--navy);
+      font-size: 14px;
+      letter-spacing: .03em;
+    }
+    tbody tr:last-child td { border-bottom: 0; }
+    td:first-child { color: var(--navy); font-weight: 700; }
+    td:last-child { color: var(--green); }
+
+    /* ---------- rhythm strip ---------- */
+    .rhythm {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 10px;
+      margin: 26px 0 0;
+      padding: 0;
+      list-style: none;
+      counter-reset: r;
+    }
+    .rhythm li {
+      position: relative;
+      padding: 16px 14px 14px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--surface);
+      font-size: 14.5px;
+      line-height: 1.55;
+      color: var(--body);
+    }
+    .rhythm li::before {
+      counter-increment: r;
+      content: "0" counter(r);
+      display: block;
+      margin-bottom: 8px;
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: .1em;
+    }
+    .rhythm b { display: block; color: var(--navy); font-size: 15px; }
+
+    /* ---------- checklist ---------- */
+    .checklist {
+      margin: 24px 0 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 10px 26px;
+    }
+    .checklist li {
+      position: relative;
+      padding-left: 26px;
+      color: var(--body);
+      font-size: 16px;
+      line-height: 1.66;
+    }
+    .checklist li::before {
+      content: "";
+      position: absolute;
+      left: 2px;
+      top: 10px;
+      width: 9px;
+      height: 9px;
+      border-radius: 2px;
+      background: var(--accent);
+      opacity: .75;
+    }
+
+    /* ---------- pull quote ---------- */
+    .pull {
+      margin: 30px 0 0;
+      padding: 30px 32px;
+      border-radius: 16px;
+      background: var(--navy);
+      color: #f2efe7;
+      font-size: clamp(19px, 1.7vw, 24px);
+      line-height: 1.6;
+      letter-spacing: -.01em;
+    }
+    .pull small {
+      display: block;
+      margin-top: 14px;
+      color: #a9bccd;
+      font-family: inherit;
+      font-size: 14px;
+      letter-spacing: .04em;
+    }
+
+    footer {
+      border-top: 1px solid var(--line);
+      padding: 36px 24px 60px;
+      background: rgba(255, 253, 248, .6);
+    }
+    .foot-inner {
+      width: min(var(--wide), 100%);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 340px);
+      gap: 40px;
+      color: var(--muted);
+      font-size: 14.5px;
+      line-height: 1.7;
+    }
+    .foot-inner h2 {
+      margin: 0 0 10px;
+      font-size: 15px;
+      font-family: inherit;
+      letter-spacing: .08em;
+      color: var(--navy);
+    }
+    .foot-inner ol { margin: 0; padding-left: 18px; }
+    .foot-inner li { margin-bottom: 6px; }
+
+    @media (max-width: 1080px) {
+      .page { grid-template-columns: minmax(0, 1fr); gap: 0; padding-top: 40px; }
+      .rail { position: static; margin-bottom: 34px; }
+      .rail ol { display: flex; flex-wrap: wrap; gap: 6px; border-left: 0; }
+      .rail a {
+        padding: 6px 12px;
+        border: 1px solid var(--line);
+        border-left: 1px solid var(--line);
+        border-radius: 999px;
+        background: var(--surface);
+      }
+      .rail a:hover, .rail a:focus-visible { border-color: var(--accent); background: var(--accent-soft); }
+      .rhythm { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .foot-inner { grid-template-columns: minmax(0, 1fr); }
+    }
+    @media (max-width: 720px) {
+      body { font-size: 16.5px; }
+      .hero { padding: 52px 20px 44px; }
+      .compare { grid-template-columns: 1fr; }
+      .compare > div + div { border-left: 0; border-top: 1px solid var(--line); }
+      .principles > li { padding-left: 46px; }
+      .rhythm { grid-template-columns: 1fr; }
+      .verdict, .pull { padding: 20px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      * { transition: none !important; animation: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="topbar">
+  <a class="brand" href="../">cizen.net</a>
+  <nav class="top-links" aria-label="页面导航">
+    <a href="../">公开分享</a>
+    <a href="#cases">三个故事</a>
+    <a href="#check">判断标准</a>
+  </nav>
+</header>
+
+<div class="hero">
+  <div class="hero-inner">
+    <p class="eyebrow">Team Learning · Sprint Retrospective</p>
+    <h1>让团队真正<span class="keep">进化的一小时</span></h1>
+    <p class="hero-lead">
+      Sprint 回顾会不是汇报会，也不是检讨会。它是团队定期停下来，观察自己如何工作，
+      并把一段真实经历<span class="keep">变成</span>下一轮改变的时刻。
+    </p>
+    <p class="verdict">
+      判断一场回顾会有没有开好，不看气氛是否热烈，而看下一个 Sprint 里，
+      团队<span class="keep">工作方式</span>是否真的改变了一件可以被验证的事。
+    </p>
+  </div>
+</div>
+
+<div class="page">
+  <aside class="rail" aria-label="章节导航">
+    <p class="rail-title">目录</p>
+    <ol>
+      <li><a href="#why">为什么必须有</a></li>
+      <li><a href="#loop">学习的闭环</a></li>
+      <li><a href="#mind">六条心法</a></li>
+      <li><a href="#cases">三个故事</a></li>
+      <li><a href="#fail">什么时候失灵</a></li>
+      <li><a href="#rhythm">一小时怎么走</a></li>
+      <li><a href="#check">判断标准</a></li>
+    </ol>
+  </aside>
+
+  <main>
+
+    <section id="why">
+      <h2>为什么必须有回顾会</h2>
+      <p class="sec-note">因为复杂工作不可能被一次性设计正确。</p>
+      <p class="body-text">
+        传统管理隐含一个前提：流程是对的，只要认真执行，结果就会对。但真实工作里，
+        需求理解会偏、方案要试、协作关系在变、外部环境也在变。计划只能是当前信息下的最佳假设，
+        不是真理。团队需要定期追问一句：
+      </p>
+      <p class="body-text"><strong>刚刚经历的现实，推翻了我们哪些假设？</strong></p>
+
+      <div class="compare">
+        <div>
+          <span class="tag review">Sprint 评审会</span>
+          <h3>检视产品</h3>
+          <dl>
+            <dt>核心问题</dt>
+            <dd>做出来的东西有价值吗？下一步做什么？</dd>
+            <dt>看什么</dt>
+            <dd>可用增量、用户与业务证据、环境变化</dd>
+            <dt>产出</dt>
+            <dd>待办列表与方向的调整</dd>
+          </dl>
+        </div>
+        <div>
+          <span class="tag retro">Sprint 回顾会</span>
+          <h3>检视系统</h3>
+          <dl>
+            <dt>核心问题</dt>
+            <dd>这群人以现在的方式工作，能不能持续创造价值？</dd>
+            <dt>看什么</dt>
+            <dd>互动、流程、工具、质量、以及没说出口的假设</dd>
+            <dt>产出</dt>
+            <dd>下一轮可执行的少量改进</dd>
+          </dl>
+        </div>
+      </div>
+
+      <p class="body-text">
+        少了后一半，团队容易把系统问题解释成个人问题：延期是执行力不够，返工是责任心不足，
+        决策慢是沟通不到位。这些解释听起来有力，却几乎不能指导任何改进。
+        Sprint 只是把周期变短了，并不会自动让组织变聪明。
+      </p>
+    </section>
+
+    <section id="loop">
+      <h2>回顾是一条闭环，不是一次回忆</h2>
+      <p class="sec-note">从经历走到能力，中间少一环都不成立。</p>
+
+      <div class="loop-wrap">
+        <svg viewBox="0 0 900 300" role="img" aria-labelledby="loop-title loop-desc">
+          <title id="loop-title">回顾会的学习闭环</title>
+          <desc id="loop-desc">真实经历、共同事实、发现模式、修正假设、改进实验、验证效果、固化为能力、下一轮经历，构成持续循环。</desc>
+          <defs>
+            <marker id="arw" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#8d938c"></path>
+            </marker>
+            <marker id="arw-accent" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#b8502c"></path>
+            </marker>
+          </defs>
+
+          <!-- 上行连接线（左→右） -->
+          <path d="M 210 71 H 246" stroke="#8d938c" stroke-width="2" fill="none" marker-end="url(#arw)"></path>
+          <path d="M 432 71 H 468" stroke="#8d938c" stroke-width="2" fill="none" marker-end="url(#arw)"></path>
+          <path d="M 654 71 H 690" stroke="#8d938c" stroke-width="2" fill="none" marker-end="url(#arw)"></path>
+          <!-- 右侧下行 -->
+          <path d="M 784 110 V 206" stroke="#8d938c" stroke-width="2" fill="none" marker-end="url(#arw)"></path>
+          <!-- 下行连接线（右→左） -->
+          <path d="M 690 245 H 656" stroke="#b8502c" stroke-width="2" fill="none" marker-end="url(#arw-accent)"></path>
+          <path d="M 468 245 H 434" stroke="#b8502c" stroke-width="2" fill="none" marker-end="url(#arw-accent)"></path>
+          <path d="M 246 245 H 212" stroke="#b8502c" stroke-width="2" fill="none" marker-end="url(#arw-accent)"></path>
+          <!-- 左侧上行 -->
+          <path d="M 118 206 V 110" stroke="#b8502c" stroke-width="2" fill="none" marker-end="url(#arw-accent)"></path>
+
+          <!-- 上行节点 -->
+          <g>
+            <rect x="30" y="40" width="176" height="62" rx="11" fill="#fffdf8" stroke="#dcd7cc"></rect>
+            <text x="118" y="67" text-anchor="middle" font-size="17" font-weight="700" fill="#19324b" font-family="Noto Serif CJK SC, SimSun, serif">真实经历</text>
+            <text x="118" y="89" text-anchor="middle" font-size="13" fill="#666b64" font-family="Noto Sans CJK SC, Microsoft YaHei, sans-serif">发生了什么</text>
+          </g>
+          <g>
+            <rect x="252" y="40" width="176" height="62" rx="11" fill="#fffdf8" stroke="#dcd7cc"></rect>
+            <text x="340" y="67" text-anchor="middle" font-size="17" font-weight="700" fill="#19324b" font-family="Noto Serif CJK SC, SimSun, serif">共同事实</text>
+            <text x="340" y="89" text-anchor="middle" font-size="13" fill="#666b64" font-family="Noto Sans CJK SC, Microsoft YaHei, sans-serif">拼出一张地图</text>
+          </g>
+          <g>
+            <rect x="474" y="40" width="176" height="62" rx="11" fill="#fffdf8" stroke="#dcd7cc"></rect>
+            <text x="562" y="67" text-anchor="middle" font-size="17" font-weight="700" fill="#19324b" font-family="Noto Serif CJK SC, SimSun, serif">发现模式</text>
+            <text x="562" y="89" text-anchor="middle" font-size="13" fill="#666b64" font-family="Noto Sans CJK SC, Microsoft YaHei, sans-serif">看系统条件</text>
+          </g>
+          <g>
+            <rect x="696" y="40" width="176" height="62" rx="11" fill="#fffdf8" stroke="#dcd7cc"></rect>
+            <text x="784" y="67" text-anchor="middle" font-size="17" font-weight="700" fill="#19324b" font-family="Noto Serif CJK SC, SimSun, serif">修正假设</text>
+            <text x="784" y="89" text-anchor="middle" font-size="13" fill="#666b64" font-family="Noto Sans CJK SC, Microsoft YaHei, sans-serif">哪条不成立</text>
+          </g>
+
+          <!-- 中间说明 -->
+          <text x="450" y="158" text-anchor="middle" font-size="14.5" fill="#8a3a1c" font-family="Noto Sans CJK SC, Microsoft YaHei, sans-serif">说得再热闹，只要工作方式没变，这一圈就没有走完</text>
+          <text x="450" y="186" text-anchor="middle" font-size="13.5" fill="#8d938c" font-family="Noto Sans CJK SC, Microsoft YaHei, sans-serif">停在“发现模式”的回顾，是总结；走到“固化”的回顾，才是学习</text>
+
+          <!-- 下行节点（右→左） -->
+          <g>
+            <rect x="696" y="214" width="176" height="62" rx="11" fill="#f8ece5" stroke="#e3bda8"></rect>
+            <text x="784" y="241" text-anchor="middle" font-size="17" font-weight="700" fill="#8a3a1c" font-family="Noto Serif CJK SC, SimSun, serif">改进实验</text>
+            <text x="784" y="263" text-anchor="middle" font-size="13" fill="#8a3a1c" font-family="Noto Sans CJK SC, Microsoft YaHei, sans-serif">1—2 项，进 Sprint</text>
+          </g>
+          <g>
+            <rect x="474" y="214" width="176" height="62" rx="11" fill="#f8ece5" stroke="#e3bda8"></rect>
+            <text x="562" y="241" text-anchor="middle" font-size="17" font-weight="700" fill="#8a3a1c" font-family="Noto Serif CJK SC, SimSun, serif">验证效果</text>
+            <text x="562" y="263" text-anchor="middle" font-size="13" fill="#8a3a1c" font-family="Noto Sans CJK SC, Microsoft YaHei, sans-serif">两周后回来看</text>
+          </g>
+          <g>
+            <rect x="252" y="214" width="176" height="62" rx="11" fill="#e9f1ec" stroke="#bcd3c7"></rect>
+            <text x="340" y="241" text-anchor="middle" font-size="17" font-weight="700" fill="#22503f" font-family="Noto Serif CJK SC, SimSun, serif">固化为能力</text>
+            <text x="340" y="263" text-anchor="middle" font-size="13" fill="#22503f" font-family="Noto Sans CJK SC, Microsoft YaHei, sans-serif">规则·工具·护栏</text>
+          </g>
+          <g>
+            <rect x="30" y="214" width="176" height="62" rx="11" fill="#fffdf8" stroke="#dcd7cc"></rect>
+            <text x="118" y="241" text-anchor="middle" font-size="17" font-weight="700" fill="#19324b" font-family="Noto Serif CJK SC, SimSun, serif">下一轮经历</text>
+            <text x="118" y="263" text-anchor="middle" font-size="13" fill="#666b64" font-family="Noto Sans CJK SC, Microsoft YaHei, sans-serif">带着新假设开始</text>
+          </g>
+        </svg>
+        <p class="figure-cap">上半圈理解过去，下半圈改变未来。</p>
+      </div>
+    </section>
+
+    <section id="mind">
+      <h2>六条心法</h2>
+      <p class="sec-note">流程决定会议能否开完，心法决定团队会不会真的进化。</p>
+
+      <ol class="principles">
+        <li>
+          <b>回顾过去，是为了改变未来</b>
+          <p>回忆不是学习。会议结束前，至少要改变一件东西：一个行为、一条规则、一种协作方式，或一个没人说出口的假设。</p>
+        </li>
+        <li>
+          <b>不追责，不等于没有责任</b>
+          <p>要区分“责备”和“负责”。人一旦担心被罚，就不会讲出当时的全部细节，组织也就永远学不会。原则是不因诚实而惩罚，但必须为改进负责。</p>
+        </li>
+        <li>
+          <b>先理解当时为什么合理</b>
+          <p>事后的人拥有当事人当时没有的信息。与其问“这么明显为什么没发现”，不如问：当时缺了哪个信号、哪道护栏，才让这个选择看起来很合理。</p>
+        </li>
+        <li>
+          <b>成功也要回顾</b>
+          <p>成功可能来自方法，也可能来自某个人的通宵、运气，或还没暴露的代价。只有把偶然成功讲清楚，它才可能被复制。没有发现问题，本身就是个问题。</p>
+        </li>
+        <li>
+          <b>人已经很忙，别再要求更努力</b>
+          <p>“加强沟通、提高责任心”往往把系统损失重新压回个人。更该找的是多余等待、无效交接、决策延迟和返工来源。</p>
+        </li>
+        <li>
+          <b>一次只改少数变量</b>
+          <p>列出二十个问题会带来分析的满足感，却什么也不会改变。每次只选一到两项，写清假设、负责人和验证方式，并占用下一轮的容量。</p>
+        </li>
+      </ol>
+    </section>
+
+    <section id="cases">
+      <h2>三个故事</h2>
+      <p class="sec-note">同样的问题，会开法和不开法，走向完全不同。</p>
+
+      <div class="case-grid">
+        <article class="case">
+          <h3>延期，不是估算问题</h3>
+          <p>
+            某团队连续三个 Sprint 没有完成承诺。前两次的解释是“估算不准”和“执行力不足”。
+            第三次他们不再只看完成率，而是还原了时间线：真正开发 3 天，等澄清 2 天，
+            等接口确认 3 天，等验收 2 天，返工 2 天。
+          </p>
+          <p>
+            问题不在开发速度，而在决策等待与交接。他们随后规定：事项进入 Sprint 前，
+            必须明确决策人、验收标准和关键依赖。
+          </p>
+          <p class="lesson">人往往已经很忙。先消除无效等待，而不是继续向个人施压。</p>
+        </article>
+
+        <article class="case">
+          <h3>实验失败，学习成功</h3>
+          <p>
+            一个增长实验跑了 30 天，转化率没起来。简单归因会变成“选品错了”或“能力不行”。
+            团队改为检查：假设能不能被证伪、干预有没有按设计执行、数据是否可信、护栏有没有被突破。
+          </p>
+          <p>
+            结果是点击确实涨了，但购买没有跟上，用户反馈指向信任信息不足。实验没有拿到预期结果，
+            却排除了一个错误方向，还找到了更值得验证的问题。
+          </p>
+          <p class="lesson">失败如果有认知产出，就是有成本的学习；没有认知变化的失败，才只是损失。</p>
+        </article>
+
+        <article class="case">
+          <h3>英雄救火之后</h3>
+          <p>
+            某次临近交付，核心系统出问题，一名骨干熬到深夜保住了节点。评审会上，
+            这通常是一个值得表扬的故事。但回顾会还要追问：为什么只有他知道怎么修？
+            风险为什么最后两天才暴露？如果那天他不在呢？
+          </p>
+          <p>
+            团队随后建立了双人掌握、自动预警和提前集成验证。
+          </p>
+          <p class="lesson">表扬英雄，同时消除组织对英雄的依赖。成熟不是每次有人力挽狂澜，而是同类危机越来越少。</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="fail">
+      <h2>什么时候会失灵</h2>
+      <p class="sec-note">回顾会最常见的退化，几乎都能从表里认出来。</p>
+
+      <div class="table-wrap">
+        <table>
+          <caption>症状—真实问题—纠偏</caption>
+          <thead>
+            <tr>
+              <th scope="col">看起来的样子</th>
+              <th scope="col">真实问题</th>
+              <th scope="col">怎么纠偏</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>轮流汇报做了什么</td>
+              <td>开成了进度会，没有检视系统</td>
+              <td>从“谁做了什么”转到“什么条件造成了结果”</td>
+            </tr>
+            <tr>
+              <td>只说失败和不足</td>
+              <td>回顾被污名化，人人自保</td>
+              <td>同时分析成功条件与可复制的做法</td>
+            </tr>
+            <tr>
+              <td>管理者先给出结论</td>
+              <td>权力抑制了真实信息</td>
+              <td>管理者最后发言，先问事实和当时的处境</td>
+            </tr>
+            <tr>
+              <td>“加强沟通、提高责任心”</td>
+              <td>用口号替代机制</td>
+              <td>改写成可观察、可验证的行为实验</td>
+            </tr>
+            <tr>
+              <td>问题列了二十条</td>
+              <td>分析满足感替代了改善</td>
+              <td>只留一到两项高杠杆改变</td>
+            </tr>
+            <tr>
+              <td>行动项进不了 Sprint</td>
+              <td>组织并不真给改善的容量</td>
+              <td>进入待办，并明确替代掉哪项工作</td>
+            </tr>
+            <tr>
+              <td>上次行动从不复查</td>
+              <td>闭环没闭上，学习没有发生</td>
+              <td>下次开场第一件事就是检查上次行动</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="rhythm">
+      <h2>一小时可以这样走</h2>
+      <p class="sec-note">结构服务于心法，不要让流程反客为主。</p>
+
+      <ol class="rhythm">
+        <li><b>建立安全边界</b>重申目的和语言规则</li>
+        <li><b>摆出共同事实</b>目标、结果、等待、返工</li>
+        <li><b>各自写下观察</b>先静默书写，再依次分享</li>
+        <li><b>深挖一个模式</b>只挑一到两个高影响问题</li>
+        <li><b>设计改进实验</b>负责人、容量、验证信号</li>
+        <li><b>结束前自检</b>这次会议本身怎么开得更好</li>
+      </ol>
+
+      <p class="body-text" style="margin-top:26px">
+        一个反例与一个正例的差别，往往只在有没有把话说到底：
+      </p>
+      <p class="body-text" style="color:var(--muted)">
+        空泛：下个 Sprint 加强沟通，减少返工。
+      </p>
+      <p class="body-text">
+        可验证：我们判断返工主要来自验收标准定得太晚。下个 Sprint，所有进入开发的工作，
+        必须先由产品、开发和测试共同确认一个可观察的验收示例；两周后用“因验收口径不清造成的返工次数”来判断是否有效。
+      </p>
+    </section>
+
+    <section id="check">
+      <h2>怎么判断这场回顾会有没有用</h2>
+      <p class="sec-note">别用发言人数、便利贴数量或气氛来衡量。</p>
+
+      <ul class="checklist">
+        <li>是否形成了过去没有的共同事实</li>
+        <li>是否改变了对问题原因的理解</li>
+        <li>是否看清了促成结果的那些条件</li>
+        <li>是否只留下少量可执行的改进</li>
+        <li>改进是否进入下一轮并占用真实容量</li>
+        <li>下一次是否真的检查了效果</li>
+        <li>团队是否越来越敢提前说出坏消息</li>
+      </ul>
+
+      <p class="pull">
+        “今天我们不是来评价过去的人，而是利用过去的事实，让未来的团队工作得更好。<br>
+        成功的做法要变成能力，失败的经历要变成学习，暴露的问题要变成下一轮可验证的改变。”
+        <small>—— 可以直接用的一段开场</small>
+      </p>
+    </section>
+
+  </main>
+</div>
+
+<footer>
+  <div class="foot-inner">
+    <div>
+      <h2>关于这份材料</h2>
+      <p>
+        本文把 Sprint 回顾会当作一套组织学习机制来理解：它检视的不是某个人，而是团队自己的工作系统。
+        内容适合团队负责人、Scrum Master、产品负责人以及希望改善协作的成员阅读，也可直接用于会前对齐。
+      </p>
+      <p>方法用于你的团队时，请结合本地节奏、授权边界与容量现实，而不必照搬时长与话术。</p>
+    </div>
+    <div>
+      <h2>参考来源</h2>
+      <ol>
+        <li><a href="https://scrumguides.org/scrum-guide.html" rel="noopener">The 2020 Scrum Guide</a></li>
+        <li><a href="https://www.etsy.com/codeascraft/blameless-postmortems" rel="noopener">Etsy Engineering：Blameless PostMortems and a Just Culture</a></li>
+        <li><a href="https://blogs.mtu.edu/improvement/2012/01/31/hansei-reflection" rel="noopener">Michigan Tech：Hansei “Reflection”</a></li>
+      </ol>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
